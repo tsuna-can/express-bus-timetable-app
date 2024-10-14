@@ -47,7 +47,7 @@ private fun mainTileLayout(
 ) = PrimaryLayout.Builder(deviceParameters)
     .setResponsiveContentInsetEnabled(true)
     .setPrimaryLabelTextContent(
-        Text.Builder(context, context.getString(R.string.from) + state.stopName)
+        Text.Builder(context, context.getString(R.string.from) + " " + state.stopName)
             .setColor(argb(Colors.DEFAULT.onSurface))
             .setTypography(androidx.wear.protolayout.material.Typography.TYPOGRAPHY_CAPTION1)
             .build()
@@ -88,10 +88,10 @@ fun mainTileLayoutPreview(context: Context): TilePreviewData {
             MainTileState(
                 "Tokyo",
                 listOf(
-                    Trip("test", "12:00"),
-                    Trip("test", "12:30"),
-                    Trip("test", "13:00"),
-                    Trip("test", "13:30"),
+                    Trip("Tokyo", "12:00"),
+                    Trip("Sapporo", "12:30"),
+                    Trip("Chiba", "13:00"),
+                    Trip("Nagoya", "13:30"),
                 )
             ),
             request

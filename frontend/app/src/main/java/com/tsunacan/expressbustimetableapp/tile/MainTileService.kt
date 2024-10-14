@@ -1,37 +1,33 @@
 package com.tsunacan.expressbustimetableapp.tile
 
-import android.content.Context
-import androidx.wear.protolayout.ColorBuilders.argb
-import androidx.wear.protolayout.LayoutElementBuilders
 import androidx.wear.protolayout.ResourceBuilders
-import androidx.wear.protolayout.TimelineBuilders
-import androidx.wear.protolayout.material.Colors
-import androidx.wear.protolayout.material.Text
-import androidx.wear.protolayout.material.Typography
-import androidx.wear.protolayout.material.layouts.PrimaryLayout
+import androidx.wear.tiles.RequestBuilders.TileRequest
+import androidx.wear.tiles.TileBuilders.Tile
 import androidx.wear.tiles.RequestBuilders
-import androidx.wear.tiles.TileBuilders
-import androidx.wear.tiles.tooling.preview.Preview
-import androidx.wear.tiles.tooling.preview.TilePreviewData
-import androidx.wear.tooling.preview.devices.WearDevices
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.google.android.horologist.tiles.SuspendingTileService
+import com.tsunacan.expressbustimetableapp.models.Trip
 
 private const val RESOURCES_VERSION = "0"
 
-/**
- * Skeleton for a tile with no images.
- */
 @OptIn(ExperimentalHorologistApi::class)
 class MainTileService : SuspendingTileService() {
+
+    private lateinit var renderer: MainTileRenderer
+
+    override fun onCreate() {
+        super.onCreate()
+        renderer = MainTileRenderer(this)
+    }
 
     override suspend fun resourcesRequest(
         requestParams: RequestBuilders.ResourcesRequest
     ) = resources(requestParams)
 
-    override suspend fun tileRequest(
-        requestParams: RequestBuilders.TileRequest
-    ) = tile(requestParams, this)
+    override suspend fun tileRequest(requestParams: TileRequest): Tile {
+        val mainTileState = generateDummyTileState()
+        return renderer.renderTimeline(mainTileState, requestParams)
+    }
 }
 
 private fun resources(
@@ -42,44 +38,14 @@ private fun resources(
         .build()
 }
 
-private fun tile(
-    requestParams: RequestBuilders.TileRequest,
-    context: Context,
-): TileBuilders.Tile {
-    val singleTileTimeline = TimelineBuilders.Timeline.Builder()
-        .addTimelineEntry(
-            TimelineBuilders.TimelineEntry.Builder()
-                .setLayout(
-                    LayoutElementBuilders.Layout.Builder()
-                        .setRoot(tileLayout(requestParams, context))
-                        .build()
-                )
-                .build()
+private fun generateDummyTileState(): MainTileState {
+    return MainTileState(
+        "Tokyo",
+        listOf(
+            Trip("Tokyo", "12:00"),
+            Trip("Sapporo", "12:30"),
+            Trip("Chiba", "13:00"),
+            Trip("Nagoya", "13:30"),
         )
-        .build()
-
-    return TileBuilders.Tile.Builder()
-        .setResourcesVersion(RESOURCES_VERSION)
-        .setTileTimeline(singleTileTimeline)
-        .build()
-}
-
-private fun tileLayout(
-    requestParams: RequestBuilders.TileRequest,
-    context: Context,
-): LayoutElementBuilders.LayoutElement {
-    return PrimaryLayout.Builder(requestParams.deviceConfiguration)
-        .setResponsiveContentInsetEnabled(true)
-        .setContent(
-            Text.Builder(context, "Hello World!")
-                .setColor(argb(Colors.DEFAULT.onSurface))
-                .setTypography(Typography.TYPOGRAPHY_CAPTION1)
-                .build()
-        ).build()
-}
-
-@Preview(device = WearDevices.SMALL_ROUND)
-@Preview(device = WearDevices.LARGE_ROUND)
-fun tilePreview(context: Context) = TilePreviewData(::resources) {
-    tile(it, context)
+    )
 }
