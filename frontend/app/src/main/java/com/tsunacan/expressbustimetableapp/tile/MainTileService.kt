@@ -6,7 +6,9 @@ import androidx.wear.tiles.TileBuilders.Tile
 import androidx.wear.tiles.RequestBuilders
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.google.android.horologist.tiles.SuspendingTileService
-import com.tsunacan.expressbustimetableapp.models.Trip
+import com.tsunacan.expressbustimetableapp.models.DepartureTimeAndDestination
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 private const val RESOURCES_VERSION = "0"
 
@@ -40,12 +42,12 @@ private fun resources(
 
 private fun generateDummyTileState(): MainTileState {
     return MainTileState(
-        "Tokyo",
-        listOf(
-            Trip("Tokyo", "12:00"),
-            Trip("Sapporo", "12:30"),
-            Trip("Chiba", "13:00"),
-            Trip("Nagoya", "13:30"),
+        parentRouteName = "Tokyo",
+        stopName = "Shinjuku",
+        timeTable = listOf(
+            DepartureTimeAndDestination(LocalDateTime.now().plusMinutes(10).toLocalTime(), "Shibuya"),
+            DepartureTimeAndDestination(LocalDateTime.now().plusMinutes(10).toLocalTime(), "Shibuya"),
+            DepartureTimeAndDestination(LocalDateTime.now().plusMinutes(10).toLocalTime(), "Shibuya"),
         )
     )
 }

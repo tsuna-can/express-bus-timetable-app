@@ -1,8 +1,9 @@
 package com.tsunacan.expressbustimetableapp.tile
 
-import com.tsunacan.expressbustimetableapp.models.Trip
+import com.tsunacan.expressbustimetableapp.models.DepartureTimeAndDestination
 
 data class MainTileState (
+    val parentRouteName: String,
     val stopName: String,
-    val timeTable: List<Trip>
+    val timeTable: List<DepartureTimeAndDestination>
 )
