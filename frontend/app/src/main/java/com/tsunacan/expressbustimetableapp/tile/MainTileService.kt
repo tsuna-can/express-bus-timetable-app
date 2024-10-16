@@ -6,19 +6,20 @@ import androidx.wear.tiles.TileBuilders.Tile
 import androidx.wear.tiles.RequestBuilders
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.google.android.horologist.tiles.SuspendingTileService
-import com.tsunacan.expressbustimetableapp.models.DepartureTimeAndDestination
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import com.tsunacan.expressbustimetableapp.data.repository.TimeTableRepository
+import kotlinx.coroutines.flow.first
 
 private const val RESOURCES_VERSION = "0"
 
 @OptIn(ExperimentalHorologistApi::class)
 class MainTileService : SuspendingTileService() {
 
+    private lateinit var repo: TimeTableRepository
     private lateinit var renderer: MainTileRenderer
 
     override fun onCreate() {
         super.onCreate()
+        repo = TimeTableRepository()
         renderer = MainTileRenderer(this)
     }
 
@@ -27,7 +28,13 @@ class MainTileService : SuspendingTileService() {
     ) = resources(requestParams)
 
     override suspend fun tileRequest(requestParams: TileRequest): Tile {
-        val mainTileState = generateDummyTileState()
+        // TODO Initialize state in onCreate after set up Proto DataStore
+        val timeTable = repo.getTimeTable("test", "test").first()
+        val mainTileState = MainTileState(
+            parentRouteName = "test",
+            stopName = "test",
+            timeTable = timeTable
+        )
         return renderer.renderTimeline(mainTileState, requestParams)
     }
 }
@@ -38,16 +45,4 @@ private fun resources(
     return ResourceBuilders.Resources.Builder()
         .setVersion(RESOURCES_VERSION)
         .build()
-}
-
-private fun generateDummyTileState(): MainTileState {
-    return MainTileState(
-        parentRouteName = "Tokyo",
-        stopName = "Shinjuku",
-        timeTable = listOf(
-            DepartureTimeAndDestination(LocalDateTime.now().plusMinutes(10).toLocalTime(), "Shibuya"),
-            DepartureTimeAndDestination(LocalDateTime.now().plusMinutes(10).toLocalTime(), "Shibuya"),
-            DepartureTimeAndDestination(LocalDateTime.now().plusMinutes(10).toLocalTime(), "Shibuya"),
-        )
-    )
 }
