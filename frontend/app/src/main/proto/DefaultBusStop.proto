@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option java_package = "com.tsunacan.expressbustimetableapp";
+option java_multiple_files = true;
+
+message DefaultBusStop{
+    string parentRouteId = 1;
+    string busStopId = 2;
+}
