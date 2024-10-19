@@ -32,7 +32,7 @@ class MainTileService : SuspendingTileService() {
 
     override suspend fun tileRequest(requestParams: TileRequest): Tile {
         // TODO Initialize state in onCreate after set up Proto DataStore
-        val timeTable = getClosestTimeTableUseCase()
+        val timeTable = getClosestTimeTableUseCase("test", "test")
         val mainTileState = MainTileState(
             parentRouteName = "test",
             stopName = "test",

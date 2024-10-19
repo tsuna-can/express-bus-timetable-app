@@ -22,6 +22,18 @@ class TimeTableRepositoryImpl : TimeTableRepository {
         return flowOf(
             listOf(
                 DepartureTimeAndDestination(
+                    LocalDateTime.now().minusMinutes(20).toLocalTime(),
+                    "Shibuya"
+                ),
+                DepartureTimeAndDestination(
+                    LocalDateTime.now().minusMinutes(10).toLocalTime(),
+                    "Shibuya"
+                ),
+                DepartureTimeAndDestination(
+                    LocalDateTime.now().toLocalTime(),
+                    "Shibuya"
+                ),
+                DepartureTimeAndDestination(
                     LocalDateTime.now().plusMinutes(10).toLocalTime(),
                     "Shibuya"
                 ),
