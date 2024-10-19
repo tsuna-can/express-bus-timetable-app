@@ -7,10 +7,12 @@ import androidx.wear.watchface.complications.data.ShortTextComplicationData
 import androidx.wear.watchface.complications.datasource.ComplicationRequest
 import androidx.wear.watchface.complications.datasource.SuspendingComplicationDataSourceService
 import java.util.Calendar
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Skeleton for complication data source that returns short text.
  */
+@AndroidEntryPoint
 class MainComplicationService : SuspendingComplicationDataSourceService() {
 
     override fun getPreviewData(type: ComplicationType): ComplicationData? {

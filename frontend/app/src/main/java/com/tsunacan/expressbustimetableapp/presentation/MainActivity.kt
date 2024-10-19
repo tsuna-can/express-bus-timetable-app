@@ -25,7 +25,9 @@ import androidx.wear.compose.material.TimeText
 import androidx.wear.tooling.preview.devices.WearDevices
 import com.tsunacan.expressbustimetableapp.R
 import com.tsunacan.expressbustimetableapp.presentation.theme.ExpressBusTimeTableAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()

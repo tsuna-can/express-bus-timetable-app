@@ -6,20 +6,23 @@ import androidx.wear.tiles.TileBuilders.Tile
 import androidx.wear.tiles.RequestBuilders
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.google.android.horologist.tiles.SuspendingTileService
-import com.tsunacan.expressbustimetableapp.data.repository.TimeTableRepository
-import kotlinx.coroutines.flow.first
+import com.tsunacan.expressbustimetableapp.domain.GetClosestTimeTableUseCase
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 private const val RESOURCES_VERSION = "0"
 
 @OptIn(ExperimentalHorologistApi::class)
+@AndroidEntryPoint
 class MainTileService : SuspendingTileService() {
 
-    private lateinit var repo: TimeTableRepository
+    @Inject
+    lateinit var getClosestTimeTableUseCase: GetClosestTimeTableUseCase
+
     private lateinit var renderer: MainTileRenderer
 
     override fun onCreate() {
         super.onCreate()
-        repo = TimeTableRepository()
         renderer = MainTileRenderer(this)
     }
 
@@ -29,7 +32,7 @@ class MainTileService : SuspendingTileService() {
 
     override suspend fun tileRequest(requestParams: TileRequest): Tile {
         // TODO Initialize state in onCreate after set up Proto DataStore
-        val timeTable = repo.getTimeTable("test", "test").first()
+        val timeTable = getClosestTimeTableUseCase()
         val mainTileState = MainTileState(
             parentRouteName = "test",
             stopName = "test",

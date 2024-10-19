@@ -15,6 +15,9 @@ tilesToolingPreview = "1.4.0"
 horologistComposeTools = "0.6.17"
 horologistTiles = "0.6.17"
 watchfaceComplicationsDataSourceKtx = "1.2.1"
+androidx-hilt = "1.2.0"
+googledagger = "2.52"
+ksp = "2.0.21-1.0.25"
 
 [libraries]
 play-services-wearable = { group = "com.google.android.gms", name = "play-services-wearable", version.ref = "playServicesWearable" }
@@ -37,9 +40,18 @@ tiles-tooling-preview = { group = "androidx.wear.tiles", name = "tiles-tooling-p
 horologist-compose-tools = { group = "com.google.android.horologist", name = "horologist-compose-tools", version.ref = "horologistComposeTools" }
 horologist-tiles = { group = "com.google.android.horologist", name = "horologist-tiles", version.ref = "horologistTiles" }
 watchface-complications-data-source-ktx = { group = "androidx.wear.watchface", name = "watchface-complications-data-source-ktx", version.ref = "watchfaceComplicationsDataSourceKtx" }
+dagger-hiltandroid = { module = "com.google.dagger:hilt-android", version.ref = "googledagger" }
+dagger-hiltandroidcompiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "googledagger" }
+dagger-hiltandroidplugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "googledagger" }
+dagger-hiltandroidtesting = { module = "com.google.dagger:hilt-android-testing", version.ref = "googledagger" }
+google-generativeai = "com.google.ai.client.generativeai:generativeai:0.9.0"
+hilt-ext-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "androidx-hilt" }
+hilt-ext-work = { module = "androidx.hilt:hilt-work", version.ref = "androidx-hilt" }
+hilt-navigationcompose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidx-hilt" }
+#gradleMavenPublishPlugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "gradlePublishPlugin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

@@ -5,9 +5,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import java.time.LocalDateTime
 
-class TimeTableRepository {
-
+interface TimeTableRepository {
     suspend fun getTimeTable(
+        parentRouteId: String,
+        busStopId: String
+    ): Flow<List<DepartureTimeAndDestination>>
+}
+
+class TimeTableRepositoryImpl : TimeTableRepository {
+
+    override suspend fun getTimeTable(
         parentRouteId: String,
         busStopId: String
     ): Flow<List<DepartureTimeAndDestination>> {
