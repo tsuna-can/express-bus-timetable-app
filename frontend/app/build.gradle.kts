@@ -1,9 +1,12 @@
+import com.google.protobuf.gradle.id
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
+    id("com.google.protobuf")
 }
 
 android {
@@ -40,6 +43,29 @@ android {
     }
 }
 
+protobuf {
+    protoc {
+        artifact = libs.protobuf.protoc.stnd.get().toString()
+    }
+    plugins {
+        id("javalite") {
+            artifact = libs.protobuf.protoc.gen.javalite.get().toString()
+        }
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                create("java") {
+                    option("lite")
+                }
+                create("kotlin") {
+                    option("lite")
+                }
+            }
+        }
+    }
+}
+
 dependencies {
 
     implementation(libs.play.services.wearable)
@@ -58,6 +84,7 @@ dependencies {
     implementation(libs.horologist.compose.tools)
     implementation(libs.horologist.tiles)
     implementation(libs.watchface.complications.data.source.ktx)
+    implementation(libs.datastore.core.android)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
@@ -67,4 +94,5 @@ dependencies {
     implementation(libs.dagger.hiltandroid)
     ksp(libs.dagger.hiltandroidcompiler)
     implementation(libs.hilt.navigationcompose)
+    implementation(libs.protobuf.kotlin.lite)
 }

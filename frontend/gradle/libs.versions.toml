@@ -18,6 +18,11 @@ watchfaceComplicationsDataSourceKtx = "1.2.1"
 androidx-hilt = "1.2.0"
 googledagger = "2.52"
 ksp = "2.0.21-1.0.25"
+protobuf = "4.28.2"
+protobuf-gen-grpc-java = "1.68.0"
+protobuf-gen-grpc-kotlin = "1.3.0:jdk8@jar"
+protobuf-gen-javalite = "3.0.0"
+datastoreCoreAndroid = "1.1.1"
 
 [libraries]
 play-services-wearable = { group = "com.google.android.gms", name = "play-services-wearable", version.ref = "playServicesWearable" }
@@ -49,9 +54,16 @@ hilt-ext-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "and
 hilt-ext-work = { module = "androidx.hilt:hilt-work", version.ref = "androidx-hilt" }
 hilt-navigationcompose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidx-hilt" }
 #gradleMavenPublishPlugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "gradlePublishPlugin" }
+protobuf-kotlin-lite = { module = "com.google.protobuf:protobuf-kotlin-lite", version.ref = "protobuf" }
+protobuf-protoc-gen-grpc-java = { module = "io.grpc:protoc-gen-grpc-java", version.ref = "protobuf-gen-grpc-java"}
+protobuf-protoc-gen-grpc-kotlin = { module = "io.grpc:protoc-gen-grpc-kotlin", version.ref = "protobuf-gen-grpc-kotlin"}
+protobuf-protoc-gen-javalite = { module = "com.google.protobuf:protoc-gen-javalite", version.ref = "protobuf-gen-javalite" }
+protobuf-protoc-stnd = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
+datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+protobuf = "com.google.protobuf:0.9.4"
