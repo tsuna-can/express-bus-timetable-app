@@ -6,6 +6,7 @@ import androidx.wear.tiles.TileBuilders.Tile
 import androidx.wear.tiles.RequestBuilders
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.google.android.horologist.tiles.SuspendingTileService
+import com.tsunacan.expressbustimetableapp.data.repository.UserSettingsRepository
 import com.tsunacan.expressbustimetableapp.domain.GetClosestTimeTableUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -15,6 +16,9 @@ private const val RESOURCES_VERSION = "0"
 @OptIn(ExperimentalHorologistApi::class)
 @AndroidEntryPoint
 class MainTileService : SuspendingTileService() {
+
+    @Inject
+    lateinit var userSettingsRepository: UserSettingsRepository
 
     @Inject
     lateinit var getClosestTimeTableUseCase: GetClosestTimeTableUseCase

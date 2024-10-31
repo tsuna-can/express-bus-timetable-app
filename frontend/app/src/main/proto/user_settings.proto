@@ -5,5 +5,7 @@ option java_multiple_files = true;
 
 message DefaultBusStop{
     string parentRouteId = 1;
-    string busStopId = 2;
+    string parentRouteName = 2;
+    string busStopId = 3;
+    string busStopName = 4;
 }

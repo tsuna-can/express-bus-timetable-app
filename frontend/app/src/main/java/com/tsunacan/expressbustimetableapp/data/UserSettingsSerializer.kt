@@ -6,8 +6,9 @@ import com.google.protobuf.InvalidProtocolBufferException
 import com.tsunacan.expressbustimetableapp.DefaultBusStop
 import java.io.InputStream
 import java.io.OutputStream
+import javax.inject.Inject
 
-object DefaultBusStopSerializer : Serializer<DefaultBusStop> {
+class UserSettingsSerializer @Inject constructor(): Serializer<DefaultBusStop> {
     override val defaultValue: DefaultBusStop = DefaultBusStop.getDefaultInstance()
     override suspend fun readFrom(input: InputStream): DefaultBusStop {
         try {

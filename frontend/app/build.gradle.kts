@@ -95,4 +95,27 @@ dependencies {
     ksp(libs.dagger.hiltandroidcompiler)
     implementation(libs.hilt.navigationcompose)
     implementation(libs.protobuf.kotlin.lite)
+    implementation(libs.androidx.dataStore)
+}
+
+// https://github.com/google/dagger/issues/4049#issuecomment-1952115248
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        afterEvaluate {
+            val variantName = variant.name.capitalize()
+            val proto = "generate${variantName}Proto"
+            val ksp = "ksp${variantName}Kotlin"
+
+            val protoTask = project.tasks.findByName(proto)
+                    as? com.google.protobuf.gradle.GenerateProtoTask
+            val kspTask = project.tasks.findByName(ksp)
+                    as? org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompileTool<*>
+            kspTask?.run {
+                protoTask?.let {
+                    @Suppress("DEPRECATION")
+                    setSource(it.outputSourceDirectorySet)
+                }
+            }
+        }
+    }
 }

@@ -22,7 +22,7 @@ protobuf = "4.28.2"
 protobuf-gen-grpc-java = "1.68.0"
 protobuf-gen-grpc-kotlin = "1.3.0:jdk8@jar"
 protobuf-gen-javalite = "3.0.0"
-datastoreCoreAndroid = "1.1.1"
+androidxDataStore= "1.1.1"
 
 [libraries]
 play-services-wearable = { group = "com.google.android.gms", name = "play-services-wearable", version.ref = "playServicesWearable" }
@@ -59,7 +59,8 @@ protobuf-protoc-gen-grpc-java = { module = "io.grpc:protoc-gen-grpc-java", versi
 protobuf-protoc-gen-grpc-kotlin = { module = "io.grpc:protoc-gen-grpc-kotlin", version.ref = "protobuf-gen-grpc-kotlin"}
 protobuf-protoc-gen-javalite = { module = "com.google.protobuf:protoc-gen-javalite", version.ref = "protobuf-gen-javalite" }
 protobuf-protoc-stnd = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
-datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroid" }
+datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "androidxDataStore" }
+androidx-dataStore = { group = "androidx.datastore", name = "datastore", version.ref = "androidxDataStore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
