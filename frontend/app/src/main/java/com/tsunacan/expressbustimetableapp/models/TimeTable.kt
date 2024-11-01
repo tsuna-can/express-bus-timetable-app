@@ -1,8 +1,9 @@
-package com.tsunacan.expressbustimetableapp.tile
+package com.tsunacan.expressbustimetableapp.models
 
-import com.tsunacan.expressbustimetableapp.models.DepartureTimeAndDestination
-
-data class MainTileState(
+/**
+ * Time table for a bus stop
+ */
+data class TimeTable (
     val parentRouteName: String = "",
     val stopName: String = "",
     val departureTimeAndDestinationList: List<DepartureTimeAndDestination> = emptyList()

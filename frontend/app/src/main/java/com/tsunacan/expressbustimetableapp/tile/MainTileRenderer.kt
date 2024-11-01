@@ -72,7 +72,7 @@ private fun mainTileLayout(
                     .build()
             )
             .apply {
-                state.timeTable.take(3).forEach {
+                state.departureTimeAndDestinationList.take(3).forEach {
                     val formattedTime = it.departureTime.format(formatter)
                     addContent(
                         Text.Builder(context, formattedTime + " " + it.destination)

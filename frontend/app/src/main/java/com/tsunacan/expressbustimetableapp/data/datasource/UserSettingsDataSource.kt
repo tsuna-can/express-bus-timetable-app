@@ -11,6 +11,8 @@ class UserSettingsDataSource @Inject constructor(
     private val userSettings: DataStore<DefaultBusStop>,
 ) {
 
+    val defaultBusStop = userSettings.data
+
     suspend fun setDefaultBusStop(busStop: DefaultBusStop) {
         try{
             userSettings.updateData {
