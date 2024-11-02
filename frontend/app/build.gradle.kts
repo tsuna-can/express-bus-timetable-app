@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
     id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
     id("com.google.protobuf")
@@ -96,6 +97,12 @@ dependencies {
     implementation(libs.hilt.navigationcompose)
     implementation(libs.protobuf.kotlin.lite)
     implementation(libs.androidx.dataStore)
+
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.kotlin.serialization)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.okhttp.logging)
+    implementation(libs.retrofit2.convertermoshi)
 }
 
 // https://github.com/google/dagger/issues/4049#issuecomment-1952115248
