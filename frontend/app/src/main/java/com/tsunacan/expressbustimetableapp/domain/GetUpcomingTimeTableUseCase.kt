@@ -1,5 +1,6 @@
 package com.tsunacan.expressbustimetableapp.domain
 
+import android.util.Log
 import com.tsunacan.expressbustimetableapp.data.repository.TimeTableRepository
 import com.tsunacan.expressbustimetableapp.models.TimeTable
 import kotlinx.coroutines.flow.first
@@ -24,10 +25,20 @@ class GetUpcomingTimeTableUseCase @Inject constructor(
                 it.departureTime > currentTime
             }
 
+        // In current implementation, if there is no upcoming departure time, return empty list
+        // TODO return the next day's first departure time
+        if (closestDepartureTimeIndex == -1) {
+            return busStopTimeTable.copy(departureTimeAndDestinationList = emptyList())
+        }
+
         // Extract 3 upcoming departure time and destination
+        // If the closest departure time is the last one, we will get the last 3 departure time
         val upComingTimeTable = busStopTimeTable.departureTimeAndDestinationList.subList(
             closestDepartureTimeIndex,
-            closestDepartureTimeIndex + 3
+            minOf(
+                busStopTimeTable.departureTimeAndDestinationList.size,
+                closestDepartureTimeIndex + 3
+            )
         )
 
         return busStopTimeTable.copy(departureTimeAndDestinationList = upComingTimeTable)
