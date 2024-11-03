@@ -1,6 +1,7 @@
 package com.tsunacan.expressbustimetableapp.data.datasource
 
 import androidx.compose.ui.util.trace
+import com.tsunacan.expressbustimetableapp.BuildConfig
 import com.tsunacan.expressbustimetableapp.data.model.TimeTableApiModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -23,8 +24,6 @@ private interface NetworkApi {
     ): TimeTableApiModel
 }
 
-private const val BASE_URL = "http://10.0.2.2:1323"
-
 class RemoteDataSource @Inject constructor(
     private val okhttpCallFactory: dagger.Lazy<Call.Factory>,
     private val networkJson: Json,
@@ -33,7 +32,7 @@ class RemoteDataSource @Inject constructor(
 
     private val networkApi = trace("RetrofitNetwork") {
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL)
             // We use callFactory lambda here with dagger.Lazy<Call.Factory>
             // to prevent initializing OkHttp on the main thread.
             .callFactory { okhttpCallFactory.get().newCall(it) }
