@@ -12,7 +12,7 @@ plugins {
 
 android {
     namespace = "com.tsunacan.expressbustimetableapp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.tsunacan.expressbustimetableapp"
@@ -95,6 +95,7 @@ dependencies {
     implementation(libs.horologist.tiles)
     implementation(libs.watchface.complications.data.source.ktx)
     implementation(libs.datastore.core.android)
+    implementation(libs.androidx.compose.material3)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
@@ -112,6 +113,11 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.okhttp.logging)
     implementation(libs.retrofit2.convertermoshi)
+
+    implementation(libs.horologist.composables)
+    implementation(libs.horologist.compose.layout)
+    implementation(libs.horologist.compose.material)
+    implementation(libs.androidx.material.icons.extended)
 }
 
 // https://github.com/google/dagger/issues/4049#issuecomment-1952115248
