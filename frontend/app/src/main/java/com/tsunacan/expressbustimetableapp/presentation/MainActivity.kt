@@ -11,6 +11,8 @@ import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import androidx.wear.compose.foundation.rememberSwipeToDismissBoxState
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
@@ -21,6 +23,7 @@ import com.google.android.horologist.compose.layout.AppScaffold
 import com.tsunacan.expressbustimetableapp.presentation.theme.ExpressBusTimeTableAppTheme
 import com.tsunacan.expressbustimetableapp.presentation.ui.Screen
 import com.tsunacan.expressbustimetableapp.presentation.ui.busstop.BusStopScreen
+import com.tsunacan.expressbustimetableapp.presentation.ui.busstop.navigateToBusStop
 import com.tsunacan.expressbustimetableapp.presentation.ui.busstoplist.BusStopListScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -57,15 +60,22 @@ fun WearApp() {
                     route = Screen.BusStopList.route,
                 ) {
                     BusStopListScreen(
-                        navigationToBusStop = {
-                            navController.navigate(Screen.BusStop.route)
-                        }
+                        navigationToBusStop = navController::navigateToBusStop
                     )
                 }
                 composable(
-                    route = Screen.BusStop.route,
-                ) {
-                    BusStopScreen()
+                    route = Screen.BusStop.route + "/{parentRouteId}/{stopId}",
+                    arguments = listOf(
+                        navArgument("parentRouteId") { type = NavType.StringType },
+                        navArgument("stopId") { type = NavType.StringType }
+                    )
+                ) { navBackStackEntry ->
+                    val parentRouteId = navBackStackEntry.arguments?.getString("parentRouteId")
+                    val stopId = navBackStackEntry.arguments?.getString("stopId")
+                    BusStopScreen(
+                        parentRouteId = parentRouteId ?: "",
+                        stopId = stopId ?: ""
+                    )
                 }
             }
         }

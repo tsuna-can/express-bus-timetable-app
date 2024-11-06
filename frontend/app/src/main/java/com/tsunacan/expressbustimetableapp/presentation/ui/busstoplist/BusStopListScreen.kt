@@ -18,7 +18,7 @@ import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults.It
 @OptIn(ExperimentalHorologistApi::class)
 @Composable
 fun BusStopListScreen(
-    navigationToBusStop: () -> Unit,
+    navigationToBusStop: (String, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val listState = rememberResponsiveColumnState(
@@ -37,25 +37,24 @@ fun BusStopListScreen(
         ScalingLazyColumn(
             columnState = listState,
         ) {
-            item { BusStopChip(navigationToBusStop, contentModifier) }
-            item { BusStopChip(navigationToBusStop, contentModifier) }
-            item { BusStopChip(navigationToBusStop, contentModifier) }
-            item { BusStopChip(navigationToBusStop, contentModifier) }
-            item { BusStopChip(navigationToBusStop, contentModifier) }
-            item { BusStopChip(navigationToBusStop, contentModifier) }
-            item { BusStopChip(navigationToBusStop, contentModifier) }
+            item { BusStopChip("routeId1", "stopId1", navigationToBusStop, contentModifier) }
+            item { BusStopChip("routeId2", "stopId2", navigationToBusStop, contentModifier) }
+            item { BusStopChip("routeId3", "stopId3", navigationToBusStop, contentModifier) }
         }
     }
 }
 
 @Composable
 fun BusStopChip(
-    navigationToBusStop: () -> Unit,
+    // TODO pass parameters as data class
+    parentRouteId: String,
+    stopId: String,
+    navigationToBusStop: (String, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Chip(
         modifier = modifier,
-        onClick = { navigationToBusStop() },
+        onClick = { navigationToBusStop(parentRouteId, stopId) },
         label = {
             Text(
                 text = "Tokyo express, Tokyo station",

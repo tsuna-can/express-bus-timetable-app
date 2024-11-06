@@ -18,7 +18,11 @@ import com.google.android.horologist.compose.material.Chip
 
 @OptIn(ExperimentalHorologistApi::class)
 @Composable
-fun BusStopScreen(modifier: Modifier = Modifier) {
+fun BusStopScreen(
+    parentRouteId : String,
+    stopId : String,
+    modifier: Modifier = Modifier
+) {
     val listState = rememberResponsiveColumnState(
         contentPadding = ScalingLazyColumnDefaults.padding(
             first = ItemType.Text,
@@ -38,7 +42,7 @@ fun BusStopScreen(modifier: Modifier = Modifier) {
         ) {
             item {
                 Text(
-                    text = "Tokyo Express",
+                    text = parentRouteId,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
