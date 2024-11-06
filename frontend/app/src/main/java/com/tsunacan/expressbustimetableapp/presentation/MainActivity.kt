@@ -9,17 +9,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.wear.compose.material.MaterialTheme
+import androidx.wear.compose.foundation.rememberSwipeToDismissBoxState
+import androidx.wear.compose.navigation.SwipeDismissableNavHost
+import androidx.wear.compose.navigation.composable
+import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
+import androidx.wear.compose.navigation.rememberSwipeDismissableNavHostState
 import androidx.wear.tooling.preview.devices.WearDevices
 import com.google.android.horologist.compose.layout.AppScaffold
 import com.tsunacan.expressbustimetableapp.presentation.theme.ExpressBusTimeTableAppTheme
+import com.tsunacan.expressbustimetableapp.presentation.ui.Screen
+import com.tsunacan.expressbustimetableapp.presentation.ui.busstop.BusStopScreen
 import com.tsunacan.expressbustimetableapp.presentation.ui.busstoplist.BusStopListScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,15 +41,32 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun WearApp() {
+    val swipeToDismissBoxState = rememberSwipeToDismissBoxState()
+    val navHostState =
+        rememberSwipeDismissableNavHostState(swipeToDismissBoxState = swipeToDismissBoxState)
+    val navController = rememberSwipeDismissableNavController()
+
     ExpressBusTimeTableAppTheme {
         AppScaffold {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colors.background),
-                contentAlignment = Alignment.Center
+            SwipeDismissableNavHost(
+                startDestination = Screen.BusStopList.route,
+                navController = navController,
+                state = navHostState,
             ) {
-                BusStopListScreen()
+                composable(
+                    route = Screen.BusStopList.route,
+                ) {
+                    BusStopListScreen(
+                        navigationToBusStop = {
+                            navController.navigate(Screen.BusStop.route)
+                        }
+                    )
+                }
+                composable(
+                    route = Screen.BusStop.route,
+                ) {
+                    BusStopScreen()
+                }
             }
         }
     }
