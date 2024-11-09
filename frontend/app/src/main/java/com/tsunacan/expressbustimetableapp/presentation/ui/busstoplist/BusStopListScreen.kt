@@ -3,9 +3,12 @@ package com.tsunacan.expressbustimetableapp.presentation.ui.busstoplist
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.wear.compose.material.Chip
 import androidx.wear.compose.material.Text
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
@@ -20,7 +23,9 @@ import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults.It
 fun BusStopListScreen(
     navigationToBusStop: (String, String) -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: BusStopListViewModel = hiltViewModel(),
 ) {
+    val busStopListState by viewModel.uiState.collectAsStateWithLifecycle()
     val listState = rememberResponsiveColumnState(
         contentPadding = ScalingLazyColumnDefaults.padding(
             first = ItemType.Chip,
@@ -37,34 +42,53 @@ fun BusStopListScreen(
         ScalingLazyColumn(
             columnState = listState,
         ) {
-            item { BusStopChip("routeId1", "stopId1", navigationToBusStop, contentModifier) }
-            item { BusStopChip("routeId2", "stopId2", navigationToBusStop, contentModifier) }
-            item { BusStopChip("routeId3", "stopId3", navigationToBusStop, contentModifier) }
+            when (busStopListState) {
+                is BusStopListScreenUiState.Loaded -> {
+                    val busStopList =
+                        (busStopListState as BusStopListScreenUiState.Loaded).busStopList
+                    busStopList.forEach { busStopUiModel ->
+                        item {
+                            BusStopChip(
+                                busStopUiModel = busStopUiModel,
+                                navigationToBusStop = navigationToBusStop,
+                                modifier = contentModifier
+                            )
+                        }
+                    }
+                }
+
+                BusStopListScreenUiState.Loading -> {
+                    item {}
+                }
+
+                BusStopListScreenUiState.Failed -> {
+                    item {}
+                }
+            }
         }
     }
 }
 
+@OptIn(ExperimentalHorologistApi::class)
 @Composable
 fun BusStopChip(
-    // TODO pass parameters as data class
-    parentRouteId: String,
-    stopId: String,
+    busStopUiModel: BusStopUiModel,
     navigationToBusStop: (String, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Chip(
         modifier = modifier,
-        onClick = { navigationToBusStop(parentRouteId, stopId) },
+        onClick = { navigationToBusStop(busStopUiModel.parentRouteId, busStopUiModel.stopId) },
         label = {
             Text(
-                text = "Tokyo express, Tokyo station",
+                text = busStopUiModel.parentRouteName,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
         },
         secondaryLabel = {
             Text(
-                text = "inbound",
+                text = busStopUiModel.stopName,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

@@ -19,6 +19,7 @@ import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavHostState
 import androidx.wear.tooling.preview.devices.WearDevices
+import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.google.android.horologist.compose.layout.AppScaffold
 import com.tsunacan.expressbustimetableapp.presentation.theme.ExpressBusTimeTableAppTheme
 import com.tsunacan.expressbustimetableapp.presentation.ui.Screen
@@ -42,6 +43,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalHorologistApi::class)
 @Composable
 fun WearApp() {
     val swipeToDismissBoxState = rememberSwipeToDismissBoxState()

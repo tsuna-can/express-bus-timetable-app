@@ -49,7 +49,7 @@ fun BusStopScreen(
             }
             item {
                 Text(
-                    text = "Tokyo station",
+                    text = stopId,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
