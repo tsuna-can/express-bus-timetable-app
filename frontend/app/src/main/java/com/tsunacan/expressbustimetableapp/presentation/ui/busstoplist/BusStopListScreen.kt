@@ -17,15 +17,16 @@ import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults
 import com.google.android.horologist.compose.layout.ScreenScaffold
 import com.google.android.horologist.compose.layout.rememberResponsiveColumnState
 import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults.ItemType
+import com.tsunacan.expressbustimetableapp.models.BusStop
 
 @OptIn(ExperimentalHorologistApi::class)
 @Composable
 fun BusStopListScreen(
     navigationToBusStop: (String, String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: BusStopListViewModel = hiltViewModel(),
+    viewModel: BusStopListScreenViewModel = hiltViewModel(),
 ) {
-    val busStopListState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val listState = rememberResponsiveColumnState(
         contentPadding = ScalingLazyColumnDefaults.padding(
             first = ItemType.Chip,
@@ -42,14 +43,14 @@ fun BusStopListScreen(
         ScalingLazyColumn(
             columnState = listState,
         ) {
-            when (busStopListState) {
+            when (uiState) {
                 is BusStopListScreenUiState.Loaded -> {
                     val busStopList =
-                        (busStopListState as BusStopListScreenUiState.Loaded).busStopList
-                    busStopList.forEach { busStopUiModel ->
+                        (uiState as BusStopListScreenUiState.Loaded).busStopList
+                    busStopList.forEach { busStop ->
                         item {
                             BusStopChip(
-                                busStopUiModel = busStopUiModel,
+                                busStop = busStop,
                                 navigationToBusStop = navigationToBusStop,
                                 modifier = contentModifier
                             )
@@ -69,26 +70,25 @@ fun BusStopListScreen(
     }
 }
 
-@OptIn(ExperimentalHorologistApi::class)
 @Composable
 fun BusStopChip(
-    busStopUiModel: BusStopUiModel,
+    busStop: BusStop,
     navigationToBusStop: (String, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Chip(
         modifier = modifier,
-        onClick = { navigationToBusStop(busStopUiModel.parentRouteId, busStopUiModel.stopId) },
+        onClick = { navigationToBusStop(busStop.parentRouteId, busStop.stopId) },
         label = {
             Text(
-                text = busStopUiModel.parentRouteName,
+                text = busStop.parentRouteName,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
         },
         secondaryLabel = {
             Text(
-                text = busStopUiModel.stopName,
+                text = busStop.stopName,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

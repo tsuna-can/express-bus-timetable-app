@@ -2,6 +2,7 @@ package com.tsunacan.expressbustimetableapp.data.datasource
 
 import androidx.compose.ui.util.trace
 import com.tsunacan.expressbustimetableapp.BuildConfig
+import com.tsunacan.expressbustimetableapp.data.model.BusStopApiModel
 import com.tsunacan.expressbustimetableapp.data.model.TimeTableApiModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -17,6 +18,9 @@ import retrofit2.http.Query
 import javax.inject.Inject
 
 private interface NetworkApi {
+    @GET(value = "bus-stops")
+    suspend fun getBusStopList(): List<BusStopApiModel>
+
     @GET(value = "timetable")
     suspend fun getTimeTable(
         @Query("parentRouteId") parentRouteId: String,
@@ -41,6 +45,16 @@ class RemoteDataSource @Inject constructor(
             )
             .build()
             .create(NetworkApi::class.java)
+    }
+
+    fun getBusStopList(): Flow<List<BusStopApiModel>> {
+        return flow { emit(networkApi.getBusStopList()) }.flowOn(ioDispatcher)
+//        return flow { emit(listOf(
+//            BusStopApiModel("1", "1", "1", "1"),
+//            BusStopApiModel("2", "2", "2", "2"),
+//            BusStopApiModel("3", "3", "3", "3")
+//        )
+//        ) }.flowOn(ioDispatcher)
     }
 
     fun getTimeTable(
