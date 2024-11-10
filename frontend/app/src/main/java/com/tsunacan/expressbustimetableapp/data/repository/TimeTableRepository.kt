@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface TimeTableRepository {
-    suspend fun getTimeTable(
+    fun getTimeTable(
         parentRouteId: String,
         busStopId: String
     ): Flow<TimeTable>
@@ -19,7 +19,7 @@ class TimeTableRepositoryImpl @Inject constructor(
     private val timeTableMapper: TimeTableMapper
 ) : TimeTableRepository {
 
-    override suspend fun getTimeTable(
+    override fun getTimeTable(
         parentRouteId: String,
         busStopId: String
     ): Flow<TimeTable> {
