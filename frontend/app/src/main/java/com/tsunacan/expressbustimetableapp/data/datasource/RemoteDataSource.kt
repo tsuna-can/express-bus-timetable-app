@@ -23,8 +23,8 @@ private interface NetworkApi {
 
     @GET(value = "timetable")
     suspend fun getTimeTable(
-        @Query("parentRouteId") parentRouteId: String,
-        @Query("busStopId") busStopId: String
+        @Query("parent-route-id") parentRouteId: String,
+        @Query("bus-stop-id") busStopId: String
     ): TimeTableApiModel
 }
 

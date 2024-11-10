@@ -22,6 +22,7 @@ import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.google.android.horologist.tiles.render.SingleTileLayoutRenderer
 import com.tsunacan.expressbustimetableapp.R
 import com.tsunacan.expressbustimetableapp.models.DepartureTimeAndDestination
+import com.tsunacan.expressbustimetableapp.presentation.MainActivity
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -88,15 +89,34 @@ private fun mainTileLayout(
         CompactChip.Builder(
             context,
             context.getString(R.string.more_info),
-            emptyClickable,
+            createClickable(context, state.parentRouteName, state.stopName),
             deviceParameters
         ).build()
     ).build()
 
-val emptyClickable = ModifiersBuilders.Clickable.Builder()
-    .setOnClick(ActionBuilders.LoadAction.Builder().build())
-    .setId("")
-    .build()
+private fun createClickable(context: Context, parentRouteId: String, busStopId: String) =
+    ModifiersBuilders.Clickable.Builder()
+        .setOnClick(createOpenAppAction(context, parentRouteId, busStopId))
+        .setId("")
+        .build()
+
+private fun createOpenAppAction(
+    context: Context,
+    parentRouteId: String,
+    busStopId: String
+): ActionBuilders.LaunchAction {
+    return ActionBuilders.LaunchAction.Builder()
+        .setAndroidActivity(
+            ActionBuilders.AndroidActivity.Builder()
+                .setPackageName(context.packageName)
+                .setClassName(MainActivity::class.java.name)
+                .addKeyToExtraMapping("destination", ActionBuilders.stringExtra("busStop"))
+                .addKeyToExtraMapping("parentRouteId", ActionBuilders.stringExtra(parentRouteId))
+                .addKeyToExtraMapping("busStopId", ActionBuilders.stringExtra(busStopId))
+                .build()
+        )
+        .build()
+}
 
 @Preview(device = WearDevices.SMALL_ROUND)
 @Preview(device = WearDevices.LARGE_ROUND)
