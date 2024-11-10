@@ -38,6 +38,7 @@ fun BusStopScreen(
             is BusStopScreenUiState.Loaded -> {
                 BusStopScreen(
                     timeTable = (uiState as BusStopScreenUiState.Loaded).timeTable,
+                    onClickSetAsDefault = viewModel::onClickSetAsDefault,
                     modifier = modifier,
                 )
             }
@@ -55,6 +56,7 @@ fun BusStopScreen(
 @Composable
 fun BusStopScreen(
     timeTable: TimeTable,
+    onClickSetAsDefault: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val contentModifier = Modifier
@@ -89,7 +91,7 @@ fun BusStopScreen(
         }
         item {
             Button(
-                onClick = { /* ... */ },
+                onClick = onClickSetAsDefault,
                 modifier = contentModifier,
             ) {
                 Text(

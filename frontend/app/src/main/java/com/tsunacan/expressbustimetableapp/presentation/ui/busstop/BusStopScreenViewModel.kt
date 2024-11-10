@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.tsunacan.expressbustimetableapp.data.repository.TimeTableRepository
+import com.tsunacan.expressbustimetableapp.data.repository.UserSettingsRepository
 import com.tsunacan.expressbustimetableapp.models.TimeTable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,12 +14,14 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class BusStopScreenViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val timeTableRepository: TimeTableRepository
+    private val timeTableRepository: TimeTableRepository,
+    private val userSettingsRepository: UserSettingsRepository
 ) : ViewModel() {
 
     val parentRouteId: String = savedStateHandle["parentRouteId"] ?: ""
@@ -37,4 +40,13 @@ class BusStopScreenViewModel @Inject constructor(
         .onStart { emit(BusStopScreenUiState.Loading) }
         .catch {}
         .stateIn(viewModelScope, SharingStarted.Lazily, BusStopScreenUiState.Loading)
+
+    fun onClickSetAsDefault() {
+        viewModelScope.launch {
+            userSettingsRepository.setDefaultBusStop(
+                parentRouteId = parentRouteId,
+                busStopId = stopId
+            )
+        }
+    }
 }
