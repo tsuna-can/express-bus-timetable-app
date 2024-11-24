@@ -29,6 +29,14 @@ import java.time.format.DateTimeFormatter
 class MainTileRenderer(context: Context) :
     SingleTileLayoutRenderer<MainTileState, Unit>(context) {
 
+    // Time to live for the tile
+    override var freshnessIntervalMillis: Long = 60 * 60 * 1000 // 1 hour
+        private set
+
+    fun setFreshnessIntervalMillis(freshnessIntervalMillis: Long) {
+        this.freshnessIntervalMillis = freshnessIntervalMillis
+    }
+
     override fun renderTile(
         state: MainTileState,
         deviceParameters: DeviceParameters

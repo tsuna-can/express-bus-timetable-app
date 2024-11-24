@@ -12,6 +12,8 @@ import com.tsunacan.expressbustimetableapp.domain.GetUpcomingTimeTableUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
+import java.time.Duration
+import java.time.LocalTime
 import javax.inject.Inject
 
 private const val RESOURCES_VERSION = "0"
@@ -39,13 +41,26 @@ class MainTileService : SuspendingTileService() {
 
     override suspend fun tileRequest(requestParams: TileRequest): Tile {
         val defaultBusStop = userSettingsRepository.defaultBusStop.stateIn(lifecycleScope).first()
+
         val timeTable =
             getUpcomingTimeTableUseCase(defaultBusStop.parentRouteId, defaultBusStop.busStopId)
+
         val mainTileState = MainTileState(
             parentRouteName = timeTable.parentRouteName,
             stopName = timeTable.stopName,
             departureTimeAndDestinationList = timeTable.departureTimeAndDestinationList
         )
+
+        // Set the freshness interval based on the departure time of the next bus
+        val freshnessIntervalMillis = if (mainTileState.departureTimeAndDestinationList.isEmpty()) {
+            Duration.ofHours(1).toMillis() // If there are no buses, refresh every hour
+        } else {
+            calculateTimeUntilDepartureInMs(
+                mainTileState.departureTimeAndDestinationList.first().departureTime
+            )
+        }
+        renderer.setFreshnessIntervalMillis(freshnessIntervalMillis)
+
         return renderer.renderTimeline(mainTileState, requestParams)
     }
 }
@@ -56,4 +71,17 @@ private fun resources(
     return ResourceBuilders.Resources.Builder()
         .setVersion(RESOURCES_VERSION)
         .build()
+}
+
+/**
+ *  Calculate the freshness interval for the tile based on the departure time of the next bus.
+ *
+ *  @param departureTime departure time
+ *  @return time until departure in milliseconds
+ */
+private fun calculateTimeUntilDepartureInMs(departureTime: LocalTime): Long {
+    val currentTime = LocalTime.now()
+    val duration = Duration.between(currentTime, departureTime)
+
+    return duration.toMillis()
 }
