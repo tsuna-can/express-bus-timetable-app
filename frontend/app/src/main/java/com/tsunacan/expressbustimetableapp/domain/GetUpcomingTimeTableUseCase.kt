@@ -1,21 +1,17 @@
 package com.tsunacan.expressbustimetableapp.domain
 
-import android.util.Log
-import com.tsunacan.expressbustimetableapp.data.repository.TimeTableRepository
 import com.tsunacan.expressbustimetableapp.models.TimeTable
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 import java.time.LocalDateTime
 
 class GetUpcomingTimeTableUseCase @Inject constructor(
-    private val timeTableRepository: TimeTableRepository
+    private val getDaySpecificTimeTableUseCase: GetDaySpecificTimeTableUseCase
 ) {
-
     suspend operator fun invoke(
         parentRouteId: String,
         busStopId: String
     ): TimeTable {
-        val busStopTimeTable = timeTableRepository.getTimeTable(parentRouteId, busStopId).first()
+        val busStopTimeTable = getDaySpecificTimeTableUseCase.invoke(parentRouteId, busStopId)
 
         val currentTime = LocalDateTime.now().toLocalTime()
 
