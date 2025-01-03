@@ -8,6 +8,5 @@ data class TimeTableApiModel (
     val parentRouteName: String,
     val stopId: String,
     val stopName: String,
-    val departureTimeAndDestinationList: List<DepartureTimeAndDestinationApiModel>
+    val timeTableEntryList: List<TimeTableEntryApiModel>
 )
-

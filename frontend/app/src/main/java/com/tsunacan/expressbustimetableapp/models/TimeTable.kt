@@ -8,5 +8,5 @@ data class TimeTable(
     val parentRouteName: String = "",
     val stopId: String = "",
     val stopName: String = "",
-    val departureTimeAndDestinationList: List<DepartureTimeAndDestination> = emptyList()
+    val timeTableEntryList: List<TimeTableEntry> = emptyList()
 )

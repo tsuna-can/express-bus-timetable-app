@@ -70,7 +70,7 @@ fun BusStopScreen(
         ),
     )
 
-    val departureTimeAndDestinationList = timeTable.departureTimeAndDestinationList
+    val timeTableEntryList = timeTable.timeTableEntryList
 
     ScalingLazyColumn(
         columnState = listState,
@@ -99,12 +99,12 @@ fun BusStopScreen(
                 )
             }
         }
-        departureTimeAndDestinationList.forEach { departureTimeAndDestination ->
+        timeTableEntryList.forEach { timeTableEntry ->
             item {
-                DepartureTimeAndDestinationChip(
+                TimeTableEntryChip(
                     modifier = contentModifier,
-                    departureTime = departureTimeAndDestination.departureTime,
-                    destination = departureTimeAndDestination.destination,
+                    departureTime = timeTableEntry.departureTime,
+                    destination = timeTableEntry.destination,
                 )
             }
         }
@@ -113,7 +113,7 @@ fun BusStopScreen(
 
 @OptIn(ExperimentalHorologistApi::class)
 @Composable
-fun DepartureTimeAndDestinationChip(
+fun TimeTableEntryChip(
     departureTime: LocalTime,
     destination: String,
     modifier: Modifier = Modifier,

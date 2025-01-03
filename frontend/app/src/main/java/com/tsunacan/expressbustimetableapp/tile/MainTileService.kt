@@ -48,15 +48,15 @@ class MainTileService : SuspendingTileService() {
         val mainTileState = MainTileState(
             parentRouteName = timeTable.parentRouteName,
             stopName = timeTable.stopName,
-            departureTimeAndDestinationList = timeTable.departureTimeAndDestinationList
+            timeTableEntryList = timeTable.timeTableEntryList
         )
 
         // Set the freshness interval based on the departure time of the next bus
-        val freshnessIntervalMillis = if (mainTileState.departureTimeAndDestinationList.isEmpty()) {
+        val freshnessIntervalMillis = if (mainTileState.timeTableEntryList.isEmpty()) {
             Duration.ofHours(1).toMillis() // If there are no buses, refresh every hour
         } else {
             calculateTimeUntilDepartureInMs(
-                mainTileState.departureTimeAndDestinationList.first().departureTime
+                mainTileState.timeTableEntryList.first().departureTime
             )
         }
         renderer.setFreshnessIntervalMillis(freshnessIntervalMillis)
