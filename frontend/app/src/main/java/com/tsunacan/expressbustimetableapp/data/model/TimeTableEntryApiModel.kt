@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class TimeTableEntryApiModel( // TODO rename this
     val departureTime: String,
     val destination: String,
-    val dayOfWeekSet: List<Int>
+    val availableDayOfWeek: List<Int>
 )

@@ -26,7 +26,7 @@ class GetDaySpecificTimeTableUseCase @Inject constructor(
 
         // Filter the time table based on the selected day of the week
         val filteredTimeTable = busStopTimeTable.timeTableEntryList.filter {
-            it.dayOfWeekSet.contains(dayOfWeek)
+            it.availableDayOfWeek.contains(dayOfWeek)
         }
 
         return busStopTimeTable.copy(timeTableEntryList = filteredTimeTable)

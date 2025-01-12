@@ -6,5 +6,5 @@ import java.time.LocalTime
 data class TimeTableEntry(
     val departureTime: LocalTime,
     val destination: String,
-    val dayOfWeekSet: Set<DayOfWeek>
+    val availableDayOfWeek: Set<DayOfWeek>
 )
