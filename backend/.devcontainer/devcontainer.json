@@ -1,0 +1,27 @@
+{
+  "name": "express-bus-time-table-api",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "target": "dev"
+  },
+  "runArgs": ["--userns=keep-id"],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "git.openRepositoryInParentFolders": "always",
+        "extension.verifySignatures": false,
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "go.toolsManagement.checkForUpdates": "off",
+        "go.gopath": "/go",
+        "go.gocodeAutoBuild": true,
+        "go.formatTool": "gofmt",
+        "go.useLanguageServer": true,
+        "editor.formatOnSave": true,
+        "[go]": {
+          "editor.formatOnSave": true
+        }
+      },
+      "extensions": ["github.copilot", "golang.go"]
+    }
+  }
+}
