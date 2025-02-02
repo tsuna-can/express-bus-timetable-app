@@ -7,7 +7,21 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
+
+var db *gorm.DB
+
+// DB接続
+func init() {
+	dsn := "host=my-postgres-container user=myuser password=mypassword dbname=mydatabase port=5432 sslmode=disable"
+	var err error
+	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect to database")
+	}
+}
 
 // NetworkTimeTableとDepartureTimeAndDestinationApiModel構造体を定義
 type NetworkTimeTable struct {
