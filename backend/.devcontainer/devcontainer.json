@@ -23,5 +23,6 @@
       },
       "extensions": ["github.copilot", "golang.go"]
     }
-  }
+  },
+  "forwardPorts": [8080]
 }
