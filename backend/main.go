@@ -5,27 +5,30 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
+	_ "github.com/lib/pq"
 )
 
-var db *gorm.DB
+var db *sqlx.DB
 
-// DB接続
-func init() {
-	dsn := "host=my-postgres-container user=myuser password=mypassword dbname=mydatabase port=5432 sslmode=disable"
+func initDB() {
 	var err error
-	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	connStr := "postgres://myuser:mypassword@localhost:5432/mydatabase?sslmode=disable"
+	db, err = sqlx.Connect("postgres", connStr)
 	if err != nil {
-		panic("failed to connect to database")
+		panic(err)
 	}
 }
 
-// NetworkTimeTableとDepartureTimeAndDestinationApiModel構造体を定義
+type ParentRoute struct {
+	ParentRouteId   string `json:"parentRouteId" db:"parent_route_id"`
+	ParentRouteName string `json:"parentRouteName" db:"parent_route_name"`
+}
+
 type NetworkTimeTable struct {
-	ParentRouteId      string                   `json:"parentRouteId"`
+	ParentRouteId      string                   `json:"parentRouteId`
 	ParentRouteName    string                   `json:"parentRouteName"`
 	StopId             string                   `json:"stopId"`
 	StopName           string                   `json:"stopName"`
@@ -38,7 +41,6 @@ type TimeTableEntryApiModel struct {
 	AvailableDayOfWeek []int  `json:"availableDayOfWeek"`
 }
 
-// BusStopApiModel構造体を定義
 type BusStopApiModel struct {
 	ParentRouteId   string `json:"parentRouteId"`
 	ParentRouteName string `json:"parentRouteName"`
@@ -47,15 +49,28 @@ type BusStopApiModel struct {
 }
 
 func main() {
+	initDB()
+	defer db.Close()
+
 	e := echo.New()
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	e.GET("/bus-stops", getBusStops)
+	e.GET("/parent-route", getParentRoute)
+	e.GET("/bus-stop", getBusStops)
 	e.GET("/timetable", getTimeTable)
 
 	e.Logger.Fatal(e.Start(":8080"))
+}
+
+func getParentRoute(c echo.Context) error {
+	var response []ParentRoute
+	err := db.Select(&response, "SELECT * FROM parentroute")
+	if err != nil {
+		return c.String(http.StatusInternalServerError, fmt.Sprintf("Error: %v", err))
+	}
+	return c.JSON(http.StatusOK, response)
 }
 
 func getTimeTable(c echo.Context) error {
@@ -100,8 +115,7 @@ func getBusStops(c echo.Context) error {
 	return c.JSON(http.StatusOK, response)
 }
 
-// レスポンスを標準出力に出力するユーティリティ関数
-func printResponse(response interface{}) {
+func printResponse(response any) {
 	// JSON文字列に変換
 	jsonData, err := json.MarshalIndent(response, "", "  ")
 	if err != nil {
