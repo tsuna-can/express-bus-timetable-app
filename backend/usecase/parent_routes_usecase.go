@@ -3,7 +3,7 @@ package usecase
 import (
   "log"
   "context"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/model"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
 )
 

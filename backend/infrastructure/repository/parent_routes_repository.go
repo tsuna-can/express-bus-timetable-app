@@ -4,7 +4,7 @@ import (
   "log"
   "context"
 	"github.com/jmoiron/sqlx"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/model"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
 )
 

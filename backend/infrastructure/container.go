@@ -15,12 +15,15 @@ func BuildContainer() *dig.Container {
 
 	// controllers
 	container.Provide(handler.NewParentRoutesHandler)
+  container.Provide(handler.NewBusStopsHandler)
 
 	// usecases
 	container.Provide(usecase.NewParentRouteUsecase)
+	container.Provide(usecase.NewBusStopUsecase)
 
 	// repositories
 	container.Provide(repository.NewParentRouteRepository)
+	container.Provide(repository.NewBusStopRepository)
 
 	return container
 }

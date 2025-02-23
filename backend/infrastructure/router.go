@@ -10,18 +10,26 @@ import (
 
 type Server struct {
 	parentRouteHandler *handler.ParentRoutesHandler
+  busStopHandler *handler.BusStopsHandler
 }
 
 func NewServer(
   parentRouteHandler *handler.ParentRoutesHandler,
+  busStopHandler *handler.BusStopsHandler,
 ) *Server {
 	return &Server{
     parentRouteHandler: parentRouteHandler,
+    busStopHandler: busStopHandler,
 	}
 }
 
 func (s *Server) GetParentRoutes(ctx echo.Context) error {
   return s.parentRouteHandler.GetParentRoutes(ctx)
+}
+
+func (s *Server) GetBusStopsByParentRouteId(ctx echo.Context) error {
+	parentRouteId := ctx.QueryParam("parent_route_id") // クエリパラメータから取得
+	return s.busStopHandler.GetByParentRouteId(ctx, parentRouteId)
 }
 
 func InitRouter() {
@@ -37,6 +45,7 @@ func InitRouter() {
 	}
 
   e.GET("/parent-routes", server.GetParentRoutes)
+  e.GET("/bus-stops", server.GetBusStopsByParentRouteId)
 
 
 	e.Logger.Fatal(e.Start(":8080"))
