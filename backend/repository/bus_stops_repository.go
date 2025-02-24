@@ -4,11 +4,11 @@ import (
 	"context"
 	"github.com/jmoiron/sqlx"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/gateway"
 	"log"
 )
 
-var query = `
+var getBusStopsQuery = `
 WITH 
 routes AS (
     SELECT route_id FROM route WHERE parent_route_id = $1
@@ -22,26 +22,25 @@ stop_times AS (
 SELECT * FROM stop WHERE stop_id IN (SELECT stop_id FROM stop_times);
 `
 
-type BusStopRepository struct {
+type BusStopsRepository struct {
 	db *sqlx.DB
 }
 
-func NewBusStopRepository(db *sqlx.DB) repository.BusStopRepository {
-	return &BusStopRepository{db}
+func NewBusStopRepository(db *sqlx.DB) gateway.BusStopsGateway {
+	return &BusStopsRepository{db}
 }
 
-func (bsr *BusStopRepository) GetByParentRouteId(ctx context.Context, parentRouteId string) ([]model.BusStop, error) {
-
-	rows, err := bsr.db.QueryContext(ctx, query, parentRouteId)
+func (bsr *BusStopsRepository) GetByParentRouteId(ctx context.Context, parentRouteId string) ([]entity.BusStop, error) {
+	rows, err := bsr.db.QueryContext(ctx, getBusStopsQuery, parentRouteId)
 	if err != nil {
 		log.Printf("Error querying bus stops: %v", err)
 		return nil, err
 	}
 	defer rows.Close()
 
-	busStops := make([]model.BusStop, 0)
+	busStops := make([]entity.BusStop, 0)
 	for rows.Next() {
-		var busStop model.BusStop
+		var busStop entity.BusStop
 		if err := rows.Scan(&busStop.BusStopId, &busStop.BusStopName); err != nil {
 			log.Printf("Error scanning bus stop: %v", err)
 			return nil, err
@@ -51,4 +50,3 @@ func (bsr *BusStopRepository) GetByParentRouteId(ctx context.Context, parentRout
 
 	return busStops, nil
 }
-

@@ -4,22 +4,22 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/handler/response"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/handler/request"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/input_port"
 	"net/http"
 )
 
 type BusStopsHandler struct {
-	busStopsUsecase usecase.BusStopUsecase
+	busStopsUsecase input_port.BusStopsInputPort
 }
 
-func NewBusStopsHandler(busStopsUsecase usecase.BusStopUsecase) *BusStopsHandler {
+func NewBusStopsHandler(busStopsUsecase input_port.BusStopsInputPort) *BusStopsHandler {
 	return &BusStopsHandler{
 		busStopsUsecase: busStopsUsecase,
 	}
 }
 
-func (h *BusStopsHandler) GetByParentRouteId(e echo.Context, parentRouteId string) error {
-  req, err := request.NewGetBusStopsByParentRouteIdRequest(e)
+func (h *BusStopsHandler) GetByParentRouteId(e echo.Context) error {
+  req, err := request.NewBusStopsRequest(e)
   if err != nil {
     return e.JSON(http.StatusBadRequest, err)
   }

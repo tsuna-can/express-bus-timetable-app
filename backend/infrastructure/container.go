@@ -2,8 +2,8 @@ package infrastructure
 
 import (
 	"github.com/tsuna-can/express-bus-time-table-app/backend/handler"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/infrastructure/repository"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/repository"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/interactor"
 	"go.uber.org/dig"
 )
 
@@ -13,17 +13,18 @@ func BuildContainer() *dig.Container {
 	container.Provide(NewServer)
 	container.Provide(NewDb)
 
-	// controllers
+	// handlers
 	container.Provide(handler.NewParentRoutesHandler)
-  container.Provide(handler.NewBusStopsHandler)
+	container.Provide(handler.NewBusStopsHandler)
 
 	// usecases
-	container.Provide(usecase.NewParentRouteUsecase)
-	container.Provide(usecase.NewBusStopUsecase)
+	container.Provide(interactor.NewParentRoutesUsecase)
+	container.Provide(interactor.NewBusStopUsecase)
 
 	// repositories
-	container.Provide(repository.NewParentRouteRepository)
+	container.Provide(repository.NewParentRoutesRepository)
 	container.Provide(repository.NewBusStopRepository)
 
 	return container
 }
+

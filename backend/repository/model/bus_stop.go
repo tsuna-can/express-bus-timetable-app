@@ -9,8 +9,8 @@ type BusStop struct {
   bus_stop_name string
 }
 
-func (bs *BusStop) ToBusStop() *model.BusStop {
-  return model.NewBusStop(
+func (bs *BusStop) ToBusStop() *entity.BusStop {
+  return entity.NewBusStop(
     bs.bus_stop_id,
     bs.bus_stop_name,
   )

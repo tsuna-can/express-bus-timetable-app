@@ -13,7 +13,7 @@ type ParentRoute struct {
   ParentRouteName string `json:"parent_route_name"`
 }
 
-func NewParentRoutesResponse(parentRoute []model.ParentRoute) *ParentRouteResponse {
+func NewParentRoutesResponse(parentRoute []entity.ParentRoute) *ParentRouteResponse {
   parentRoutes := make([]ParentRoute, 0, len(parentRoute))
   for _, pr := range parentRoute {
     parentRoutes = append(parentRoutes, ParentRoute{

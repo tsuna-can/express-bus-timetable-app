@@ -13,7 +13,7 @@ type BusStop struct {
   BusStopName string `json:"bus_stop_name"`
 }
 
-func NewBusStopsResponse(busStops []model.BusStop) *BusStopResponse {
+func NewBusStopsResponse(busStops []entity.BusStop) *BusStopResponse {
   busStopResponses := make([]BusStop, 0, len(busStops))
   for _, bs := range busStops {
     busStopResponses = append(busStopResponses, BusStop{

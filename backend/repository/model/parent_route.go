@@ -9,8 +9,8 @@ type ParentRoute struct {
 	parent_route_name string
 }
 
-func (pr *ParentRoute) ToParentRoute() *model.ParentRoute {
-	return model.NewParentRoute(
+func (pr *ParentRoute) ToParentRoute() *entity.ParentRoute {
+	return entity.NewParentRoute(
 		pr.parent_route_id,
 		pr.parent_route_name,
 	)
