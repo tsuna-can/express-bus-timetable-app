@@ -1,18 +1,25 @@
 package model
 
 import (
-  "github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
+	"fmt"
+
+	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/vo"
 )
 
 type BusStop struct {
-  bus_stop_id string
-  bus_stop_name string
+	BusStopId   string
+	BusStopName string
 }
 
-func (bs *BusStop) ToBusStop() *entity.BusStop {
-  return entity.NewBusStop(
-    bs.bus_stop_id,
-    bs.bus_stop_name,
-  )
-}
+func (bs *BusStop) ToBusStop() (*entity.BusStop, error) {
+	name, err := vo.NewBusStopName(bs.BusStopName)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create BusStopName: %w", err)
+	}
 
+	return entity.NewBusStop(
+		bs.BusStopId,
+		*name,
+	), nil
+}

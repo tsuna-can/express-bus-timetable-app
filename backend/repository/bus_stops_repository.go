@@ -2,10 +2,12 @@ package repository
 
 import (
 	"context"
+	"log"
+
 	"github.com/jmoiron/sqlx"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/repository/model"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/gateway"
-	"log"
 )
 
 var getBusStopsQuery = `
@@ -19,7 +21,7 @@ trips AS (
 stop_times AS (
     SELECT stop_id FROM stoptime WHERE trip_id IN (SELECT trip_id FROM trips)
 )
-SELECT * FROM stop WHERE stop_id IN (SELECT stop_id FROM stop_times);
+SELECT stop_id, stop_name FROM stop WHERE stop_id IN (SELECT stop_id FROM stop_times);
 `
 
 type BusStopsRepository struct {
@@ -40,13 +42,25 @@ func (bsr *BusStopsRepository) GetByParentRouteId(ctx context.Context, parentRou
 
 	busStops := make([]entity.BusStop, 0)
 	for rows.Next() {
-		var busStop entity.BusStop
-		if err := rows.Scan(&busStop.BusStopId, &busStop.BusStopName); err != nil {
-			log.Printf("Error scanning bus stop: %v", err)
+		var bsm model.BusStop
+		if err := rows.Scan(&bsm.BusStopId, &bsm.BusStopName); err != nil {
+			log.Printf("Error scanning row: %v", err)
 			return nil, err
 		}
-		busStops = append(busStops, busStop)
+
+		bse, err := bsm.ToBusStop()
+		if err != nil {
+			log.Printf("Error converting to BusStop: %v", err)
+			return nil, err
+		}
+		busStops = append(busStops, *bse)
+	}
+
+	if err := rows.Err(); err != nil {
+		log.Printf("Error iterating rows: %v", err)
+		return nil, err
 	}
 
 	return busStops, nil
 }
+
