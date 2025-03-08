@@ -6,6 +6,7 @@ import (
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/gateway"
 	"log"
+  "github.com/tsuna-can/express-bus-time-table-app/backend/repository/model"
 )
 
 type ParentRoutesRepository struct {
@@ -29,12 +30,19 @@ func (r *ParentRoutesRepository) GetAll(ctx context.Context) ([]entity.ParentRou
 	defer rows.Close()
 
 	for rows.Next() {
-		var parentRoute entity.ParentRoute
-		if err := rows.Scan(&parentRoute.ParentRouteId, &parentRoute.ParentRouteName); err != nil {
+    var prm model.ParentRoute
+		if err := rows.Scan(&prm.ParentRouteId, &prm.ParentRouteName); err != nil {
 			log.Printf("Error scanning parent route: %v", err)
 			return nil, err
 		}
-		parentRoutes = append(parentRoutes, parentRoute)
+
+    pre, err := prm.ToParentRoute()
+    if err != nil {
+      log.Printf("Error converting to ParentRoute: %v", err)
+      return nil, err
+    }
+
+		parentRoutes = append(parentRoutes, *pre)
 	}
 
 	if err := rows.Err(); err != nil {

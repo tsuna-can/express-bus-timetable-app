@@ -18,7 +18,7 @@ func NewParentRoutesResponse(parentRoute []entity.ParentRoute) *ParentRouteRespo
   for _, pr := range parentRoute {
     parentRoutes = append(parentRoutes, ParentRoute{
       ParentRouteId: pr.ParentRouteId,
-      ParentRouteName: pr.ParentRouteName,
+      ParentRouteName: pr.ParentRouteName.Value(),
     })
   }
   return &ParentRouteResponse{

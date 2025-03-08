@@ -53,6 +53,7 @@ func (bsr *BusStopsRepository) GetByParentRouteId(ctx context.Context, parentRou
 			log.Printf("Error converting to BusStop: %v", err)
 			return nil, err
 		}
+
 		busStops = append(busStops, *bse)
 	}
 
