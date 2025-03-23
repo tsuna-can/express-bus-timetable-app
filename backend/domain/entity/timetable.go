@@ -1,7 +1,7 @@
 package entity
 
 type Timetable struct {
-	ParentRouteId    string
+	ParentRouteId    string 
 	BusStopId        string
 	TimetableEntries []TimetableEntry
 }

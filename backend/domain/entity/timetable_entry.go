@@ -6,15 +6,14 @@ import (
 
 type TimetableEntry struct {
 	DepartureTime   vo.DepartureTime
+	OperationDays   vo.OperationDays
 	DestinationName vo.DestinationName
-	OperatingDays   vo.OperationDays
 }
 
-func NewTimetableEntry(departureTime vo.DepartureTime, destinationName vo.DestinationName, operationDays vo.OperationDays) *TimetableEntry {
+func NewTimetableEntry(departureTime vo.DepartureTime, operationDays vo.OperationDays, destinationName vo.DestinationName) *TimetableEntry {
 	return &TimetableEntry{
 		DepartureTime:   departureTime,
+		OperationDays:   operationDays,
 		DestinationName: destinationName,
-		OperatingDays:   operationDays,
 	}
 }
-

@@ -11,15 +11,18 @@ import (
 type Server struct {
 	parentRouteHandler *handler.ParentRoutesHandler
 	busStopHandler     *handler.BusStopsHandler
+  timeTableHandler   *handler.TimetableHandler
 }
 
 func NewServer(
 	parentRouteHandler *handler.ParentRoutesHandler,
 	busStopHandler *handler.BusStopsHandler,
+  timeTableHandler *handler.TimetableHandler,
 ) *Server {
 	return &Server{
 		parentRouteHandler: parentRouteHandler,
 		busStopHandler:     busStopHandler,
+    timeTableHandler:   timeTableHandler,
 	}
 }
 
@@ -29,6 +32,10 @@ func (s *Server) GetParentRoutes(ctx echo.Context) error {
 
 func (s *Server) GetBusStopsByParentRouteId(ctx echo.Context) error {
 	return s.busStopHandler.GetByParentRouteId(ctx)
+}
+
+func (s *Server) GetTimetableByParentRouteIdAndBusStopId(ctx echo.Context) error {
+	return s.timeTableHandler.GetByParentRouteIdAndBusStopId(ctx)
 }
 
 func InitRouter() {
@@ -45,7 +52,7 @@ func InitRouter() {
 
 	e.GET("/parent-routes", server.GetParentRoutes)
 	e.GET("/bus-stops", server.GetBusStopsByParentRouteId)
+	e.GET("/timetable", server.GetTimetableByParentRouteIdAndBusStopId)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
-

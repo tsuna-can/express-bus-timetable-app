@@ -18,7 +18,7 @@ func NewDepartureTime(value string) (*DepartureTime, error) {
 	return &DepartureTime{value: value}, nil
 }
 
-func (d DepartureTime) String() string {
+func (d DepartureTime) Value() string {
 	return d.value
 }
 

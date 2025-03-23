@@ -16,14 +16,17 @@ func BuildContainer() *dig.Container {
 	// handlers
 	container.Provide(handler.NewParentRoutesHandler)
 	container.Provide(handler.NewBusStopsHandler)
+  container.Provide(handler.NewTimetableHandler)
 
 	// usecases
 	container.Provide(interactor.NewParentRoutesUsecase)
 	container.Provide(interactor.NewBusStopUsecase)
+  container.Provide(interactor.NewTimetableUsecase)
 
 	// repositories
 	container.Provide(repository.NewParentRoutesRepository)
 	container.Provide(repository.NewBusStopRepository)
+  container.Provide(repository.NewTimetableRepository)
 
 	return container
 }

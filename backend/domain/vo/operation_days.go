@@ -9,9 +9,9 @@ type OperationDays struct {
 	days map[time.Weekday]struct{}
 }
 
-func NewOperationDays(days ...time.Weekday) (OperationDays, error) {
+func NewOperationDays(days []time.Weekday) (*OperationDays, error) {
 	if len(days) == 0 {
-		return OperationDays{}, fmt.Errorf("OperationDays must have at least one operation day")
+		return nil, fmt.Errorf("OperationDays must have at least one operation day")
 	}
 
 	uniqueDays := make(map[time.Weekday]struct{})
@@ -19,7 +19,7 @@ func NewOperationDays(days ...time.Weekday) (OperationDays, error) {
 		uniqueDays[day] = struct{}{}
 	}
 
-	return OperationDays{days: uniqueDays}, nil
+	return &OperationDays{days: uniqueDays}, nil
 }
 
 // Contains は指定した曜日が有効日かどうかを判定する
@@ -45,5 +45,15 @@ func (od OperationDays) String() string {
 		result = append(result, weekdays[day])
 	}
 	return fmt.Sprintf("[%s]", fmt.Sprint(result))
+}
+
+// List は曜日を文字列のスライスとして返す
+func (od OperationDays) Slice() []string {
+  weekdays := []string{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}
+  result := []string{}
+  for _, day := range od.Days() {
+    result = append(result, weekdays[day])
+  }
+  return result
 }
 
