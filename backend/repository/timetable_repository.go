@@ -8,7 +8,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/vo"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/gateway"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
 )
 
 var getTimetableQuery = `
@@ -35,7 +35,7 @@ type TimetableRepository struct {
 	db *sqlx.DB
 }
 
-func NewTimetableRepository(db *sqlx.DB) gateway.TimetableGateway {
+func NewTimetableRepository(db *sqlx.DB) repository.TimetableRepository{
 	return &TimetableRepository{db}
 }
 

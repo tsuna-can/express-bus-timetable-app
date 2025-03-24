@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/jmoiron/sqlx"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/gateway"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
 	"log"
   "github.com/tsuna-can/express-bus-time-table-app/backend/repository/model"
 )
@@ -13,7 +13,7 @@ type ParentRoutesRepository struct {
 	db *sqlx.DB
 }
 
-func NewParentRoutesRepository(db *sqlx.DB) gateway.ParentRoutesGateway {
+func NewParentRoutesRepository(db *sqlx.DB) repository.ParentRoutesRepository {
 	return &ParentRoutesRepository{
 		db: db,
 	}

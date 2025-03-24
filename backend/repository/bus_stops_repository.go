@@ -6,8 +6,8 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/repository/model"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/gateway"
 )
 
 var getBusStopsQuery = `
@@ -28,7 +28,7 @@ type BusStopsRepository struct {
 	db *sqlx.DB
 }
 
-func NewBusStopRepository(db *sqlx.DB) gateway.BusStopsGateway {
+func NewBusStopRepository(db *sqlx.DB) repository.BusStopsRepository {
 	return &BusStopsRepository{db}
 }
 
@@ -64,4 +64,3 @@ func (bsr *BusStopsRepository) GetByParentRouteId(ctx context.Context, parentRou
 
 	return busStops, nil
 }
-

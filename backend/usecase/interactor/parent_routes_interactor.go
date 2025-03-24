@@ -3,16 +3,16 @@ package interactor
 import (
 	"context"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/gateway"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/input"
 	"log"
 )
 
 type parentRoutesUsecase struct {
-	parentRoutesRepository gateway.ParentRoutesGateway
+	parentRoutesRepository repository.ParentRoutesRepository
 }
 
-func NewParentRoutesUsecase(parentRoutesRepository gateway.ParentRoutesGateway) input.ParentRoutesInputPort {
+func NewParentRoutesUsecase(parentRoutesRepository repository.ParentRoutesRepository) input.ParentRoutesInputPort {
 	return &parentRoutesUsecase{
 		parentRoutesRepository: parentRoutesRepository,
 	}

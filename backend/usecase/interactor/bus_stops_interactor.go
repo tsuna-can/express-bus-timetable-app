@@ -4,15 +4,15 @@ import (
 	"context"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/input"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/gateway"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
 	"log"
 )
 
 type busStopsUsecase struct {
-	busStopsRepository gateway.BusStopsGateway
+	busStopsRepository repository.BusStopsRepository
 }
 
-func NewBusStopUsecase(busStopsRepository gateway.BusStopsGateway) input.BusStopsInputPort {
+func NewBusStopUsecase(busStopsRepository repository.BusStopsRepository) input.BusStopsInputPort {
 	return &busStopsUsecase{
 		busStopsRepository: busStopsRepository,
 	}
