@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/gateway"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/input_port"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/input"
 	"log"
 )
 
@@ -12,7 +12,7 @@ type timetableUsecase struct {
 	timetableRepository gateway.TimetableGateway
 }
 
-func NewTimetableUsecase(timetableRepository gateway.TimetableGateway) input_port.TimetableInputPort {
+func NewTimetableUsecase(timetableRepository gateway.TimetableGateway) input.TimetableInputPort {
 	return &timetableUsecase{
 		timetableRepository: timetableRepository,
 	}

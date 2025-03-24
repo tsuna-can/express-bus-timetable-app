@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/gateway"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/input_port"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/input"
 	"log"
 )
 
@@ -12,7 +12,7 @@ type parentRoutesUsecase struct {
 	parentRoutesRepository gateway.ParentRoutesGateway
 }
 
-func NewParentRoutesUsecase(parentRoutesRepository gateway.ParentRoutesGateway) input_port.ParentRoutesInputPort {
+func NewParentRoutesUsecase(parentRoutesRepository gateway.ParentRoutesGateway) input.ParentRoutesInputPort {
 	return &parentRoutesUsecase{
 		parentRoutesRepository: parentRoutesRepository,
 	}

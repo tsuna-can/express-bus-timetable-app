@@ -4,15 +4,15 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/handler/response"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/handler/request"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/input_port"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/input"
 	"net/http"
 )
 
 type BusStopsHandler struct {
-	busStopsUsecase input_port.BusStopsInputPort
+	busStopsUsecase input.BusStopsInputPort
 }
 
-func NewBusStopsHandler(busStopsUsecase input_port.BusStopsInputPort) *BusStopsHandler {
+func NewBusStopsHandler(busStopsUsecase input.BusStopsInputPort) *BusStopsHandler {
 	return &BusStopsHandler{
 		busStopsUsecase: busStopsUsecase,
 	}

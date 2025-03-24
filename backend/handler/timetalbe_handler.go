@@ -4,16 +4,16 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/handler/request"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/handler/response"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/input_port"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/input"
 	"log"
 	"net/http"
 )
 
 type TimetableHandler struct {
-	timetableUsecase input_port.TimetableInputPort
+	timetableUsecase input.TimetableInputPort
 }
 
-func NewTimetableHandler(timetableUsecase input_port.TimetableInputPort) *TimetableHandler {
+func NewTimetableHandler(timetableUsecase input.TimetableInputPort) *TimetableHandler {
 	return &TimetableHandler{
 		timetableUsecase: timetableUsecase,
 	}

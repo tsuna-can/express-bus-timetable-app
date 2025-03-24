@@ -3,7 +3,7 @@ package interactor
 import (
 	"context"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/input_port"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/input"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/gateway"
 	"log"
 )
@@ -12,7 +12,7 @@ type busStopsUsecase struct {
 	busStopsRepository gateway.BusStopsGateway
 }
 
-func NewBusStopUsecase(busStopsRepository gateway.BusStopsGateway) input_port.BusStopsInputPort {
+func NewBusStopUsecase(busStopsRepository gateway.BusStopsGateway) input.BusStopsInputPort {
 	return &busStopsUsecase{
 		busStopsRepository: busStopsRepository,
 	}

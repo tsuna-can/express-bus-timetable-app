@@ -3,16 +3,16 @@ package handler
 import (
   "log"
 	"github.com/labstack/echo/v4"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/input_port"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/input"
   "github.com/tsuna-can/express-bus-time-table-app/backend/handler/response"
 	"net/http"
 )
 
 type ParentRoutesHandler struct {
-	parentRoutesUsecase input_port.ParentRoutesInputPort
+	parentRoutesUsecase input.ParentRoutesInputPort
 }
 
-func NewParentRoutesHandler(parentRoutesUsecase input_port.ParentRoutesInputPort) *ParentRoutesHandler {
+func NewParentRoutesHandler(parentRoutesUsecase input.ParentRoutesInputPort) *ParentRoutesHandler {
 	return &ParentRoutesHandler{
 		parentRoutesUsecase: parentRoutesUsecase,
 	}

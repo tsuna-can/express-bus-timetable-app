@@ -1,4 +1,4 @@
-package input_port 
+package input
 
 import (
 	"context"
