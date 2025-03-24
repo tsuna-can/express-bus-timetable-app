@@ -7,7 +7,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/repository/model"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/infrastructure/repository/model"
 )
 
 var getBusStopsQuery = `

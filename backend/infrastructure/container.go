@@ -2,7 +2,7 @@ package infrastructure
 
 import (
 	"github.com/tsuna-can/express-bus-time-table-app/backend/handler"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/repository"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/infrastructure/repository"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/interactor"
 	"go.uber.org/dig"
 )

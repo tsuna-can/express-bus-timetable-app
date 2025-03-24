@@ -6,7 +6,7 @@ import (
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
 	"log"
-  "github.com/tsuna-can/express-bus-time-table-app/backend/repository/model"
+  "github.com/tsuna-can/express-bus-time-table-app/backend/infrastructure/repository/model"
 )
 
 type ParentRoutesRepository struct {
