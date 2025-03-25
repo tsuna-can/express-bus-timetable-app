@@ -7,8 +7,8 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/vo"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/infrastructure/repository/model"
 )
 
 var getTimetableQuery = `
@@ -35,7 +35,7 @@ type TimetableRepository struct {
 	db *sqlx.DB
 }
 
-func NewTimetableRepository(db *sqlx.DB) repository.TimetableRepository{
+func NewTimetableRepository(db *sqlx.DB) repository.TimetableRepository {
 	return &TimetableRepository{db}
 }
 
@@ -48,20 +48,22 @@ func (r *TimetableRepository) GetByParentRouteIdAndBusStopId(ctx context.Context
 	defer rows.Close()
 
 	// Create timetable entries
-	var entries []entity.TimetableEntry
+	var timetableModel model.Timetable
+	timetableModel.ParentRouteId = parentRouteId
+	timetableModel.BusStopId = busStopId
 
 	for rows.Next() {
-		var parentRouteId, parentRouteName, routeId, routeName, stopId, stopName string
+		var entry model.TimetableEntry
 		var monday, tuesday, wednesday, thursday, friday, saturday, sunday bool
 		var departureTime time.Time
 
 		if err := rows.Scan(
-			&parentRouteId,
-			&parentRouteName,
-			&routeId,
-			&routeName,
-			&stopId,
-			&stopName,
+			&timetableModel.ParentRouteId,
+			&entry.DestinationName,
+			&entry.DestinationName, // route_id (not used)
+			&entry.DestinationName, // route_name
+			&timetableModel.BusStopId,
+			&entry.DestinationName, // stop_name
 			&departureTime,
 			&monday,
 			&tuesday,
@@ -75,64 +77,40 @@ func (r *TimetableRepository) GetByParentRouteIdAndBusStopId(ctx context.Context
 			return entity.Timetable{}, err
 		}
 
-		// create departure time vo
-		departureTimeVo, err := vo.NewDepartureTime(departureTime.Format("15:04"))
-		if err != nil {
-			log.Printf("Error creating DepartureTime: %v", err)
-			return entity.Timetable{}, err
-		}
-
-		// create distination name vo
-		destinationNameVo, err := vo.NewDestinationName(routeName)
-		if err != nil {
-			log.Printf("Error creating RouteName: %v", err)
-			return entity.Timetable{}, err
-		}
-
-		// 曜日情報をtime.Weekdayのスライスに変換
-		activeWeekdays := getActiveWeekdays(monday, tuesday, wednesday, thursday, friday, saturday, sunday)
-
-		// 曜日情報をvoに変換
-		operationDays, err := vo.NewOperationDays(activeWeekdays)
-
-		// Create timetable entry
-		entry := entity.TimetableEntry{
-			DepartureTime:   *departureTimeVo,
-			DestinationName: *destinationNameVo,
-			OperationDays:   *operationDays,
-		}
-		entries = append(entries, entry)
+		entry.DepartureTime = departureTime.Format("15:04")
+		entry.OperationDays = getActiveWeekdaysStrings(monday, tuesday, wednesday, thursday, friday, saturday, sunday)
+		timetableModel.TimetableEntry = append(timetableModel.TimetableEntry, entry)
 	}
 
-	// Create timetable
-	timetable := entity.Timetable{
-		ParentRouteId:    parentRouteId,
-		BusStopId:        busStopId,
-		TimetableEntries: entries,
+	// Convert model to entity
+	timetableEntity, err := timetableModel.ToTimetable()
+	if err != nil {
+		log.Printf("Error converting model to entity: %v", err)
+		return entity.Timetable{}, err
 	}
 
-	return timetable, nil
+	return *timetableEntity, nil
 }
 
-// 曜日フラグをtime.Weekdayのスライスに変換する関数
-func getActiveWeekdays(monday, tuesday, wednesday, thursday, friday, saturday, sunday bool) []time.Weekday {
+// Helper function to convert weekday flags to string slice
+func getActiveWeekdaysStrings(monday, tuesday, wednesday, thursday, friday, saturday, sunday bool) []string {
 	weekdays := []struct {
-		flag    bool
-		weekday time.Weekday
+		flag bool
+		name string
 	}{
-		{monday, time.Monday},
-		{tuesday, time.Tuesday},
-		{wednesday, time.Wednesday},
-		{thursday, time.Thursday},
-		{friday, time.Friday},
-		{saturday, time.Saturday},
-		{sunday, time.Sunday},
+		{monday, "monday"},
+		{tuesday, "tuesday"},
+		{wednesday, "wednesday"},
+		{thursday, "thursday"},
+		{friday, "friday"},
+		{saturday, "saturday"},
+		{sunday, "sunday"},
 	}
 
-	var activeDays []time.Weekday
+	var activeDays []string
 	for _, w := range weekdays {
 		if w.flag {
-			activeDays = append(activeDays, w.weekday)
+			activeDays = append(activeDays, w.name)
 		}
 	}
 
