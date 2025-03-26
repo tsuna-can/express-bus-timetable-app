@@ -6,14 +6,28 @@ import (
 
 type TimetableEntry struct {
 	DepartureTime   vo.DepartureTime
-	OperationDays   vo.OperationDays
+	OperationDays   map[vo.OperationDay]struct{}
 	DestinationName vo.DestinationName
 }
 
-func NewTimetableEntry(departureTime vo.DepartureTime, operationDays vo.OperationDays, destinationName vo.DestinationName) *TimetableEntry {
+func NewTimetableEntry(
+	departureTime vo.DepartureTime,
+	operationDays map[vo.OperationDay]struct{},
+	destinationName vo.DestinationName,
+) *TimetableEntry {
 	return &TimetableEntry{
 		DepartureTime:   departureTime,
 		OperationDays:   operationDays,
 		DestinationName: destinationName,
 	}
+}
+
+// OperationDays を int のスライスに変換するメソッド
+func (t *TimetableEntry) OperationDaysAsIntSlice() []int {
+	days := make([]int, 0, len(t.OperationDays))
+	for opDay := range t.OperationDays {
+		days = append(days, int(opDay.IntValue()))
+	}
+
+	return days
 }

@@ -54,7 +54,7 @@ func (r *TimetableRepository) GetByParentRouteIdAndBusStopId(ctx context.Context
 
 	for rows.Next() {
 		var entry model.TimetableEntry
-		var monday, tuesday, wednesday, thursday, friday, saturday, sunday bool
+		// var monday, tuesday, wednesday, thursday, friday, saturday, sunday bool
 		var departureTime time.Time
 
 		if err := rows.Scan(
@@ -65,20 +65,19 @@ func (r *TimetableRepository) GetByParentRouteIdAndBusStopId(ctx context.Context
 			&timetableModel.BusStopId,
 			&entry.DestinationName, // stop_name
 			&departureTime,
-			&monday,
-			&tuesday,
-			&wednesday,
-			&thursday,
-			&friday,
-			&saturday,
-			&sunday,
+			&entry.Monday,
+			&entry.Tuesday,
+			&entry.Wednesday,
+			&entry.Thursday,
+			&entry.Friday,
+			&entry.Saturday,
+			&entry.Sunday,
 		); err != nil {
 			log.Printf("Error scanning row: %v", err)
 			return entity.Timetable{}, err
 		}
 
 		entry.DepartureTime = departureTime.Format("15:04")
-		entry.OperationDays = getActiveWeekdaysStrings(monday, tuesday, wednesday, thursday, friday, saturday, sunday)
 		timetableModel.TimetableEntry = append(timetableModel.TimetableEntry, entry)
 	}
 
@@ -92,27 +91,3 @@ func (r *TimetableRepository) GetByParentRouteIdAndBusStopId(ctx context.Context
 	return *timetableEntity, nil
 }
 
-// Helper function to convert weekday flags to string slice
-func getActiveWeekdaysStrings(monday, tuesday, wednesday, thursday, friday, saturday, sunday bool) []string {
-	weekdays := []struct {
-		flag bool
-		name string
-	}{
-		{monday, "monday"},
-		{tuesday, "tuesday"},
-		{wednesday, "wednesday"},
-		{thursday, "thursday"},
-		{friday, "friday"},
-		{saturday, "saturday"},
-		{sunday, "sunday"},
-	}
-
-	var activeDays []string
-	for _, w := range weekdays {
-		if w.flag {
-			activeDays = append(activeDays, w.name)
-		}
-	}
-
-	return activeDays
-}

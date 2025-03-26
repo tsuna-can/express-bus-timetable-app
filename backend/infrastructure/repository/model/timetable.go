@@ -17,28 +17,13 @@ type Timetable struct {
 type TimetableEntry struct {
 	DepartureTime   string
 	DestinationName string
-	OperationDays   []string
-}
-
-func stringToWeekday(day string) (time.Weekday, error) {
-	switch day {
-	case "monday":
-		return time.Monday, nil
-	case "tuesday":
-		return time.Tuesday, nil
-	case "wednesday":
-		return time.Wednesday, nil
-	case "thursday":
-		return time.Thursday, nil
-	case "friday":
-		return time.Friday, nil
-	case "saturday":
-		return time.Saturday, nil
-	case "sunday":
-		return time.Sunday, nil
-	default:
-		return time.Sunday, fmt.Errorf("invalid day: %s", day)
-	}
+	Monday          bool
+	Tuesday         bool
+	Wednesday       bool
+	Thursday        bool
+	Friday          bool
+	Saturday        bool
+	Sunday          bool
 }
 
 // ToTimetable converts Timetable to entity.Timetable
@@ -55,24 +40,40 @@ func (t *Timetable) ToTimetable() (*entity.Timetable, error) {
 			return nil, fmt.Errorf("failed to create DestinationName: %w", err)
 		}
 
-		days := make([]time.Weekday, len(te.OperationDays))
-		for i, day := range te.OperationDays {
-			weekday, err := stringToWeekday(day)
-			if err != nil {
-				return nil, fmt.Errorf("failed to convert day to time.Weekday: %w", err)
+		operationDays := make(map[vo.OperationDay]struct{})
+		addOperationDay := func(day time.Weekday) {
+			opDay := vo.NewOperationDay(day) // *vo.OperationDay（ポインタ）
+			if opDay != nil {                // nil チェック
+				operationDays[*opDay] = struct{}{} // ポインタをデリファレンスして格納
 			}
-			days[i] = weekday
 		}
 
-		operationDays, err := vo.NewOperationDays(days)
-		if err != nil {
-			return nil, fmt.Errorf("failed to create OperationDays: %w", err)
+		if te.Monday {
+			addOperationDay(time.Monday)
+		}
+		if te.Tuesday {
+			addOperationDay(time.Tuesday)
+		}
+		if te.Wednesday {
+			addOperationDay(time.Wednesday)
+		}
+		if te.Thursday {
+			addOperationDay(time.Thursday)
+		}
+		if te.Friday {
+			addOperationDay(time.Friday)
+		}
+		if te.Saturday {
+			addOperationDay(time.Saturday)
+		}
+		if te.Sunday {
+			addOperationDay(time.Sunday)
 		}
 
 		timetableEntries[i] = entity.TimetableEntry{
 			DepartureTime:   *departureTime,
 			DestinationName: *destinationName,
-			OperationDays:   *operationDays,
+			OperationDays:   operationDays,
 		}
 	}
 

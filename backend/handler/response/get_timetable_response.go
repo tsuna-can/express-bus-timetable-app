@@ -13,7 +13,7 @@ type TimetableResponse struct {
 type TimetableEntry struct {
   DepartureTime   string   `json:"departure_time"`
   DestinationName string   `json:"destination_name"`
-  OperationDays   []string `json:"operation_days"`
+  OperationDays   []int `json:"operation_days"`
 }
 
 func NewTimetableResponse(timetable entity.Timetable) *TimetableResponse {
@@ -22,7 +22,7 @@ func NewTimetableResponse(timetable entity.Timetable) *TimetableResponse {
     timetableEntries = append(timetableEntries, TimetableEntry{
       DepartureTime:   te.DepartureTime.Value(),
       DestinationName: te.DestinationName.Value(),
-      OperationDays:   te.OperationDays.Slice(),
+      OperationDays:   te.OperationDaysAsIntSlice(),
     })
   }
   return &TimetableResponse{
