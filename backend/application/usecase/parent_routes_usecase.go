@@ -1,10 +1,10 @@
-package interactor
+package usecase 
 
 import (
 	"context"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase/input"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/application/input"
 	"log"
 )
 
