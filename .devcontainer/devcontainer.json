@@ -1,9 +1,9 @@
 {
   "name": "express-bus-time-table-api",
-  "build": {
-    "dockerfile": "../Dockerfile",
-    "target": "dev"
-  },
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "api", 
+  "workspaceFolder": "/backend",
+  "shutdownAction": "stopCompose",
   "runArgs": ["--userns=keep-id"],
   "customizations": {
     "vscode": {
