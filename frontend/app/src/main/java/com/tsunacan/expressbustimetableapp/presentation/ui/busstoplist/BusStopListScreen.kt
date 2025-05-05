@@ -28,6 +28,37 @@ fun BusStopListScreen(
     viewModel: BusStopListScreenViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ScreenScaffold() {
+        when (uiState) {
+            is BusStopListScreenUiState.Loaded -> {
+                BusStopListScreen(
+                    busStopList = (uiState as BusStopListScreenUiState.Loaded).busStopList,
+                    navigationToBusStop = navigationToBusStop,
+                    modifier = modifier,
+                )
+            }
+
+            BusStopListScreenUiState.Loading -> {
+            }
+
+            BusStopListScreenUiState.Failed -> {
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalHorologistApi::class)
+@Composable
+fun BusStopListScreen(
+    busStopList: List<BusStop>,
+    navigationToBusStop: (String, String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val contentModifier = modifier
+        .fillMaxWidth()
+        .padding(bottom = 8.dp)
+
     val listState = rememberResponsiveColumnState(
         contentPadding = ScalingLazyColumnDefaults.padding(
             first = ItemType.Chip,
@@ -35,37 +66,25 @@ fun BusStopListScreen(
         ),
     )
 
-    ScreenScaffold(scrollState = listState) {
+    val parentRouteName = busStopList.firstOrNull()?.parentRouteName ?: "Unknown Route"
 
-        val contentModifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp)
-
-        ScalingLazyColumn(
-            columnState = listState,
-        ) {
-            when (uiState) {
-                is BusStopListScreenUiState.Loaded -> {
-                    val busStopList =
-                        (uiState as BusStopListScreenUiState.Loaded).busStopList
-                    busStopList.forEach { busStop ->
-                        item {
-                            BusStopChip(
-                                busStop = busStop,
-                                navigationToBusStop = navigationToBusStop,
-                                modifier = contentModifier
-                            )
-                        }
-                    }
-                }
-
-                BusStopListScreenUiState.Loading -> {
-                    item {}
-                }
-
-                BusStopListScreenUiState.Failed -> {
-                    item {}
-                }
+    ScalingLazyColumn(
+        columnState = listState,
+    ) {
+        item{
+            Text(
+                text = parentRouteName,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+        busStopList.forEach { busStop ->
+            item {
+                BusStopChip(
+                    busStop = busStop,
+                    navigationToBusStop = navigationToBusStop,
+                    modifier = contentModifier
+                )
             }
         }
     }
