@@ -1,0 +1,203 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample server for Express Bus Time Table API.",
+        "title": "Express Bus Time Table API",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.example.com/support"
+        },
+        "version": "1.0"
+    },
+    "paths": {
+        "/bus-stops": {
+            "get": {
+                "description": "Get bus stops by parent route ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "bus_stops"
+                ],
+                "summary": "Get bus stops by parent route ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Parent Route ID",
+                        "name": "parent_route_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/response.BusStopResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/parent-routes": {
+            "get": {
+                "description": "Get all parent routes",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "parent_routes"
+                ],
+                "summary": "Get all parent routes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/response.ParentRouteResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/timetable": {
+            "get": {
+                "description": "Get timetable by parent route ID and bus stop ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "timetable"
+                ],
+                "summary": "Get timetable by parent route ID and bus stop ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Parent Route ID",
+                        "name": "parent_route_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bus Stop ID",
+                        "name": "bus_stop_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/response.TimetableResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "response.BusStop": {
+            "type": "object",
+            "properties": {
+                "bus_stop_id": {
+                    "type": "string"
+                },
+                "bus_stop_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.BusStopResponse": {
+            "type": "object",
+            "properties": {
+                "bus_stops": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/response.BusStop"
+                    }
+                }
+            }
+        },
+        "response.ParentRoute": {
+            "type": "object",
+            "properties": {
+                "parent_route_id": {
+                    "type": "string"
+                },
+                "parent_route_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.ParentRouteResponse": {
+            "type": "object",
+            "properties": {
+                "parent_routes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/response.ParentRoute"
+                    }
+                }
+            }
+        },
+        "response.TimetableEntry": {
+            "type": "object",
+            "properties": {
+                "departure_time": {
+                    "type": "string"
+                },
+                "destination_name": {
+                    "type": "string"
+                },
+                "operation_days": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "response.TimetableResponse": {
+            "type": "object",
+            "properties": {
+                "bus_stop_id": {
+                    "type": "string"
+                },
+                "bus_stop_name": {
+                    "type": "string"
+                },
+                "parent_route_id": {
+                    "type": "string"
+                },
+                "parent_route_name": {
+                    "type": "string"
+                },
+                "timetable_entry": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/response.TimetableEntry"
+                    }
+                }
+            }
+        }
+    }
+}

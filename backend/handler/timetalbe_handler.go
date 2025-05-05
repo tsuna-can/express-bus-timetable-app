@@ -19,6 +19,16 @@ func NewTimetableHandler(timetableUsecase input.TimetableInputPort) *TimetableHa
 	}
 }
 
+// GetByParentRouteIdAndBusStopId godoc
+// @Summary Get timetable by parent route ID and bus stop ID
+// @Description Get timetable by parent route ID and bus stop ID
+// @Tags timetable
+// @Accept json
+// @Produce json
+// @Param parent_route_id query string true "Parent Route ID"
+// @Param bus_stop_id query string true "Bus Stop ID"
+// @Success 200 {array} response.TimetableResponse
+// @Router /timetable [get]
 func (h TimetableHandler) GetByParentRouteIdAndBusStopId(e echo.Context) error {
 	req, err := request.NewTimetableRequest(e)
 	if err != nil {

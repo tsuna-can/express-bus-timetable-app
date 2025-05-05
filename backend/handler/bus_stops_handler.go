@@ -18,6 +18,15 @@ func NewBusStopsHandler(busStopsUsecase input.BusStopsInputPort) *BusStopsHandle
 	}
 }
 
+// GetByParentRouteId godoc
+// @Summary Get bus stops by parent route ID
+// @Description Get bus stops by parent route ID
+// @Tags bus_stops
+// @Accept json
+// @Produce json
+// @Param parent_route_id query string true "Parent Route ID"
+// @Success 200 {array} response.BusStopResponse
+// @Router /bus-stops [get]
 func (h *BusStopsHandler) GetByParentRouteId(e echo.Context) error {
   req, err := request.NewBusStopsRequest(e)
   if err != nil {

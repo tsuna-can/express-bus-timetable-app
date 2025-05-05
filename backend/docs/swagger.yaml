@@ -1,0 +1,132 @@
+definitions:
+  response.BusStop:
+    properties:
+      bus_stop_id:
+        type: string
+      bus_stop_name:
+        type: string
+    type: object
+  response.BusStopResponse:
+    properties:
+      bus_stops:
+        items:
+          $ref: '#/definitions/response.BusStop'
+        type: array
+    type: object
+  response.ParentRoute:
+    properties:
+      parent_route_id:
+        type: string
+      parent_route_name:
+        type: string
+    type: object
+  response.ParentRouteResponse:
+    properties:
+      parent_routes:
+        items:
+          $ref: '#/definitions/response.ParentRoute'
+        type: array
+    type: object
+  response.TimetableEntry:
+    properties:
+      departure_time:
+        type: string
+      destination_name:
+        type: string
+      operation_days:
+        items:
+          type: integer
+        type: array
+    type: object
+  response.TimetableResponse:
+    properties:
+      bus_stop_id:
+        type: string
+      bus_stop_name:
+        type: string
+      parent_route_id:
+        type: string
+      parent_route_name:
+        type: string
+      timetable_entry:
+        items:
+          $ref: '#/definitions/response.TimetableEntry'
+        type: array
+    type: object
+info:
+  contact:
+    name: API Support
+    url: http://www.example.com/support
+  description: This is a sample server for Express Bus Time Table API.
+  title: Express Bus Time Table API
+  version: "1.0"
+paths:
+  /bus-stops:
+    get:
+      consumes:
+      - application/json
+      description: Get bus stops by parent route ID
+      parameters:
+      - description: Parent Route ID
+        in: query
+        name: parent_route_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.BusStopResponse'
+            type: array
+      summary: Get bus stops by parent route ID
+      tags:
+      - bus_stops
+  /parent-routes:
+    get:
+      consumes:
+      - application/json
+      description: Get all parent routes
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.ParentRouteResponse'
+            type: array
+      summary: Get all parent routes
+      tags:
+      - parent_routes
+  /timetable:
+    get:
+      consumes:
+      - application/json
+      description: Get timetable by parent route ID and bus stop ID
+      parameters:
+      - description: Parent Route ID
+        in: query
+        name: parent_route_id
+        required: true
+        type: string
+      - description: Bus Stop ID
+        in: query
+        name: bus_stop_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.TimetableResponse'
+            type: array
+      summary: Get timetable by parent route ID and bus stop ID
+      tags:
+      - timetable
+swagger: "2.0"
