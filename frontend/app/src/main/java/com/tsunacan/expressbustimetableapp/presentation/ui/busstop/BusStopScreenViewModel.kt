@@ -46,12 +46,19 @@ class BusStopScreenViewModel @Inject constructor(
         .catch {}
         .stateIn(viewModelScope, SharingStarted.Lazily, BusStopScreenUiState.Loading)
 
-    fun onClickSetAsDefault() {
+    fun onClickSetAsDefault(
+        parentRouteId: String,
+        parentRouteName: String,
+        busStopId: String,
+        busStopName: String
+    ) {
         viewModelScope.launch {
             // Set the default bus stop to Proto DataStore
             userSettingsRepository.setDefaultBusStop(
                 parentRouteId = parentRouteId,
-                busStopId = stopId
+                parentRouteName = parentRouteName,
+                busStopId = busStopId,
+                busStopName = busStopName
             )
             // Request an update to the tile
             TileService.getUpdater(context)

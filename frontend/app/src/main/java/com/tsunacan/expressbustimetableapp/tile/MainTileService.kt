@@ -46,7 +46,9 @@ class MainTileService : SuspendingTileService() {
             getUpcomingTimeTableUseCase(defaultBusStop.parentRouteId, defaultBusStop.busStopId)
 
         val mainTileState = MainTileState(
+            parentRouteId = timeTable.parentRouteId,
             parentRouteName = timeTable.parentRouteName,
+            stopId = timeTable.stopId,
             stopName = timeTable.stopName,
             timeTableEntryList = timeTable.timeTableEntryList
         )

@@ -7,7 +7,12 @@ import javax.inject.Inject
 
 interface UserSettingsRepository {
     val defaultBusStop: Flow<DefaultBusStop>
-    suspend fun setDefaultBusStop(parentRouteId: String, busStopId: String)
+    suspend fun setDefaultBusStop(
+        parentRouteId: String,
+        parentRouteName: String,
+        busStopId: String,
+        busStopName: String
+    )
 }
 
 class UserSettingsRepositoryImpl @Inject constructor(
@@ -16,7 +21,17 @@ class UserSettingsRepositoryImpl @Inject constructor(
 
     override val defaultBusStop: Flow<DefaultBusStop> = userSettingsDataSource.defaultBusStop
 
-    override suspend fun setDefaultBusStop(parentRouteId: String, busStopId: String) {
-        userSettingsDataSource.setDefaultBusStop(parentRouteId, busStopId)
+    override suspend fun setDefaultBusStop(
+        parentRouteId: String,
+        parentRouteName: String,
+        busStopId: String,
+        busStopName: String
+    ) {
+        userSettingsDataSource.setDefaultBusStop(
+            parentRouteId,
+            parentRouteName,
+            busStopId,
+            busStopName
+        )
     }
 }

@@ -62,24 +62,19 @@ private fun mainTileLayout(
 ) = PrimaryLayout.Builder(deviceParameters)
     .setResponsiveContentInsetEnabled(true)
     .setPrimaryLabelTextContent(
-        Text.Builder(context, state.parentRouteName)
+        Text.Builder(context, state.stopName)
             .setColor(argb(Colors.DEFAULT.onSurface))
             .setTypography(Typography.TYPOGRAPHY_CAPTION1)
             .build()
     )
+    .setSecondaryLabelTextContent(
+        Text.Builder(context, state.parentRouteName)
+            .setColor(argb(Colors.DEFAULT.onSurface))
+            .setTypography(Typography.TYPOGRAPHY_CAPTION2)
+            .build()
+    )
     .setContent(
         LayoutElementBuilders.Column.Builder()
-            .addContent(
-                Text.Builder(context, state.stopName)
-                    .setColor(argb(Colors.DEFAULT.onSurface))
-                    .setTypography(Typography.TYPOGRAPHY_CAPTION2)
-                    .build()
-            )
-            .addContent(
-                LayoutElementBuilders.Spacer.Builder()
-                    .setHeight(dp(8f))
-                    .build()
-            )
             .apply {
                 state.timeTableEntryList.take(3).forEach {
                     val formattedTime = it.departureTime.format(formatter)
@@ -97,7 +92,7 @@ private fun mainTileLayout(
         CompactChip.Builder(
             context,
             context.getString(R.string.more_info),
-            createClickable(context, state.parentRouteName, state.stopName),
+            createClickable(context, state.parentRouteId, state.stopId),
             deviceParameters
         ).build()
     ).build()
@@ -135,7 +130,9 @@ fun mainTileLayoutPreview(context: Context): TilePreviewData {
     return TilePreviewData() { request ->
         MainTileRenderer(context).renderTimeline(
             MainTileState(
+                parentRouteId = "Nagoya-go-id",
                 parentRouteName = "Nagoya-go",
+                stopId = "Tokyo-id",
                 stopName = "Tokyo",
                 listOf(
                     TimeTableEntry(dummyTime1, "Tokyo", setOf(LocalDateTime.now().dayOfWeek)),

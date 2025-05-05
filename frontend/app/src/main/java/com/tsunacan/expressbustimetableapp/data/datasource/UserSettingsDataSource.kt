@@ -13,12 +13,19 @@ class UserSettingsDataSource @Inject constructor(
 
     val defaultBusStop = userSettings.data
 
-    suspend fun setDefaultBusStop(parentRouteId: String, busStopId: String) {
-        try{
+    suspend fun setDefaultBusStop(
+        parentRouteId: String,
+        parentRouteName: String,
+        busStopId: String,
+        busStopName: String
+    ) {
+        try {
             userSettings.updateData {
                 it.copy {
                     this.parentRouteId = parentRouteId
+                    this.parentRouteName = parentRouteName
                     this.busStopId = busStopId
+                    this.busStopName = busStopName
                 }
             }
         } catch (ioException: IOException) {

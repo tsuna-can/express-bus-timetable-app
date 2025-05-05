@@ -17,7 +17,7 @@ object TimeTableMapper {
         parentRouteId = timeTableApiModel.parentRouteId,
         parentRouteName = timeTableApiModel.parentRouteName,
         stopId = timeTableApiModel.busStopId,
-        stopName = timeTableApiModel.busStopId,
+        stopName = timeTableApiModel.busStopName,
         timeTableEntryList = timeTableApiModel.timeTableEntry.mapNotNull { mapEntry(it) }
     )
 

@@ -56,7 +56,7 @@ fun BusStopScreen(
 @Composable
 fun BusStopScreen(
     timeTable: TimeTable,
-    onClickSetAsDefault: () -> Unit,
+    onClickSetAsDefault: (String, String, String, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val contentModifier = Modifier
@@ -91,7 +91,14 @@ fun BusStopScreen(
         }
         item {
             Button(
-                onClick = onClickSetAsDefault,
+                onClick = {
+                    onClickSetAsDefault(
+                        timeTable.parentRouteId,
+                        timeTable.parentRouteName,
+                        timeTable.stopId,
+                        timeTable.stopName
+                    )
+                },
                 modifier = contentModifier,
             ) {
                 Text(
