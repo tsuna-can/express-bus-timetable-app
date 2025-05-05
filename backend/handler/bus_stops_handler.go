@@ -1,11 +1,12 @@
 package handler
 
 import (
-	"github.com/labstack/echo/v4"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/handler/response"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/handler/request"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/application/input"
 	"net/http"
+
+	"github.com/labstack/echo/v4"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/application/input"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/handler/request"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/handler/response"
 )
 
 type BusStopsHandler struct {
@@ -28,18 +29,17 @@ func NewBusStopsHandler(busStopsUsecase input.BusStopsInputPort) *BusStopsHandle
 // @Success 200 {array} response.BusStopResponse
 // @Router /bus-stops [get]
 func (h *BusStopsHandler) GetByParentRouteId(e echo.Context) error {
-  req, err := request.NewBusStopsRequest(e)
-  if err != nil {
-    return e.JSON(http.StatusBadRequest, err)
-  }
+	req, err := request.NewBusStopsRequest(e)
+	if err != nil {
+		return e.JSON(http.StatusBadRequest, err)
+	}
 
 	ctx := e.Request().Context()
-	busStops, err := h.busStopsUsecase.GetByParentRouteId(ctx, req.ParentRouteId)
+	busStops, parentRoute, err := h.busStopsUsecase.GetByParentRouteId(ctx, req.ParentRouteId)
 	if err != nil {
 		return e.JSON(http.StatusInternalServerError, err)
 	}
 
-	res:= response.NewBusStopsResponse(busStops)
+	res := response.NewBusStopsResponse(busStops, parentRoute)
 	return e.JSON(http.StatusOK, res)
 }
-

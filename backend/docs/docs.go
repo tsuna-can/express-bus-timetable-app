@@ -142,6 +142,12 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/response.BusStop"
                     }
+                },
+                "parent_route_id": {
+                    "type": "string"
+                },
+                "parent_route_name": {
+                    "type": "string"
                 }
             }
         },

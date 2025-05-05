@@ -12,6 +12,10 @@ definitions:
         items:
           $ref: '#/definitions/response.BusStop'
         type: array
+      parent_route_id:
+        type: string
+      parent_route_name:
+        type: string
     type: object
   response.ParentRoute:
     properties:

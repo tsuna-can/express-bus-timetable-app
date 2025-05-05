@@ -2,11 +2,13 @@ package repository
 
 import (
 	"context"
+	"log"
+
 	"github.com/jmoiron/sqlx"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
-	"log"
-  "github.com/tsuna-can/express-bus-time-table-app/backend/infrastructure/repository/model"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/vo"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/infrastructure/repository/model"
 )
 
 type ParentRoutesRepository struct {
@@ -30,17 +32,17 @@ func (r *ParentRoutesRepository) GetAll(ctx context.Context) ([]entity.ParentRou
 	defer rows.Close()
 
 	for rows.Next() {
-    var prm model.ParentRoute
+		var prm model.ParentRoute
 		if err := rows.Scan(&prm.ParentRouteId, &prm.ParentRouteName); err != nil {
 			log.Printf("Error scanning parent route: %v", err)
 			return nil, err
 		}
 
-    pre, err := prm.ToParentRoute()
-    if err != nil {
-      log.Printf("Error converting to ParentRoute: %v", err)
-      return nil, err
-    }
+		pre, err := prm.ToParentRoute()
+		if err != nil {
+			log.Printf("Error converting to ParentRoute: %v", err)
+			return nil, err
+		}
 
 		parentRoutes = append(parentRoutes, *pre)
 	}
@@ -51,4 +53,30 @@ func (r *ParentRoutesRepository) GetAll(ctx context.Context) ([]entity.ParentRou
 	}
 
 	return parentRoutes, nil
+}
+
+func (r *ParentRoutesRepository) GetByParentRouteId(ctx context.Context, parentRouteId string) (entity.ParentRoute, error) {
+	var (
+		parentRouteIdRaw   string
+		parentRouteNameRaw string
+	)
+
+	row := r.db.QueryRowContext(ctx, "SELECT parent_route_id, parent_route_name FROM parentroute WHERE parent_route_id = $1", parentRouteId)
+	if err := row.Scan(&parentRouteIdRaw, &parentRouteNameRaw); err != nil {
+		log.Printf("Error scanning parent route: %v", err)
+		return entity.ParentRoute{}, err
+	}
+
+	parentRouteName, prnErr := vo.NewParentRouteName(parentRouteNameRaw)
+	if prnErr != nil {
+		log.Printf("Error creating ParentRouteName: %v", prnErr)
+		return entity.ParentRoute{}, prnErr
+	}
+
+	parentRoute := entity.ParentRoute{
+		ParentRouteId:   parentRouteId,
+		ParentRouteName: *parentRouteName,
+	}
+
+	return parentRoute, nil
 }
