@@ -1,5 +1,6 @@
 package com.tsunacan.expressbustimetableapp.presentation.ui.busstoplist
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
@@ -17,10 +18,15 @@ import javax.inject.Inject
 @ExperimentalHorologistApi
 @HiltViewModel
 class BusStopListScreenViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val busStopRepository: BusStopRepository
 ) : ViewModel() {
 
-    val uiState: StateFlow<BusStopListScreenUiState> = busStopRepository.getBusStopList()
+    val parentRouteId :String = savedStateHandle["parentRouteId"] ?: ""
+
+    val uiState: StateFlow<BusStopListScreenUiState> = busStopRepository.getBusStopList(
+        parentRouteId = parentRouteId
+    )
         .map<List<BusStop>, BusStopListScreenUiState> { busStops ->
             BusStopListScreenUiState.Loaded(busStops)
         }

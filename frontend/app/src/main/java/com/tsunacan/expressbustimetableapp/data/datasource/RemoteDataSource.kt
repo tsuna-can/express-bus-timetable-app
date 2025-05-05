@@ -3,6 +3,7 @@ package com.tsunacan.expressbustimetableapp.data.datasource
 import androidx.compose.ui.util.trace
 import com.tsunacan.expressbustimetableapp.BuildConfig
 import com.tsunacan.expressbustimetableapp.data.model.BusStopApiModel
+import com.tsunacan.expressbustimetableapp.data.model.BusStopsApiModel
 import com.tsunacan.expressbustimetableapp.data.model.ParentRoutesApiModel
 import com.tsunacan.expressbustimetableapp.data.model.TimeTableApiModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -21,7 +22,9 @@ import javax.inject.Inject
 interface NetworkDataSource {
     suspend fun getParentRouteList(): ParentRoutesApiModel
 
-    suspend fun getBusStopList(): List<BusStopApiModel>
+    suspend fun getBusStopList(
+        parentRouteId: String
+    ): BusStopsApiModel
 
     suspend fun getTimeTable(
         parentRouteId: String,
@@ -35,7 +38,9 @@ private interface NetworkApi {
     suspend fun getParentRouteList(): ParentRoutesApiModel
 
     @GET(value = "bus-stops")
-    suspend fun getBusStopList(): List<BusStopApiModel>
+    suspend fun getBusStopList(
+        @Query("parent-route-id") parentRouteId: String
+    ): BusStopsApiModel
 
     @GET(value = "timetable")
     suspend fun getTimeTable(
@@ -67,8 +72,10 @@ class RemoteDataSource @Inject constructor(
         return networkApi.getParentRouteList()
     }
 
-    override suspend fun getBusStopList(): List<BusStopApiModel> {
-        return networkApi.getBusStopList()
+    override suspend fun getBusStopList(
+        parentRouteId: String
+    ): BusStopsApiModel {
+        return networkApi.getBusStopList(parentRouteId)
 //        return flow { emit(listOf(
 //            BusStopApiModel("1", "1", "1", "1"),
 //            BusStopApiModel("2", "2", "2", "2"),

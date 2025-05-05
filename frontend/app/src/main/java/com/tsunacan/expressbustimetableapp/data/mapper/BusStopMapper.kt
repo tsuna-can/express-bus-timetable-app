@@ -1,16 +1,19 @@
 package com.tsunacan.expressbustimetableapp.data.mapper
 
-import com.tsunacan.expressbustimetableapp.data.model.BusStopApiModel
+import com.tsunacan.expressbustimetableapp.data.model.BusStopsApiModel
 import com.tsunacan.expressbustimetableapp.models.BusStop
 
 object BusStopMapper {
-    fun map(busStopList: List<BusStopApiModel>): List<BusStop> {
-        return busStopList.map { busStopApiModel ->
+    fun map(busStopsApiModel: BusStopsApiModel): List<BusStop> {
+        val busStopList = busStopsApiModel.busStops
+        val parentRouteId = busStopsApiModel.parentRouteId
+        val parentRouteName = busStopsApiModel.parentRouteName
+        return busStopList.map { busStop->
             BusStop(
-                parentRouteId = busStopApiModel.parentRouteId,
-                parentRouteName = busStopApiModel.parentRouteName,
-                stopId = busStopApiModel.stopId,
-                stopName = busStopApiModel.stopName
+                parentRouteId = parentRouteId,
+                parentRouteName = parentRouteName,
+                stopId = busStop.busStopId,
+                stopName = busStop.busStopName
             )
         }
     }

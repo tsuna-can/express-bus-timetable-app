@@ -4,11 +4,13 @@ import com.tsunacan.expressbustimetableapp.data.datasource.RemoteDataSource
 import com.tsunacan.expressbustimetableapp.data.mapper.BusStopMapper
 import com.tsunacan.expressbustimetableapp.models.BusStop
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 interface BusStopRepository {
-    fun getBusStopList(): Flow<List<BusStop>>
+    fun getBusStopList(
+        parentRouteId: String
+    ): Flow<List<BusStop>>
 }
 
 class BusStopRepositoryImpl @Inject constructor(
@@ -16,9 +18,14 @@ class BusStopRepositoryImpl @Inject constructor(
     private val busStopMapper: BusStopMapper
 ) : BusStopRepository {
 
-    override fun getBusStopList(): Flow<List<BusStop>> {
-        return remoteDataSource.getBusStopList().map {
-            busStopMapper.map(it)
+    override fun getBusStopList(
+        parentRouteId: String
+    ): Flow<List<BusStop>> {
+        return flow {
+            val busStopsApiModel= remoteDataSource.getBusStopList(
+                parentRouteId = parentRouteId
+            )
+            emit(busStopMapper.map(busStopsApiModel))
         }
     }
 }

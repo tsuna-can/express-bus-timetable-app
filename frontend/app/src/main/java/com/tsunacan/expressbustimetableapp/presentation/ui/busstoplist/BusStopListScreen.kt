@@ -22,6 +22,7 @@ import com.tsunacan.expressbustimetableapp.models.BusStop
 @OptIn(ExperimentalHorologistApi::class)
 @Composable
 fun BusStopListScreen(
+    parentRouteId: String,
     navigationToBusStop: (String, String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: BusStopListScreenViewModel = hiltViewModel(),
@@ -80,13 +81,6 @@ fun BusStopChip(
         modifier = modifier,
         onClick = { navigationToBusStop(busStop.parentRouteId, busStop.stopId) },
         label = {
-            Text(
-                text = busStop.parentRouteName,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        },
-        secondaryLabel = {
             Text(
                 text = busStop.stopName,
                 maxLines = 1,

@@ -4,6 +4,7 @@ import com.tsunacan.expressbustimetableapp.data.datasource.RemoteDataSource
 import com.tsunacan.expressbustimetableapp.data.mapper.TimeTableMapper
 import com.tsunacan.expressbustimetableapp.models.TimeTable
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -23,8 +24,9 @@ class TimeTableRepositoryImpl @Inject constructor(
         parentRouteId: String,
         busStopId: String
     ): Flow<TimeTable> {
-        return remoteDataSource.getTimeTable(parentRouteId, busStopId).map{
-            timeTableMapper.map(it)
+        return flow {
+            val timeTable = remoteDataSource.getTimeTable(parentRouteId, busStopId)
+            emit(timeTableMapper.map(timeTable))
         }
     }
 }

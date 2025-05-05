@@ -45,9 +45,14 @@ fun WearApp(
                     )
                 }
                 composable(
-                    route = Screen.BusStopList.route,
-                ) {
+                    route = Screen.BusStopList.route + "/{parentRouteId}",
+                    arguments = listOf(
+                        navArgument("parentRouteId") { type = NavType.StringType },
+                    )
+                ) { navBackStackEntry ->
+                    val parentRouteId = navBackStackEntry.arguments?.getString("parentRouteId")
                     BusStopListScreen(
+                        parentRouteId = parentRouteId ?: "",
                         navigationToBusStop = navController::navigateToBusStop
                     )
                 }
