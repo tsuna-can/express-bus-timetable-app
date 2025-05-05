@@ -14,17 +14,19 @@ object TimeTableMapper {
     private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
     fun map(timeTableApiModel: TimeTableApiModel): TimeTable = TimeTable(
+        parentRouteId = timeTableApiModel.parentRouteId,
         parentRouteName = timeTableApiModel.parentRouteName,
-        stopName = timeTableApiModel.stopName,
-        timeTableEntryList = timeTableApiModel.timeTableEntryList.mapNotNull { mapEntry(it) }
+        stopId = timeTableApiModel.busStopId,
+        stopName = timeTableApiModel.busStopId,
+        timeTableEntryList = timeTableApiModel.timeTableEntry.mapNotNull { mapEntry(it) }
     )
 
     private fun mapEntry(entry: TimeTableEntryApiModel): TimeTableEntry? {
         val departureTime = departureTimeStringToLocalTime(entry.departureTime) ?: return null
         return TimeTableEntry(
             departureTime = departureTime,
-            destination = entry.destination,
-            availableDayOfWeek = integerSetToDayOfWeekSet(entry.availableDayOfWeek)
+            destination = entry.destinationName,
+            availableDayOfWeek = integerSetToDayOfWeekSet(entry.operationDays)
         )
     }
 

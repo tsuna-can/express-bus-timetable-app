@@ -1,10 +1,14 @@
 package com.tsunacan.expressbustimetableapp.data.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class TimeTableEntryApiModel( // TODO rename this
+data class TimeTableEntryApiModel(
+    @SerialName("departure_time")
     val departureTime: String,
-    val destination: String,
-    val availableDayOfWeek: List<Int>
+    @SerialName("destination_name")
+    val destinationName: String,
+    @SerialName("operation_days")
+    val operationDays: List<Int>
 )
