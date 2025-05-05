@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
         // If the destination is a busStop, need to pass the parentRouteId and busStopId
         val initialRoute = when {
             destination == Screen.BusStop.route -> Screen.BusStop.route + "/$parentRouteId/$busStopId"
-            else -> Screen.BusStopList.route
+            else -> Screen.ParentRouteList.route
         }
 
         setContent {

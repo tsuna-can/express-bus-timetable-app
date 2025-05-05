@@ -5,9 +5,12 @@ import com.tsunacan.expressbustimetableapp.DefaultBusStop
 import com.tsunacan.expressbustimetableapp.data.datasource.RemoteDataSource
 import com.tsunacan.expressbustimetableapp.data.datasource.UserSettingsDataSource
 import com.tsunacan.expressbustimetableapp.data.mapper.BusStopMapper
+import com.tsunacan.expressbustimetableapp.data.mapper.ParentRouteMapper
 import com.tsunacan.expressbustimetableapp.data.mapper.TimeTableMapper
 import com.tsunacan.expressbustimetableapp.data.repository.BusStopRepository
 import com.tsunacan.expressbustimetableapp.data.repository.BusStopRepositoryImpl
+import com.tsunacan.expressbustimetableapp.data.repository.ParentRouteRepository
+import com.tsunacan.expressbustimetableapp.data.repository.ParentRouteRepositoryImpl
 import com.tsunacan.expressbustimetableapp.data.repository.TimeTableRepository
 import com.tsunacan.expressbustimetableapp.data.repository.TimeTableRepositoryImpl
 import com.tsunacan.expressbustimetableapp.data.repository.UserSettingsRepository
@@ -23,6 +26,19 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class DataModule {
+
+    @Provides
+    @Singleton
+    fun parentRouteRepository(
+        parentRouteRepositoryImpl: ParentRouteRepositoryImpl
+    ): ParentRouteRepository = parentRouteRepositoryImpl
+
+    @Provides
+    @Singleton
+    fun parentRouteRepositoryImpl(
+        remoteDataSource: RemoteDataSource,
+        parentRouteMapper : ParentRouteMapper
+    ) = ParentRouteRepositoryImpl(remoteDataSource, parentRouteMapper)
 
     @Provides
     @Singleton
@@ -67,6 +83,9 @@ class DataModule {
     fun userSettingsDataSource(
         dataStore: DataStore<DefaultBusStop>
     ): UserSettingsDataSource = UserSettingsDataSource(dataStore)
+
+    @Provides
+    fun parentRouteMapper() = ParentRouteMapper
 
     @Provides
     fun busStopMapper() = BusStopMapper

@@ -3,6 +3,7 @@ package com.tsunacan.expressbustimetableapp.data.datasource
 import androidx.compose.ui.util.trace
 import com.tsunacan.expressbustimetableapp.BuildConfig
 import com.tsunacan.expressbustimetableapp.data.model.BusStopApiModel
+import com.tsunacan.expressbustimetableapp.data.model.ParentRoutesApiModel
 import com.tsunacan.expressbustimetableapp.data.model.TimeTableApiModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +18,22 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import javax.inject.Inject
 
+interface NetworkDataSource {
+    suspend fun getParentRouteList(): ParentRoutesApiModel
+
+    suspend fun getBusStopList(): List<BusStopApiModel>
+
+    suspend fun getTimeTable(
+        parentRouteId: String,
+        busStopId: String
+    ): TimeTableApiModel
+
+}
+
 private interface NetworkApi {
+    @GET(value = "parent-routes")
+    suspend fun getParentRouteList(): ParentRoutesApiModel
+
     @GET(value = "bus-stops")
     suspend fun getBusStopList(): List<BusStopApiModel>
 
@@ -32,7 +48,7 @@ class RemoteDataSource @Inject constructor(
     private val okhttpCallFactory: dagger.Lazy<Call.Factory>,
     private val networkJson: Json,
     private val ioDispatcher: CoroutineDispatcher
-) {
+): NetworkDataSource{
 
     private val networkApi = trace("RetrofitNetwork") {
         Retrofit.Builder()
@@ -47,8 +63,12 @@ class RemoteDataSource @Inject constructor(
             .create(NetworkApi::class.java)
     }
 
-    fun getBusStopList(): Flow<List<BusStopApiModel>> {
-        return flow { emit(networkApi.getBusStopList()) }.flowOn(ioDispatcher)
+    override suspend fun getParentRouteList(): ParentRoutesApiModel {
+        return networkApi.getParentRouteList()
+    }
+
+    override suspend fun getBusStopList(): List<BusStopApiModel> {
+        return networkApi.getBusStopList()
 //        return flow { emit(listOf(
 //            BusStopApiModel("1", "1", "1", "1"),
 //            BusStopApiModel("2", "2", "2", "2"),
@@ -57,10 +77,10 @@ class RemoteDataSource @Inject constructor(
 //        ) }.flowOn(ioDispatcher)
     }
 
-    fun getTimeTable(
+    override suspend fun getTimeTable(
         parentRouteId: String,
         busStopId: String
-    ): Flow<TimeTableApiModel> {
-        return flow { emit(networkApi.getTimeTable(parentRouteId, busStopId)) }.flowOn(ioDispatcher)
+    ): TimeTableApiModel {
+        return networkApi.getTimeTable(parentRouteId, busStopId)
     }
 }

@@ -17,6 +17,8 @@ import com.tsunacan.expressbustimetableapp.presentation.ui.Screen
 import com.tsunacan.expressbustimetableapp.presentation.ui.busstop.BusStopScreen
 import com.tsunacan.expressbustimetableapp.presentation.ui.busstop.navigateToBusStop
 import com.tsunacan.expressbustimetableapp.presentation.ui.busstoplist.BusStopListScreen
+import com.tsunacan.expressbustimetableapp.presentation.ui.busstoplist.navigateToBusStopList
+import com.tsunacan.expressbustimetableapp.presentation.ui.parentroutelist.ParentRouteListScreen
 
 @OptIn(ExperimentalHorologistApi::class)
 @Composable
@@ -35,6 +37,13 @@ fun WearApp(
                 navController = navController,
                 state = navHostState,
             ) {
+                composable(
+                    route = Screen.ParentRouteList.route,
+                ) {
+                    ParentRouteListScreen(
+                        navigationToBusStopList = navController::navigateToBusStopList,
+                    )
+                }
                 composable(
                     route = Screen.BusStopList.route,
                 ) {
