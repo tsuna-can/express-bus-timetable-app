@@ -9,9 +9,11 @@ import (
 )
 
 type Timetable struct {
-	ParentRouteId  string
-	BusStopId      string
-	TimetableEntry []TimetableEntry
+	ParentRouteId   string
+	ParentRouteName string
+	BusStopName     string
+	BusStopId       string
+	TimetableEntry  []TimetableEntry
 }
 
 type TimetableEntry struct {
@@ -29,6 +31,16 @@ type TimetableEntry struct {
 // ToTimetable converts Timetable to entity.Timetable
 func (t *Timetable) ToTimetable() (*entity.Timetable, error) {
 	timetableEntries := make([]entity.TimetableEntry, len(t.TimetableEntry))
+
+	parentRouteName, err := vo.NewParentRouteName(t.ParentRouteName)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create ParentRouteName: %w", err)
+	}
+	busStopName, err := vo.NewBusStopName(t.BusStopName)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create BusStopName: %w", err)
+	}
+
 	for i, te := range t.TimetableEntry {
 		departureTime, err := vo.NewDepartureTime(te.DepartureTime)
 		if err != nil {
@@ -79,7 +91,9 @@ func (t *Timetable) ToTimetable() (*entity.Timetable, error) {
 
 	return entity.NewTimetable(
 		t.ParentRouteId, // t.ParentRouteIdを使用
-		t.BusStopId,     // t.BusStopIdを使用
+		*parentRouteName,
+		t.BusStopId, // t.BusStopIdを使用
+		*busStopName,
 		timetableEntries,
 	), nil
 }

@@ -15,7 +15,6 @@ var getTimetableQuery = `
 SELECT
     pr.parent_route_id,
     pr.parent_route_name,
-    r.route_id,
     r.route_name,
     s.stop_id,
     s.stop_name,
@@ -49,8 +48,6 @@ func (r *TimetableRepository) GetByParentRouteIdAndBusStopId(ctx context.Context
 
 	// Create timetable entries
 	var timetableModel model.Timetable
-	timetableModel.ParentRouteId = parentRouteId
-	timetableModel.BusStopId = busStopId
 
 	for rows.Next() {
 		var entry model.TimetableEntry
@@ -59,11 +56,10 @@ func (r *TimetableRepository) GetByParentRouteIdAndBusStopId(ctx context.Context
 
 		if err := rows.Scan(
 			&timetableModel.ParentRouteId,
-			&entry.DestinationName,
-			&entry.DestinationName, // route_id (not used)
+			&timetableModel.ParentRouteName,
 			&entry.DestinationName, // route_name
 			&timetableModel.BusStopId,
-			&entry.DestinationName, // stop_name
+			&timetableModel.BusStopName,
 			&departureTime,
 			&entry.Monday,
 			&entry.Tuesday,
@@ -90,4 +86,3 @@ func (r *TimetableRepository) GetByParentRouteIdAndBusStopId(ctx context.Context
 
 	return *timetableEntity, nil
 }
-
