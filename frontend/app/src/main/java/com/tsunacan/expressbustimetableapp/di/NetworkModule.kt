@@ -1,6 +1,7 @@
 package com.tsunacan.expressbustimetableapp.di
 
 import androidx.compose.ui.util.trace
+import com.tsunacan.expressbustimetableapp.data.datasource.ApiKeyInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,6 +32,7 @@ internal object NetworkModule {
                         setLevel(HttpLoggingInterceptor.Level.BODY)
                     },
             )
+            .addInterceptor(ApiKeyInterceptor())
             .build()
     }
 }

@@ -1,4 +1,5 @@
 import com.google.protobuf.gradle.id
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -21,6 +22,9 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        val localProperties = Properties()
+        localProperties.load(rootProject.file("local.properties").inputStream())
+        buildConfigField("String", "API_KEY", "\"${localProperties.getProperty("API_KEY")}\"")
     }
 
     buildFeatures {
