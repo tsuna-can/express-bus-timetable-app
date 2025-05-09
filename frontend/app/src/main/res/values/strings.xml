@@ -10,4 +10,5 @@
     <string name="more_info">More</string>
     <string name="from">From</string>
     <string name="set_as_default">Set as default</string>
+    <string name="route_list">Route list</string>
 </resources>

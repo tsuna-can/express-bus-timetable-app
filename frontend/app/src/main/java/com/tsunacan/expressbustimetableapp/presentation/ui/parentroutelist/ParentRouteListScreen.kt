@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -17,6 +18,7 @@ import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults
 import com.google.android.horologist.compose.layout.ScreenScaffold
 import com.google.android.horologist.compose.layout.rememberResponsiveColumnState
 import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults.ItemType
+import com.tsunacan.expressbustimetableapp.R
 import com.tsunacan.expressbustimetableapp.models.ParentRoute
 
 @OptIn(ExperimentalHorologistApi::class)
@@ -27,6 +29,38 @@ fun ParentRouteListScreen(
     viewModel: ParentRouteListScreenViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ScreenScaffold {
+        val contentModifier = modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp)
+
+        when (uiState) {
+            is ParentRouteListScreenUiState.Loaded -> {
+                ParentRouteListScreen(
+                    parentRouteList = (uiState as ParentRouteListScreenUiState.Loaded).parentRouteList,
+                    navigationToBusStopList = navigationToBusStopList,
+                    modifier = contentModifier,
+                )
+            }
+
+            ParentRouteListScreenUiState.Loading -> {
+            }
+
+            ParentRouteListScreenUiState.Failed -> {
+            }
+        }
+    }
+}
+
+
+@OptIn(ExperimentalHorologistApi::class)
+@Composable
+fun ParentRouteListScreen(
+    parentRouteList: List<ParentRoute>,
+    navigationToBusStopList: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val listState = rememberResponsiveColumnState(
         contentPadding = ScalingLazyColumnDefaults.padding(
             first = ItemType.Chip,
@@ -34,37 +68,23 @@ fun ParentRouteListScreen(
         ),
     )
 
-    ScreenScaffold(scrollState = listState) {
-
-        val contentModifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp)
-
-        ScalingLazyColumn(
-            columnState = listState,
-        ) {
-            when (uiState) {
-                is ParentRouteListScreenUiState.Loaded -> {
-                    val parentRouteList =
-                        (uiState as ParentRouteListScreenUiState.Loaded).parentRouteList
-                    parentRouteList.forEach { parentRoute ->
-                        item {
-                            ParentRouteChip(
-                                parentRoute = parentRoute,
-                                navigationToParentRoute = navigationToBusStopList,
-                                modifier = contentModifier
-                            )
-                        }
-                    }
-                }
-
-                ParentRouteListScreenUiState.Loading -> {
-                    item {}
-                }
-
-                ParentRouteListScreenUiState.Failed -> {
-                    item {}
-                }
+    ScalingLazyColumn(
+        columnState = listState,
+    ) {
+        item {
+            Text(
+                text = stringResource(R.string.route_list),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+        parentRouteList.forEach { parentRoute ->
+            item {
+                ParentRouteChip(
+                    parentRoute = parentRoute,
+                    navigationToParentRoute = navigationToBusStopList,
+                    modifier = modifier
+                )
             }
         }
     }
