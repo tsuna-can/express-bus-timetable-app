@@ -4,7 +4,7 @@ FROM golang:1.23.2-bullseye as builder
 WORKDIR /app
 
 # Copy go.mod and download dependencies
-COPY ./backend/go.mod ./
+COPY go.mod ./
 RUN go mod download
 
 # Copy the rest of the application code
