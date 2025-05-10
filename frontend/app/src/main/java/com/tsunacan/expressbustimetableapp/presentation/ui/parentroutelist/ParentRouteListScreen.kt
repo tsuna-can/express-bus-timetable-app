@@ -80,13 +80,23 @@ fun ParentRouteListScreen(
                 overflow = TextOverflow.Ellipsis
             )
         }
-        parentRouteList.forEach { parentRoute ->
+        if (parentRouteList.isEmpty()) {
             item {
-                ParentRouteChip(
-                    parentRoute = parentRoute,
-                    navigationToParentRoute = navigationToBusStopList,
-                    modifier = modifier
+                Text(
+                    text = stringResource(R.string.no_route),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
+            }
+        } else {
+            parentRouteList.forEach { parentRoute ->
+                item {
+                    ParentRouteChip(
+                        parentRoute = parentRoute,
+                        navigationToParentRoute = navigationToBusStopList,
+                        modifier = modifier
+                    )
+                }
             }
         }
     }

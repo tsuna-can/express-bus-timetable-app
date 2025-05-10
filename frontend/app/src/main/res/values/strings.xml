@@ -12,4 +12,7 @@
     <string name="route_list">Route list</string>
     <string name="set_for_tile">Set for the tile</string>
     <string name="set_for_tile_success">Bus stop successfully set for the tile</string>
+    <string name="no_route">Route not found</string>
+    <string name="no_bus_stop">Bus stop not found</string>
+    <string name="no_timetable_entry">Timetable not found</string>
 </resources>

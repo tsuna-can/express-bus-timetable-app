@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -19,6 +20,7 @@ import com.google.android.horologist.compose.layout.rememberResponsiveColumnStat
 import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults.ItemType
 import com.tsunacan.expressbustimetableapp.models.BusStop
 import com.tsunacan.expressbustimetableapp.presentation.ui.common.LoadingIndicator
+import com.tsunacan.expressbustimetableapp.R
 
 @OptIn(ExperimentalHorologistApi::class)
 @Composable
@@ -73,20 +75,30 @@ fun BusStopListScreen(
     ScalingLazyColumn(
         columnState = listState,
     ) {
-        item{
+        item {
             Text(
                 text = parentRouteName,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
         }
-        busStopList.forEach { busStop ->
+        if (busStopList.isEmpty()) {
             item {
-                BusStopChip(
-                    busStop = busStop,
-                    navigationToBusStop = navigationToBusStop,
-                    modifier = contentModifier
+                Text(
+                    text = stringResource(R.string.no_bus_stop),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
+            }
+        } else {
+            busStopList.forEach { busStop ->
+                item {
+                    BusStopChip(
+                        busStop = busStop,
+                        navigationToBusStop = navigationToBusStop,
+                        modifier = contentModifier
+                    )
+                }
             }
         }
     }

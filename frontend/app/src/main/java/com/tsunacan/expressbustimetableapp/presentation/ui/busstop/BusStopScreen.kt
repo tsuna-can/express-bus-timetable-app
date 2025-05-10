@@ -106,13 +106,23 @@ fun BusStopScreen(
                 modifier = contentModifier,
             )
         }
-        timeTableEntryList.forEach { timeTableEntry ->
+        if (timeTableEntryList.isEmpty()) {
             item {
-                TimeTableEntryChip(
-                    modifier = contentModifier,
-                    departureTime = timeTableEntry.departureTime,
-                    destination = timeTableEntry.destination,
+                Text(
+                    text = stringResource(R.string.no_timetable_entry),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
+            }
+        } else {
+            timeTableEntryList.forEach { timeTableEntry ->
+                item {
+                    TimeTableEntryChip(
+                        modifier = contentModifier,
+                        departureTime = timeTableEntry.departureTime,
+                        destination = timeTableEntry.destination,
+                    )
+                }
             }
         }
     }
