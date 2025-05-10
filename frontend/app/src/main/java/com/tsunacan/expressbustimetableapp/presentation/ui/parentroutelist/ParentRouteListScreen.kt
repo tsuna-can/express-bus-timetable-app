@@ -20,6 +20,7 @@ import com.google.android.horologist.compose.layout.rememberResponsiveColumnStat
 import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults.ItemType
 import com.tsunacan.expressbustimetableapp.R
 import com.tsunacan.expressbustimetableapp.models.ParentRoute
+import com.tsunacan.expressbustimetableapp.presentation.ui.common.LoadingIndicator
 
 @OptIn(ExperimentalHorologistApi::class)
 @Composable
@@ -45,6 +46,7 @@ fun ParentRouteListScreen(
             }
 
             ParentRouteListScreenUiState.Loading -> {
+                LoadingIndicator()
             }
 
             ParentRouteListScreenUiState.Failed -> {

@@ -1,7 +1,6 @@
 package com.tsunacan.expressbustimetableapp.presentation.ui.busstop
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -10,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -27,6 +25,7 @@ import com.google.android.horologist.compose.layout.rememberResponsiveColumnStat
 import com.google.android.horologist.compose.material.Chip
 import com.tsunacan.expressbustimetableapp.R
 import com.tsunacan.expressbustimetableapp.models.TimeTable
+import com.tsunacan.expressbustimetableapp.presentation.ui.common.LoadingIndicator
 import java.time.LocalTime
 
 @OptIn(ExperimentalHorologistApi::class)
@@ -44,12 +43,13 @@ fun BusStopScreen(
             is BusStopScreenUiState.Loaded -> {
                 BusStopScreen(
                     timeTable = (uiState as BusStopScreenUiState.Loaded).timeTable,
-                    onClickSetForTile= viewModel::onClickSetForTile,
+                    onClickSetForTile = viewModel::onClickSetForTile,
                     modifier = modifier,
                 )
             }
 
             BusStopScreenUiState.Loading -> {
+                LoadingIndicator()
             }
 
             BusStopScreenUiState.Failed -> {

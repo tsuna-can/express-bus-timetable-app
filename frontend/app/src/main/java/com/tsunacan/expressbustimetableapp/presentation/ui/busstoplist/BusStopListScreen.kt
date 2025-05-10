@@ -18,6 +18,7 @@ import com.google.android.horologist.compose.layout.ScreenScaffold
 import com.google.android.horologist.compose.layout.rememberResponsiveColumnState
 import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults.ItemType
 import com.tsunacan.expressbustimetableapp.models.BusStop
+import com.tsunacan.expressbustimetableapp.presentation.ui.common.LoadingIndicator
 
 @OptIn(ExperimentalHorologistApi::class)
 @Composable
@@ -40,6 +41,7 @@ fun BusStopListScreen(
             }
 
             BusStopListScreenUiState.Loading -> {
+                LoadingIndicator()
             }
 
             BusStopListScreenUiState.Failed -> {
