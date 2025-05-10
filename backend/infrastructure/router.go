@@ -11,18 +11,18 @@ import (
 type Server struct {
 	parentRouteHandler *handler.ParentRoutesHandler
 	busStopHandler     *handler.BusStopsHandler
-  timeTableHandler   *handler.TimetableHandler
+	timeTableHandler   *handler.TimetableHandler
 }
 
 func NewServer(
 	parentRouteHandler *handler.ParentRoutesHandler,
 	busStopHandler *handler.BusStopsHandler,
-  timeTableHandler *handler.TimetableHandler,
+	timeTableHandler *handler.TimetableHandler,
 ) *Server {
 	return &Server{
 		parentRouteHandler: parentRouteHandler,
 		busStopHandler:     busStopHandler,
-    timeTableHandler:   timeTableHandler,
+		timeTableHandler:   timeTableHandler,
 	}
 }
 
@@ -40,6 +40,7 @@ func (s *Server) GetTimetableByParentRouteIdAndBusStopId(ctx echo.Context) error
 
 func InitRouter() {
 	e := echo.New()
+	e.Use(APIKeyAuthMiddleware)
 
 	container := BuildContainer()
 
