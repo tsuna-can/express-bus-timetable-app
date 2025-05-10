@@ -46,7 +46,7 @@ class BusStopScreenViewModel @Inject constructor(
         .catch {}
         .stateIn(viewModelScope, SharingStarted.Lazily, BusStopScreenUiState.Loading)
 
-    fun onClickSetAsDefault(
+    fun onClickSetForTile(
         parentRouteId: String,
         parentRouteName: String,
         busStopId: String,
