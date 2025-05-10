@@ -17,9 +17,10 @@ func NewDb() (*sqlx.DB, error) {
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASSWORD")
 	host := os.Getenv("DB_HOST")
+	port := os.Getenv("DB_PORT")
 	dbname := os.Getenv("DB_NAME")
 
-	connStr := fmt.Sprintf("user=%s password=%s host=%s dbname=%s", user, password, host, dbname)
+	connStr := fmt.Sprintf("user=%s password=%s host=%s port=%s dbname=%s", user, password, host, port, dbname)
 	db, err = sqlx.Connect("postgres", connStr)
 	if err != nil {
 		log.Printf("Error connecting to database: %v", err)
