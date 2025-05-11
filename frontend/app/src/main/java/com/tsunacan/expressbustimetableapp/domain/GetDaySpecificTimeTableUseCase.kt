@@ -29,7 +29,10 @@ class GetDaySpecificTimeTableUseCase @Inject constructor(
             it.availableDayOfWeek.contains(dayOfWeek)
         }
 
-        return busStopTimeTable.copy(timeTableEntryList = filteredTimeTable)
+        // Sort the time table based on the departure time
+        val sortedTimeTable = filteredTimeTable.sortedBy { it.departureTime }
+
+        return busStopTimeTable.copy(timeTableEntryList = sortedTimeTable)
     }
 
 }
