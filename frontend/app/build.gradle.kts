@@ -11,6 +11,9 @@ plugins {
     id("com.google.protobuf")
 }
 
+val localProperties = Properties()
+localProperties.load(rootProject.file("local.properties").inputStream())
+
 android {
     namespace = "com.tsunacan.expressbustimetableapp"
     compileSdk = 35
@@ -22,8 +25,6 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        val localProperties = Properties()
-        localProperties.load(rootProject.file("local.properties").inputStream())
         buildConfigField("String", "API_KEY", "\"${localProperties.getProperty("API_KEY")}\"")
     }
 
@@ -38,11 +39,17 @@ android {
             }
         }
         release {
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"${localProperties.getProperty("BASE_URL_PROD")}\""
+            )
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug") // TODO use release signing config
         }
     }
     compileOptions {
