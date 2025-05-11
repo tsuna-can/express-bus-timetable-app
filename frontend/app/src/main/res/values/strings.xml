@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Express Bus Time Table App</string>
+    <string name="app_name">Express Bus Time Table</string>
     <!--
     This string is used for square devices and overridden by hello_world in
     values-round/strings.xml for round devices.
@@ -8,7 +8,6 @@
     <string name="tile_label">Example tile</string>
     <string name="complication_label">Example complication</string>
     <string name="more_info">More</string>
-    <string name="from">From</string>
     <string name="route_list">Route list</string>
     <string name="set_for_tile">Set for the tile</string>
     <string name="set_for_tile_success">Bus stop successfully set for the tile</string>

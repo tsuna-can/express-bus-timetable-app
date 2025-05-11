@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">高速バス時刻表</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">From the Square world,\nHello, %1$s!</string>
+    <string name="tile_label">Example tile</string>
+    <string name="complication_label">Example complication</string>
+    <string name="more_info">さらに表示</string>
+    <string name="route_list">経路一覧</string>
+    <string name="set_for_tile">タイルに設定する</string>
+    <string name="set_for_tile_success">このバス停をタイルに設定しました</string>
+    <string name="no_route">経路が存在しません</string>
+    <string name="no_bus_stop">バス停が存在しません</string>
+    <string name="no_timetable_entry">時刻表情報が存在しません</string>
+</resources>
