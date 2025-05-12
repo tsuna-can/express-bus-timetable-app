@@ -2,14 +2,10 @@ package com.tsunacan.expressbustimetableapp.data.datasource
 
 import androidx.compose.ui.util.trace
 import com.tsunacan.expressbustimetableapp.BuildConfig
-import com.tsunacan.expressbustimetableapp.data.model.BusStopApiModel
 import com.tsunacan.expressbustimetableapp.data.model.BusStopsApiModel
 import com.tsunacan.expressbustimetableapp.data.model.ParentRoutesApiModel
 import com.tsunacan.expressbustimetableapp.data.model.TimeTableApiModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.serialization.json.Json
 import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaType
@@ -76,12 +72,6 @@ class RemoteDataSource @Inject constructor(
         parentRouteId: String
     ): BusStopsApiModel {
         return networkApi.getBusStopList(parentRouteId)
-//        return flow { emit(listOf(
-//            BusStopApiModel("1", "1", "1", "1"),
-//            BusStopApiModel("2", "2", "2", "2"),
-//            BusStopApiModel("3", "3", "3", "3")
-//        )
-//        ) }.flowOn(ioDispatcher)
     }
 
     override suspend fun getTimeTable(

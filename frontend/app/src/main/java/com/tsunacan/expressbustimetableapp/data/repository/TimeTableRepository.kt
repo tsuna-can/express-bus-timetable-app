@@ -5,7 +5,6 @@ import com.tsunacan.expressbustimetableapp.data.mapper.TimeTableMapper
 import com.tsunacan.expressbustimetableapp.models.TimeTable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface TimeTableRepository {
