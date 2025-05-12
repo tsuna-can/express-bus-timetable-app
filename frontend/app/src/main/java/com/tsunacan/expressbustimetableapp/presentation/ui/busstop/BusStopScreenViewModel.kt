@@ -39,7 +39,7 @@ class BusStopScreenViewModel @Inject constructor(
             )
             emit(BusStopScreenUiState.Loaded(timeTable = timeTable))
         } catch (e: Exception) {
-            // TODO handle error
+            emit(BusStopScreenUiState.Failed)
         }
     }
         .stateIn(viewModelScope, SharingStarted.Lazily, BusStopScreenUiState.Loading)

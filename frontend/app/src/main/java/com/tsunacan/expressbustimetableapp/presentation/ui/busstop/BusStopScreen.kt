@@ -25,6 +25,7 @@ import com.google.android.horologist.compose.layout.rememberResponsiveColumnStat
 import com.google.android.horologist.compose.material.Chip
 import com.tsunacan.expressbustimetableapp.R
 import com.tsunacan.expressbustimetableapp.models.TimeTable
+import com.tsunacan.expressbustimetableapp.presentation.ui.common.ErrorScreen
 import com.tsunacan.expressbustimetableapp.presentation.ui.common.LoadingIndicator
 import java.time.LocalTime
 
@@ -53,6 +54,7 @@ fun BusStopScreen(
             }
 
             BusStopScreenUiState.Failed -> {
+                ErrorScreen()
             }
         }
     }

@@ -21,6 +21,7 @@ import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults.It
 import com.tsunacan.expressbustimetableapp.models.BusStop
 import com.tsunacan.expressbustimetableapp.presentation.ui.common.LoadingIndicator
 import com.tsunacan.expressbustimetableapp.R
+import com.tsunacan.expressbustimetableapp.presentation.ui.common.ErrorScreen
 
 @OptIn(ExperimentalHorologistApi::class)
 @Composable
@@ -47,6 +48,7 @@ fun BusStopListScreen(
             }
 
             BusStopListScreenUiState.Failed -> {
+                ErrorScreen()
             }
         }
     }

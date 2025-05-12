@@ -14,4 +14,5 @@
     <string name="no_route">経路が存在しません</string>
     <string name="no_bus_stop">バス停が存在しません</string>
     <string name="no_timetable_entry">時刻表情報が存在しません</string>
+    <string name="error_screen_title">エラーが発生しました</string>
 </resources>

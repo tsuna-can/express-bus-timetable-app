@@ -31,7 +31,9 @@ class BusStopListScreenViewModel @Inject constructor(
             BusStopListScreenUiState.Loaded(busStops)
         }
         .onStart { emit(BusStopListScreenUiState.Loading) }
-        .catch {}
+        .catch {
+            emit(BusStopListScreenUiState.Failed)
+        }
         .stateIn(viewModelScope, SharingStarted.Lazily, BusStopListScreenUiState.Loading)
 
 }

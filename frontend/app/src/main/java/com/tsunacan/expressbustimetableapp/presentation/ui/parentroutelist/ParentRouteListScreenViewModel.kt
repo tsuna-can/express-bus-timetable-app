@@ -25,7 +25,9 @@ class ParentRouteListScreenViewModel @Inject constructor(
             ParentRouteListScreenUiState.Loaded(parentRoutes)
         }
         .onStart { emit(ParentRouteListScreenUiState.Loading) }
-        .catch {}
+        .catch {
+            emit(ParentRouteListScreenUiState.Failed)
+        }
         .stateIn(viewModelScope, SharingStarted.Lazily, ParentRouteListScreenUiState.Loading)
 
 }
