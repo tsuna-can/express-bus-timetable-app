@@ -1,6 +1,7 @@
 package com.tsunacan.expressbustimetableapp.domain
 
 import com.tsunacan.expressbustimetableapp.models.TimeTable
+import java.time.LocalDate
 import javax.inject.Inject
 import java.time.LocalDateTime
 
@@ -9,9 +10,11 @@ class GetUpcomingTimeTableUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         parentRouteId: String,
-        busStopId: String
+        busStopId: String,
+        today: LocalDate
     ): TimeTable {
-        val busStopTimeTable = getDaySpecificTimeTableUseCase.invoke(parentRouteId, busStopId)
+        val busStopTimeTable =
+            getDaySpecificTimeTableUseCase.invoke(parentRouteId, busStopId, today)
 
         val currentTime = LocalDateTime.now().toLocalTime()
 

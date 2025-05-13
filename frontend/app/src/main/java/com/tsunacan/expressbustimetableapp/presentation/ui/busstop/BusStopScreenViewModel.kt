@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,7 +36,8 @@ class BusStopScreenViewModel @Inject constructor(
         try {
             val timeTable = getDaySpecificTimeTableUseCase.invoke(
                 parentRouteId = parentRouteId,
-                busStopId = stopId
+                busStopId = stopId,
+                today = LocalDate.now()
             )
             emit(BusStopScreenUiState.Loaded(timeTable = timeTable))
         } catch (e: Exception) {

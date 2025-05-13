@@ -17,7 +17,7 @@ import javax.inject.Inject
 @ExperimentalHorologistApi
 @HiltViewModel
 class ParentRouteListScreenViewModel @Inject constructor(
-    private val parentRouteRepository: ParentRouteRepository
+    parentRouteRepository: ParentRouteRepository
 ) : ViewModel() {
 
     val uiState: StateFlow<ParentRouteListScreenUiState> = parentRouteRepository.getParentRouteList()

@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BusStopListScreenViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val busStopRepository: BusStopRepository
+    busStopRepository: BusStopRepository
 ) : ViewModel() {
 
     val parentRouteId :String = savedStateHandle["parentRouteId"] ?: ""

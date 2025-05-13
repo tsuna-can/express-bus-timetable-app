@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import java.time.Duration
+import java.time.LocalDate
 import java.time.LocalTime
 import javax.inject.Inject
 
@@ -43,7 +44,11 @@ class MainTileService : SuspendingTileService() {
         val defaultBusStop = userSettingsRepository.defaultBusStop.stateIn(lifecycleScope).first()
 
         val timeTable =
-            getUpcomingTimeTableUseCase(defaultBusStop.parentRouteId, defaultBusStop.busStopId)
+            getUpcomingTimeTableUseCase(
+                defaultBusStop.parentRouteId,
+                defaultBusStop.busStopId,
+                LocalDate.now()
+            )
 
         val mainTileState = MainTileState(
             parentRouteId = timeTable.parentRouteId,
