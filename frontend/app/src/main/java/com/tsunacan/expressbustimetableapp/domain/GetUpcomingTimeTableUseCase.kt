@@ -21,7 +21,7 @@ class GetUpcomingTimeTableUseCase @Inject constructor(
         // Get the index of the first departure time that is greater than the current time
         val closestDepartureTimeIndex =
             busStopTimeTable.timeTableEntryList.indexOfFirst {
-                it.departureTime > currentTime
+                it.departureTime >= currentTime
             }
 
         // In current implementation, if there is no upcoming departure time, return empty list

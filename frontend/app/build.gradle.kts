@@ -129,6 +129,11 @@ dependencies {
     implementation(libs.horologist.compose.layout)
     implementation(libs.horologist.compose.material)
     implementation(libs.androidx.material.icons.extended)
+
+    // Unit testing dependencies
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
 }
 
 // https://github.com/google/dagger/issues/4049#issuecomment-1952115248
@@ -152,3 +157,4 @@ androidComponents {
         }
     }
 }
+

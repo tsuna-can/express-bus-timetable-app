@@ -31,6 +31,9 @@ retrofitKotlinxSerializationJson = "1.0.0"
 kotlinxSerializationJson = "1.6.3"
 com-squareup-retrofit2 = "2.11.0"
 composeMaterial3 = "1.0.0-alpha28"
+junit = "4.13.2"
+kotlinxCoroutinesTest = "1.7.3"
+mockk = "1.13.9"
 
 [libraries]
 play-services-wearable = { group = "com.google.android.gms", name = "play-services-wearable", version.ref = "playServicesWearable" }
@@ -80,6 +83,9 @@ horologist-composables = { module = "com.google.android.horologist:horologist-co
 horologist-compose-layout = { module = "com.google.android.horologist:horologist-compose-layout", version.ref = "horologist" }
 horologist-compose-material = { module = "com.google.android.horologist:horologist-compose-material", version.ref = "horologist" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
