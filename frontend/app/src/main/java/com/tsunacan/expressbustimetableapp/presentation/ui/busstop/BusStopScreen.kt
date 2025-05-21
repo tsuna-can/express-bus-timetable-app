@@ -99,12 +99,14 @@ fun BusStopScreen(
         }
         item {
             SetForTileButton(
-                onClick = onClickSetForTile(
-                    timeTable.parentRouteId,
-                    timeTable.parentRouteName,
-                    timeTable.stopId,
-                    timeTable.stopName
-                ),
+                onClick = {
+                    onClickSetForTile(
+                        timeTable.parentRouteId,
+                        timeTable.parentRouteName,
+                        timeTable.stopId,
+                        timeTable.stopName
+                    )
+                },
                 modifier = contentModifier,
             )
         }
@@ -132,7 +134,7 @@ fun BusStopScreen(
 
 @Composable
 fun SetForTileButton(
-    onClick: Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -140,7 +142,7 @@ fun SetForTileButton(
 
     Button(
         onClick = {
-            onClick
+            onClick()
             Toast.makeText(
                 context,
                 setSuccessMessage,
