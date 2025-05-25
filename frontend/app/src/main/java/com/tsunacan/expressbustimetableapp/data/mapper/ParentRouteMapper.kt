@@ -4,7 +4,7 @@ import com.tsunacan.expressbustimetableapp.data.model.ParentRouteApiModel
 import com.tsunacan.expressbustimetableapp.models.ParentRoute
 
 object ParentRouteMapper{
-    fun map(parentRouteList: List<ParentRouteApiModel>): List<ParentRoute> {
+    fun mapToParentRouteList(parentRouteList: List<ParentRouteApiModel>): List<ParentRoute> {
         return parentRouteList.map { parentRouteApiModel ->
             ParentRoute(
                 parentRouteId = parentRouteApiModel.parentRouteId,

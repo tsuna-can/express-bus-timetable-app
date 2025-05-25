@@ -21,7 +21,7 @@ class ParentRouteRepositoryImpl @Inject constructor(
         return flow {
             try {
                 val parentRoutesApiModel= remoteDataSource.getParentRouteList()
-                emit(parentRouteMapper.map(parentRoutesApiModel.parentRoutes))
+                emit(parentRouteMapper.mapToParentRouteList(parentRoutesApiModel.parentRoutes))
             } catch (e: Exception) {
                 Log.e("ParentRouteRepository", "Error fetching parent route list", e)
                 emit(emptyList())

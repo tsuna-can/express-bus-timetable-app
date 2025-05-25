@@ -13,7 +13,7 @@ import java.time.format.DateTimeParseException
 object TimeTableMapper {
     private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
-    fun map(timeTableApiModel: TimeTableApiModel): TimeTable = TimeTable(
+    fun mapToTimeTable(timeTableApiModel: TimeTableApiModel): TimeTable = TimeTable(
         parentRouteId = timeTableApiModel.parentRouteId,
         parentRouteName = timeTableApiModel.parentRouteName,
         stopId = timeTableApiModel.busStopId,

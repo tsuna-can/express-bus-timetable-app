@@ -25,7 +25,7 @@ class BusStopRepositoryImpl @Inject constructor(
             val busStopsApiModel= remoteDataSource.getBusStopList(
                 parentRouteId = parentRouteId
             )
-            emit(busStopMapper.map(busStopsApiModel))
+            emit(busStopMapper.mapToButStopList(busStopsApiModel))
         }
     }
 }

@@ -4,7 +4,7 @@ import com.tsunacan.expressbustimetableapp.data.model.BusStopsApiModel
 import com.tsunacan.expressbustimetableapp.models.BusStop
 
 object BusStopMapper {
-    fun map(busStopsApiModel: BusStopsApiModel): List<BusStop> {
+    fun mapToButStopList(busStopsApiModel: BusStopsApiModel): List<BusStop> {
         val busStopList = busStopsApiModel.busStops
         val parentRouteId = busStopsApiModel.parentRouteId
         val parentRouteName = busStopsApiModel.parentRouteName

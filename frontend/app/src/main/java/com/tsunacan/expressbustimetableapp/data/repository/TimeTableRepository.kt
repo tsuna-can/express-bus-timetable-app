@@ -25,7 +25,7 @@ class TimeTableRepositoryImpl @Inject constructor(
     ): Flow<TimeTable> {
         return flow {
             val timeTable = remoteDataSource.getTimeTable(parentRouteId, busStopId)
-            emit(timeTableMapper.map(timeTable))
+            emit(timeTableMapper.mapToTimeTable(timeTable))
         }
     }
 }
