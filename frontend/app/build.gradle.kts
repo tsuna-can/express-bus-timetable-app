@@ -9,6 +9,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
     id("com.google.protobuf")
+    id("io.gitlab.arturbosch.detekt") version "1.23.8"
 }
 
 val localProperties = Properties()
@@ -134,6 +135,9 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk)
+
+    // detekt
+    detektPlugins (libs.detekt)
 }
 
 // https://github.com/google/dagger/issues/4049#issuecomment-1952115248
@@ -158,3 +162,7 @@ androidComponents {
     }
 }
 
+detekt{
+    config.setFrom("${rootProject.projectDir}/config/detekt/detekt.yml")
+    buildUponDefaultConfig = true
+}

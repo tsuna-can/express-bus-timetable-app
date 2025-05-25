@@ -1,5 +1,6 @@
 [versions]
 agp = "8.7.0"
+detekt = "0.4.22"
 kotlin = "2.0.21"
 playServicesWearable = "18.2.0"
 composeBom = "2024.04.01"
@@ -36,6 +37,7 @@ kotlinxCoroutinesTest = "1.7.3"
 mockk = "1.13.9"
 
 [libraries]
+detekt = { module = "io.nlopez.compose.rules:detekt", version.ref = "detekt" }
 play-services-wearable = { group = "com.google.android.gms", name = "play-services-wearable", version.ref = "playServicesWearable" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 ui = { group = "androidx.compose.ui", name = "ui" }

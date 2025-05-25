@@ -7,4 +7,5 @@ plugins {
     alias(libs.plugins.protobuf) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     id("com.google.dagger.hilt.android") version "2.52" apply false
+    id("io.gitlab.arturbosch.detekt").version("1.23.8") apply false
 }
