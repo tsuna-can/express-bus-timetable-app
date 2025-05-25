@@ -20,12 +20,12 @@ SELECT
     s.stop_name,
     st.departure_time,
     c.monday, c.tuesday, c.wednesday, c.thursday, c.friday, c.saturday, c.sunday
-FROM StopTime st
-JOIN Stop s ON st.stop_id = s.stop_id
-JOIN Trip t ON st.trip_id = t.trip_id
-JOIN Route r ON t.route_id = r.route_id
-JOIN ParentRoute pr ON r.parent_route_id = pr.parent_route_id
-JOIN Calendar c ON t.service_id = c.service_id
+FROM stop_time st
+JOIN stop s ON st.stop_id = s.stop_id
+JOIN trip t ON st.trip_id = t.trip_id
+JOIN route r ON t.route_id = r.route_id
+JOIN parent_route pr ON r.parent_route_id = pr.parent_route_id
+JOIN calendar c ON t.service_id = c.service_id
 WHERE pr.parent_route_id = $1
 AND s.stop_id = $2;
 `
@@ -38,6 +38,7 @@ func NewTimetableRepository(db *sqlx.DB) repository.TimetableRepository {
 	return &TimetableRepository{db}
 }
 
+// FIXME : Refactor SQL and logic
 func (r *TimetableRepository) GetByParentRouteIdAndBusStopId(ctx context.Context, parentRouteId string, busStopId string) (entity.Timetable, error) {
 	rows, err := r.db.QueryContext(ctx, getTimetableQuery, parentRouteId, busStopId)
 	if err != nil {

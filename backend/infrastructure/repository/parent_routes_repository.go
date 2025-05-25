@@ -24,7 +24,7 @@ func NewParentRoutesRepository(db *sqlx.DB) repository.ParentRoutesRepository {
 func (r *ParentRoutesRepository) GetAll(ctx context.Context) ([]entity.ParentRoute, error) {
 	var parentRoutes []entity.ParentRoute
 
-	rows, err := r.db.QueryContext(ctx, "SELECT parent_route_id, parent_route_name FROM parentroute")
+	rows, err := r.db.QueryContext(ctx, "SELECT parent_route_id, parent_route_name FROM parent_route")
 	if err != nil {
 		log.Printf("Error querying parent routes: %v", err)
 		return nil, err
@@ -61,7 +61,7 @@ func (r *ParentRoutesRepository) GetByParentRouteId(ctx context.Context, parentR
 		parentRouteNameRaw string
 	)
 
-	row := r.db.QueryRowContext(ctx, "SELECT parent_route_id, parent_route_name FROM parentroute WHERE parent_route_id = $1", parentRouteId)
+	row := r.db.QueryRowContext(ctx, "SELECT parent_route_id, parent_route_name FROM parent_route WHERE parent_route_id = $1", parentRouteId)
 	if err := row.Scan(&parentRouteIdRaw, &parentRouteNameRaw); err != nil {
 		log.Printf("Error scanning parent route: %v", err)
 		return entity.ParentRoute{}, err

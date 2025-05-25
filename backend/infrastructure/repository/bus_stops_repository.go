@@ -10,6 +10,7 @@ import (
 	"github.com/tsuna-can/express-bus-time-table-app/backend/infrastructure/repository/model"
 )
 
+// FIXME : Compare below query with the one that uses JOIN statements
 var getBusStopsQuery = `
 WITH 
 routes AS (
@@ -19,7 +20,7 @@ trips AS (
     SELECT trip_id FROM trip WHERE route_id IN (SELECT route_id FROM routes)
 ),
 stop_times AS (
-    SELECT stop_id FROM stoptime WHERE trip_id IN (SELECT trip_id FROM trips)
+    SELECT stop_id FROM stop_time WHERE trip_id IN (SELECT trip_id FROM trips)
 )
 SELECT stop_id, stop_name FROM stop WHERE stop_id IN (SELECT stop_id FROM stop_times);
 `
