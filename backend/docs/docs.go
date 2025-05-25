@@ -112,10 +112,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/response.TimetableResponse"
-                            }
+                            "$ref": "#/definitions/response.TimetableResponse"
                         }
                     }
                 }

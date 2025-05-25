@@ -1,12 +1,13 @@
 package handler
 
 import (
-	"github.com/labstack/echo/v4"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/handler/request"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/handler/response"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/application/input"
 	"log"
 	"net/http"
+
+	"github.com/labstack/echo/v4"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/application/input"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/handler/request"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/handler/response"
 )
 
 type TimetableHandler struct {
@@ -27,7 +28,7 @@ func NewTimetableHandler(timetableUsecase input.TimetableInputPort) *TimetableHa
 // @Produce json
 // @Param parent_route_id query string true "Parent Route ID"
 // @Param bus_stop_id query string true "Bus Stop ID"
-// @Success 200 {array} response.TimetableResponse
+// @Success 200 {object} response.TimetableResponse
 // @Router /timetable [get]
 func (h TimetableHandler) GetByParentRouteIdAndBusStopId(e echo.Context) error {
 	req, err := request.NewTimetableRequest(e)
@@ -45,4 +46,3 @@ func (h TimetableHandler) GetByParentRouteIdAndBusStopId(e echo.Context) error {
 	res := response.NewTimetableResponse(timetable)
 	return e.JSON(http.StatusOK, res)
 }
-

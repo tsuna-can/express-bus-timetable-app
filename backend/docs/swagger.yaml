@@ -127,9 +127,7 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/response.TimetableResponse'
-            type: array
+            $ref: '#/definitions/response.TimetableResponse'
       summary: Get timetable by parent route ID and bus stop ID
       tags:
       - timetable
