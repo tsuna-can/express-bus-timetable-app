@@ -26,7 +26,6 @@ interface NetworkDataSource {
         parentRouteId: String,
         busStopId: String
     ): TimeTableApiModel
-
 }
 
 private interface NetworkApi {
@@ -49,7 +48,7 @@ class RemoteDataSource @Inject constructor(
     private val okhttpCallFactory: dagger.Lazy<Call.Factory>,
     private val networkJson: Json,
     private val ioDispatcher: CoroutineDispatcher
-): NetworkDataSource{
+) : NetworkDataSource {
 
     private val networkApi = trace("RetrofitNetwork") {
         Retrofit.Builder()

@@ -22,7 +22,7 @@ class BusStopListScreenViewModel @Inject constructor(
     busStopRepository: BusStopRepository
 ) : ViewModel() {
 
-    val parentRouteId :String = savedStateHandle["parentRouteId"] ?: ""
+    val parentRouteId: String = savedStateHandle["parentRouteId"] ?: ""
 
     val uiState: StateFlow<BusStopListScreenUiState> = busStopRepository.getBusStopList(
         parentRouteId = parentRouteId
@@ -35,5 +35,4 @@ class BusStopListScreenViewModel @Inject constructor(
             emit(BusStopListScreenUiState.Failed)
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, BusStopListScreenUiState.Loading)
-
 }

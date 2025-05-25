@@ -39,7 +39,7 @@ fun BusStopScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    ScreenScaffold() {
+    ScreenScaffold {
         when (uiState) {
             is BusStopScreenUiState.Loaded -> {
                 BusStopScreen(

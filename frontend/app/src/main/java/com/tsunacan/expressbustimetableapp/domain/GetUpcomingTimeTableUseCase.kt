@@ -2,8 +2,8 @@ package com.tsunacan.expressbustimetableapp.domain
 
 import com.tsunacan.expressbustimetableapp.models.TimeTable
 import java.time.LocalDate
-import javax.inject.Inject
 import java.time.LocalDateTime
+import javax.inject.Inject
 
 class GetUpcomingTimeTableUseCase @Inject constructor(
     private val getDaySpecificTimeTableUseCase: GetDaySpecificTimeTableUseCase

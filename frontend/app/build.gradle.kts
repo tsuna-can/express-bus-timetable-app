@@ -138,6 +138,7 @@ dependencies {
 
     // detekt
     detektPlugins (libs.detekt)
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1")
 }
 
 // https://github.com/google/dagger/issues/4049#issuecomment-1952115248
@@ -165,4 +166,5 @@ androidComponents {
 detekt{
     config.setFrom("${rootProject.projectDir}/config/detekt/detekt.yml")
     buildUponDefaultConfig = true
+    autoCorrect = true
 }

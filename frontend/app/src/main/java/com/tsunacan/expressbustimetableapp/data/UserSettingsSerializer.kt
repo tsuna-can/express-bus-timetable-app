@@ -8,7 +8,7 @@ import java.io.InputStream
 import java.io.OutputStream
 import javax.inject.Inject
 
-class UserSettingsSerializer @Inject constructor(): Serializer<DefaultBusStop> {
+class UserSettingsSerializer @Inject constructor() : Serializer<DefaultBusStop> {
     override val defaultValue: DefaultBusStop = DefaultBusStop.getDefaultInstance()
     override suspend fun readFrom(input: InputStream): DefaultBusStop {
         try {

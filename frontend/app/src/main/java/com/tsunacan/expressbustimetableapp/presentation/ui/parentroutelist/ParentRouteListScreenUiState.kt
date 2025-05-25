@@ -3,9 +3,8 @@ package com.tsunacan.expressbustimetableapp.presentation.ui.parentroutelist
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.tsunacan.expressbustimetableapp.models.ParentRoute
 
-
 @ExperimentalHorologistApi
-sealed class ParentRouteListScreenUiState  {
+sealed class ParentRouteListScreenUiState {
 
     data object Loading : ParentRouteListScreenUiState()
 

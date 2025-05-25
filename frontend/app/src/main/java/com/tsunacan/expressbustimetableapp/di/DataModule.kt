@@ -37,7 +37,7 @@ class DataModule {
     @Singleton
     fun parentRouteRepositoryImpl(
         remoteDataSource: RemoteDataSource,
-        parentRouteMapper : ParentRouteMapper
+        parentRouteMapper: ParentRouteMapper
     ) = ParentRouteRepositoryImpl(remoteDataSource, parentRouteMapper)
 
     @Provides

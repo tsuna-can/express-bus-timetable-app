@@ -65,14 +65,14 @@ class GetUpcomingTimetableUseCaseTest {
             stopId = busStopId,
             stopName = "Stop 1",
             timeTableEntryList =
-                listOf(
-                    createTimeTableEntry("10:00"),
-                    createTimeTableEntry("11:00"),
-                    createTimeTableEntry("12:30"), // First upcoming
-                    createTimeTableEntry("13:00"), // Second upcoming
-                    createTimeTableEntry("14:00"), // Third upcoming
-                    createTimeTableEntry("15:00") // Not included
-                )
+            listOf(
+                createTimeTableEntry("10:00"),
+                createTimeTableEntry("11:00"),
+                createTimeTableEntry("12:30"), // First upcoming
+                createTimeTableEntry("13:00"), // Second upcoming
+                createTimeTableEntry("14:00"), // Third upcoming
+                createTimeTableEntry("15:00") // Not included
+            )
         )
 
         coEvery {
@@ -102,11 +102,11 @@ class GetUpcomingTimetableUseCaseTest {
             stopId = busStopId,
             stopName = "Stop 1",
             timeTableEntryList =
-                listOf(
-                    createTimeTableEntry("10:00"),
-                    createTimeTableEntry("11:00")
-                    // All departures are before current time (12:00)
-                )
+            listOf(
+                createTimeTableEntry("10:00"),
+                createTimeTableEntry("11:00")
+                // All departures are before current time (12:00)
+            )
         )
 
         coEvery {
@@ -134,12 +134,12 @@ class GetUpcomingTimetableUseCaseTest {
                 stopId = busStopId,
                 stopName = "Stop 1",
                 timeTableEntryList =
-                    listOf(
-                        createTimeTableEntry("10:00"),
-                        createTimeTableEntry("11:00"),
-                        createTimeTableEntry("12:30"), // First upcoming
-                        createTimeTableEntry("13:00")  // Second upcoming
-                    )
+                listOf(
+                    createTimeTableEntry("10:00"),
+                    createTimeTableEntry("11:00"),
+                    createTimeTableEntry("12:30"), // First upcoming
+                    createTimeTableEntry("13:00") // Second upcoming
+                )
             )
 
             coEvery {
@@ -168,12 +168,12 @@ class GetUpcomingTimetableUseCaseTest {
             stopId = busStopId,
             stopName = "Stop 1",
             timeTableEntryList =
-                listOf(
-                    createTimeTableEntry("10:00"),
-                    createTimeTableEntry("12:00"), // Equal to current time, should be included
-                    createTimeTableEntry("12:30"),
-                    createTimeTableEntry("13:00")
-                )
+            listOf(
+                createTimeTableEntry("10:00"),
+                createTimeTableEntry("12:00"), // Equal to current time, should be included
+                createTimeTableEntry("12:30"),
+                createTimeTableEntry("13:00")
+            )
         )
 
         coEvery {

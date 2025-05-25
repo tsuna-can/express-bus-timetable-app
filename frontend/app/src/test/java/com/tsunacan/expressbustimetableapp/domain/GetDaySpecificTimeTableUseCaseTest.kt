@@ -63,7 +63,7 @@ class GetDaySpecificTimeTableUseCaseTest {
         // Assert
         val expectedEntries = listOf(
             timeTableEntries[1], // 9:00, Tuesday
-            timeTableEntries[0],  // 10:00, Tuesday
+            timeTableEntries[0], // 10:00, Tuesday
         )
         assertEquals(expectedEntries, result.timeTableEntryList)
     }

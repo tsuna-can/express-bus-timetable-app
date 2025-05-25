@@ -15,9 +15,9 @@ import androidx.wear.compose.material.Text
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.google.android.horologist.compose.layout.ScalingLazyColumn
 import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults
+import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults.ItemType
 import com.google.android.horologist.compose.layout.ScreenScaffold
 import com.google.android.horologist.compose.layout.rememberResponsiveColumnState
-import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults.ItemType
 import com.tsunacan.expressbustimetableapp.R
 import com.tsunacan.expressbustimetableapp.models.ParentRoute
 import com.tsunacan.expressbustimetableapp.presentation.ui.common.ErrorScreen
@@ -56,7 +56,6 @@ fun ParentRouteListScreen(
         }
     }
 }
-
 
 @OptIn(ExperimentalHorologistApi::class)
 @Composable

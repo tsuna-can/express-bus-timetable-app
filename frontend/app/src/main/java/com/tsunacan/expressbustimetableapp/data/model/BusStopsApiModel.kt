@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BusStopsApiModel (
+data class BusStopsApiModel(
     @SerialName("bus_stops")
     val busStops: List<BusStopApiModel>,
     @SerialName("parent_route_id")
@@ -14,7 +14,7 @@ data class BusStopsApiModel (
 )
 
 @Serializable
-data class BusStopApiModel (
+data class BusStopApiModel(
     @SerialName("bus_stop_id")
     val busStopId: String,
     @SerialName("bus_stop_name")

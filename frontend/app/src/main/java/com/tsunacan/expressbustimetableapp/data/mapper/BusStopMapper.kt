@@ -8,7 +8,7 @@ object BusStopMapper {
         val busStopList = busStopsApiModel.busStops
         val parentRouteId = busStopsApiModel.parentRouteId
         val parentRouteName = busStopsApiModel.parentRouteName
-        return busStopList.map { busStop->
+        return busStopList.map { busStop ->
             BusStop(
                 parentRouteId = parentRouteId,
                 parentRouteName = parentRouteName,

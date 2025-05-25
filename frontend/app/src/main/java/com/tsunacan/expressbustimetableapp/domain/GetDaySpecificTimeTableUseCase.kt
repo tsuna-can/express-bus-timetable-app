@@ -36,5 +36,4 @@ class GetDaySpecificTimeTableUseCase @Inject constructor(
 
         return busStopTimeTable.copy(timeTableEntryList = sortedTimeTable)
     }
-
 }

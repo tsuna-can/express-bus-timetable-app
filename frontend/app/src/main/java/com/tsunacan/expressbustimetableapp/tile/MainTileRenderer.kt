@@ -6,14 +6,13 @@ import android.content.Context
 import androidx.wear.protolayout.ActionBuilders
 import androidx.wear.protolayout.ColorBuilders.argb
 import androidx.wear.protolayout.DeviceParametersBuilders.DeviceParameters
-import androidx.wear.protolayout.DimensionBuilders.dp
 import androidx.wear.protolayout.LayoutElementBuilders
 import androidx.wear.protolayout.ModifiersBuilders
 import androidx.wear.protolayout.ResourceBuilders.Resources
-import androidx.wear.protolayout.material.Typography
 import androidx.wear.protolayout.material.Colors
 import androidx.wear.protolayout.material.CompactChip
 import androidx.wear.protolayout.material.Text
+import androidx.wear.protolayout.material.Typography
 import androidx.wear.protolayout.material.layouts.PrimaryLayout
 import androidx.wear.tiles.tooling.preview.Preview
 import androidx.wear.tiles.tooling.preview.TilePreviewData
@@ -127,7 +126,7 @@ fun mainTileLayoutPreview(context: Context): TilePreviewData {
     val dummyTime1 = LocalDateTime.now().plusMinutes(10).toLocalTime()
     val dummyTime2 = LocalDateTime.now().plusMinutes(20).toLocalTime()
     val dummyTime3 = LocalDateTime.now().plusMinutes(30).toLocalTime()
-    return TilePreviewData() { request ->
+    return TilePreviewData { request ->
         MainTileRenderer(context).renderTimeline(
             MainTileState(
                 parentRouteId = "Nagoya-go-id",

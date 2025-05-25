@@ -32,5 +32,4 @@ class UserSettingsDataSource @Inject constructor(
             Log.e("Proto DataStore", "Failed to set default bus stop", ioException)
         }
     }
-
 }

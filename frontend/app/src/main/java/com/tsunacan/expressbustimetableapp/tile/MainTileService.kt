@@ -2,9 +2,9 @@ package com.tsunacan.expressbustimetableapp.tile
 
 import androidx.lifecycle.lifecycleScope
 import androidx.wear.protolayout.ResourceBuilders
+import androidx.wear.tiles.RequestBuilders
 import androidx.wear.tiles.RequestBuilders.TileRequest
 import androidx.wear.tiles.TileBuilders.Tile
-import androidx.wear.tiles.RequestBuilders
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.google.android.horologist.tiles.SuspendingTileService
 import com.tsunacan.expressbustimetableapp.data.repository.UserSettingsRepository

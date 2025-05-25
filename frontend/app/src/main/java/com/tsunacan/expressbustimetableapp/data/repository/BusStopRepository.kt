@@ -22,7 +22,7 @@ class BusStopRepositoryImpl @Inject constructor(
         parentRouteId: String
     ): Flow<List<BusStop>> {
         return flow {
-            val busStopsApiModel= remoteDataSource.getBusStopList(
+            val busStopsApiModel = remoteDataSource.getBusStopList(
                 parentRouteId = parentRouteId
             )
             emit(busStopMapper.mapToButStopList(busStopsApiModel))

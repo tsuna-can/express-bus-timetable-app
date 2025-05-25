@@ -9,5 +9,5 @@ fun NavController.navigateToBusStop(
     stopId: String? = null,
     navOptions: NavOptions? = null,
 ) {
-    navigate(route = Screen.BusStop.route + "/${parentRouteId}/${stopId}", navOptions)
+    navigate(route = Screen.BusStop.route + "/$parentRouteId/$stopId", navOptions)
 }

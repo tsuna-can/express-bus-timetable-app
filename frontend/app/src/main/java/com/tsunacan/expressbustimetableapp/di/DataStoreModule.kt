@@ -1,9 +1,9 @@
 package com.tsunacan.expressbustimetableapp.di
 
 import android.content.Context
-import androidx.datastore.dataStoreFile
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
+import androidx.datastore.dataStoreFile
 import com.tsunacan.expressbustimetableapp.DefaultBusStop
 import com.tsunacan.expressbustimetableapp.data.UserSettingsSerializer
 import dagger.Module
@@ -25,7 +25,7 @@ object DataStoreModule {
     ): DataStore<DefaultBusStop> =
         DataStoreFactory.create(
             serializer = userSettingsSerializer,
-        ){
+        ) {
             context.dataStoreFile("user_settings.pb")
         }
 }
