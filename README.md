@@ -1,5 +1,5 @@
-# Express Bus Time Table app
-Ths is a simple WearOS app that provides a bus time table for a given route. 
+# Express Bus Timetable App
+Ths is a simple WearOS app that provides a bus timetable for a given route. 
 
 # Features
 
@@ -21,23 +21,28 @@ The app consists of the following three screens.
 # Architecure
 ```mermaid
 graph LR
-    MobileApp[Mobile App] -->|Request| API
-    API -->|Response| MobileApp
+    App[App] -->|Request| API
+    API -->|Response| App
+    API -->|Query| DB
+    DB -->|Data| API
 
-    subgraph koyeb[Cloud: Koyeb]
-        API[API Server] -->|Query| DB[(Database)]
-        DB -->|Data| API
+    subgraph koyeb[Koyeb]
+        API[API Server]
+    end
+    
+    subgraph neon[Neon]
+        DB[Database]
     end
 ```
 
 # Tech Stack
-- Mobile
+- App
     - Kotlin
     - Jetpack Compose
-- Backend
+- API
     - Go
     - Echo
+    - Hosted on [Koyeb](https://www.koyeb.com/)
 - Database
     - PostgreSQL
-- Hosting
-    - [Koyeb](https://www.koyeb.com/)
+    - Hosted on [Neon](https://neon.tech/)
