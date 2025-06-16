@@ -37,8 +37,12 @@ graph LR
 
 # Tech Stack
 - App
+    - WearOS
     - Kotlin
     - Jetpack Compose
+    - Retrofit
+    - Dagger Hilt
+    - Proto DataStore
 - API
     - Go
     - Echo

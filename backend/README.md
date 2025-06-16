@@ -1,4 +1,4 @@
-# Express Bus Time Table App (Backend)
+# Express Bus Timetable App (Backend)
 
 ## Setup development environment
 1. Install devcontainer extension in VSCode
