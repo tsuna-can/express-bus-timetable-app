@@ -10,12 +10,12 @@ import (
 )
 
 type BusStopsHandler struct {
-	busStopsUsecase input.BusStopsInputPort
+	getBusStopsUsecase input.BusStopsInputPort
 }
 
-func NewBusStopsHandler(busStopsUsecase input.BusStopsInputPort) *BusStopsHandler {
+func NewBusStopsHandler(getBusStopsUsecase input.BusStopsInputPort) *BusStopsHandler {
 	return &BusStopsHandler{
-		busStopsUsecase: busStopsUsecase,
+		getBusStopsUsecase: getBusStopsUsecase,
 	}
 }
 
@@ -35,7 +35,7 @@ func (h *BusStopsHandler) GetByParentRouteId(e echo.Context) error {
 	}
 
 	ctx := e.Request().Context()
-	busStops, parentRoute, err := h.busStopsUsecase.GetByParentRouteId(ctx, req.ParentRouteId)
+	busStops, parentRoute, err := h.getBusStopsUsecase.GetByParentRouteId(ctx, req.ParentRouteId)
 	if err != nil {
 		return e.JSON(http.StatusInternalServerError, err)
 	}

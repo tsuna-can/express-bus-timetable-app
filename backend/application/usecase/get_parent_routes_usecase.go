@@ -1,24 +1,25 @@
-package usecase 
+package usecase
 
 import (
 	"context"
+	"log"
+
+	"github.com/tsuna-can/express-bus-time-table-app/backend/application/input"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/application/input"
-	"log"
 )
 
-type parentRoutesUsecase struct {
+type getParentRoutesUsecase struct {
 	parentRoutesRepository repository.ParentRoutesRepository
 }
 
-func NewParentRoutesUsecase(parentRoutesRepository repository.ParentRoutesRepository) input.ParentRoutesInputPort {
-	return &parentRoutesUsecase{
+func NewGetParentRoutesUsecase(parentRoutesRepository repository.ParentRoutesRepository) input.ParentRoutesInputPort {
+	return &getParentRoutesUsecase{
 		parentRoutesRepository: parentRoutesRepository,
 	}
 }
 
-func (u *parentRoutesUsecase) GetAll(ctx context.Context) ([]entity.ParentRoute, error) {
+func (u *getParentRoutesUsecase) GetAll(ctx context.Context) ([]entity.ParentRoute, error) {
 	parentRoutes, err := u.parentRoutesRepository.GetAll(ctx)
 	if err != nil {
 		log.Printf("Error getting parent routes: %v", err)

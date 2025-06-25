@@ -19,9 +19,9 @@ func BuildContainer() *dig.Container {
 	container.Provide(handler.NewTimetableHandler)
 
 	// usecases
-	container.Provide(usecase.NewParentRoutesUsecase)
-	container.Provide(usecase.NewBusStopUsecase)
-	container.Provide(usecase.NewTimetableUsecase)
+	container.Provide(usecase.NewGetParentRoutesUsecase)
+	container.Provide(usecase.NewGetBusStopsUsecase)
+	container.Provide(usecase.NewGetTimetableUsecase)
 
 	// repositories
 	container.Provide(repository.NewParentRoutesRepository)

@@ -11,12 +11,12 @@ import (
 )
 
 type TimetableHandler struct {
-	timetableUsecase input.TimetableInputPort
+	getTimetableUsecase input.TimetableInputPort
 }
 
-func NewTimetableHandler(timetableUsecase input.TimetableInputPort) *TimetableHandler {
+func NewTimetableHandler(getTimetableUsecase input.TimetableInputPort) *TimetableHandler {
 	return &TimetableHandler{
-		timetableUsecase: timetableUsecase,
+		getTimetableUsecase: getTimetableUsecase,
 	}
 }
 
@@ -37,7 +37,7 @@ func (h TimetableHandler) GetByParentRouteIdAndBusStopId(e echo.Context) error {
 	}
 
 	ctx := e.Request().Context()
-	timetable, err := h.timetableUsecase.GetByParentRouteIdAndBusStopId(ctx, req.ParentRouteId, req.BusStopId)
+	timetable, err := h.getTimetableUsecase.GetByParentRouteIdAndBusStopId(ctx, req.ParentRouteId, req.BusStopId)
 	if err != nil {
 		log.Printf("Error getting timetables: %v", err)
 		return e.JSON(http.StatusInternalServerError, err)

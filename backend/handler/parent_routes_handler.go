@@ -1,20 +1,21 @@
 package handler
 
 import (
+	"log"
+	"net/http"
+
 	"github.com/labstack/echo/v4"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/application/input"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/handler/response"
-	"log"
-	"net/http"
 )
 
 type ParentRoutesHandler struct {
-	parentRoutesUsecase input.ParentRoutesInputPort
+	getParentRoutesUsecase input.ParentRoutesInputPort
 }
 
-func NewParentRoutesHandler(parentRoutesUsecase input.ParentRoutesInputPort) *ParentRoutesHandler {
+func NewParentRoutesHandler(getParentRoutesUsecase input.ParentRoutesInputPort) *ParentRoutesHandler {
 	return &ParentRoutesHandler{
-		parentRoutesUsecase: parentRoutesUsecase,
+		getParentRoutesUsecase: getParentRoutesUsecase,
 	}
 }
 
@@ -28,7 +29,7 @@ func NewParentRoutesHandler(parentRoutesUsecase input.ParentRoutesInputPort) *Pa
 // @Router /parent-routes [get]
 func (h ParentRoutesHandler) GetParentRoutes(e echo.Context) error {
 	ctx := e.Request().Context()
-	parentRoutes, err := h.parentRoutesUsecase.GetAll(ctx)
+	parentRoutes, err := h.getParentRoutesUsecase.GetAll(ctx)
 	if err != nil {
 		log.Printf("Error getting parent routes: %v", err)
 		return e.JSON(http.StatusInternalServerError, err)
