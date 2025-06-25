@@ -4,16 +4,19 @@ import (
 	"context"
 	"log"
 
-	"github.com/tsuna-can/express-bus-time-table-app/backend/application/input"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
 )
+
+type GetTimetableUsecase interface {
+	GetByParentRouteIdAndBusStopId(ctx context.Context, parentRouteId string, busStopId string) (entity.Timetable, error)
+}
 
 type getTimetableUsecase struct {
 	timetableRepository repository.TimetableRepository
 }
 
-func NewGetTimetableUsecase(timetableRepository repository.TimetableRepository) input.TimetableInputPort {
+func NewGetTimetableUsecase(timetableRepository repository.TimetableRepository) GetTimetableUsecase {
 	return &getTimetableUsecase{
 		timetableRepository: timetableRepository,
 	}

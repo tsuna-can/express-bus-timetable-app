@@ -4,16 +4,19 @@ import (
 	"context"
 	"log"
 
-	"github.com/tsuna-can/express-bus-time-table-app/backend/application/input"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
 )
+
+type GetParentRoutesUsecase interface {
+	GetAll(ctx context.Context) ([]entity.ParentRoute, error)
+}
 
 type getParentRoutesUsecase struct {
 	parentRoutesRepository repository.ParentRoutesRepository
 }
 
-func NewGetParentRoutesUsecase(parentRoutesRepository repository.ParentRoutesRepository) input.ParentRoutesInputPort {
+func NewGetParentRoutesUsecase(parentRoutesRepository repository.ParentRoutesRepository) GetParentRoutesUsecase {
 	return &getParentRoutesUsecase{
 		parentRoutesRepository: parentRoutesRepository,
 	}

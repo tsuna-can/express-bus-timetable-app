@@ -5,15 +5,15 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/application/input"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/application/usecase"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/handler/response"
 )
 
 type ParentRoutesHandler struct {
-	getParentRoutesUsecase input.ParentRoutesInputPort
+	getParentRoutesUsecase usecase.GetParentRoutesUsecase
 }
 
-func NewParentRoutesHandler(getParentRoutesUsecase input.ParentRoutesInputPort) *ParentRoutesHandler {
+func NewParentRoutesHandler(getParentRoutesUsecase usecase.GetParentRoutesUsecase) *ParentRoutesHandler {
 	return &ParentRoutesHandler{
 		getParentRoutesUsecase: getParentRoutesUsecase,
 	}
