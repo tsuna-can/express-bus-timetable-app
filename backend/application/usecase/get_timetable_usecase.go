@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"context"
-	"log"
+	"fmt"
 
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
@@ -25,8 +25,7 @@ func NewGetTimetableUsecase(timetableRepository repository.TimetableRepository) 
 func (u *getTimetableUsecase) GetByParentRouteIdAndBusStopId(ctx context.Context, parentRouteId string, busStopId string) (entity.Timetable, error) {
 	timetable, err := u.timetableRepository.GetByParentRouteIdAndBusStopId(ctx, parentRouteId, busStopId)
 	if err != nil {
-		log.Printf("Error getting timetables: %v", err)
-		return entity.Timetable{}, err
+		return entity.Timetable{}, fmt.Errorf("failed to get timetable for parent route %s and bus stop %s: %w", parentRouteId, busStopId, err)
 	}
 	return timetable, nil
 }

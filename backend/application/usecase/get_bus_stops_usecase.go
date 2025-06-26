@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"context"
-	"log"
+	"fmt"
 
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
@@ -27,14 +27,12 @@ func NewGetBusStopsUsecase(busStopsRepository repository.BusStopsRepository, par
 func (u *getBusStopsUsecase) GetByParentRouteId(ctx context.Context, parentRouteId string) ([]entity.BusStop, entity.ParentRoute, error) {
 	busStops, err := u.busStopsRepository.GetByParentRouteId(ctx, parentRouteId)
 	if err != nil {
-		log.Printf("Error getting bus stops: %v", err)
-		return nil, entity.ParentRoute{}, err
+		return nil, entity.ParentRoute{}, fmt.Errorf("failed to get bus stops for parent route %s: %w", parentRouteId, err)
 	}
 
 	parentRoute, err := u.parentRoutesRepository.GetByParentRouteId(ctx, parentRouteId)
 	if err != nil {
-		log.Printf("Error getting parent route: %v", err)
-		return nil, entity.ParentRoute{}, err
+		return nil, entity.ParentRoute{}, fmt.Errorf("failed to get parent route %s: %w", parentRouteId, err)
 	}
 
 	return busStops, parentRoute, nil
