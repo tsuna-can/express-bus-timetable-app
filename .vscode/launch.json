@@ -2,11 +2,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch Echo API",
+      "name": "Launch API (Echo)",
       "type": "go",
       "request": "launch",
-      "mode": "debug",
-      "program": "${workspaceFolder}/main.go",
+      "mode": "auto",
+      "program": "${workspaceFolder}/backend",
       "env": {
         "PORT": "8080",
         "DB_USER": "myuser",
@@ -18,7 +18,7 @@
         "API_KEY": "local_development_key"
       },
       "args": [],
-      "showLog": true
+      "cwd": "${workspaceFolder}/backend"
     }
   ]
 }
