@@ -25,7 +25,7 @@ func BuildContainer() *dig.Container {
 
 	// repositories
 	container.Provide(repository.NewParentRoutesRepository)
-	container.Provide(repository.NewBusStopRepository)
+	container.Provide(repository.NewBusStopsRepository)
 	container.Provide(repository.NewTimetableRepository)
 
 	return container

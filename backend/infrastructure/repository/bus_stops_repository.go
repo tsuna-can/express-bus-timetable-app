@@ -29,7 +29,7 @@ type BusStopsRepository struct {
 	db *sqlx.DB
 }
 
-func NewBusStopRepository(db *sqlx.DB) repository.BusStopsRepository {
+func NewBusStopsRepository(db *sqlx.DB) repository.BusStopsRepository {
 	return &BusStopsRepository{db}
 }
 
