@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"log"
+	"fmt"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
@@ -11,7 +11,7 @@ import (
 )
 
 // FIXME : Compare below query with the one that uses JOIN statements
-var getBusStopsQuery = `
+const getBusStopsQuery = `
 WITH 
 routes AS (
     SELECT route_id FROM route WHERE parent_route_id = $1
@@ -36,8 +36,7 @@ func NewBusStopsRepository(db *sqlx.DB) repository.BusStopsRepository {
 func (bsr *BusStopsRepository) GetByParentRouteId(ctx context.Context, parentRouteId string) ([]entity.BusStop, error) {
 	rows, err := bsr.db.QueryContext(ctx, getBusStopsQuery, parentRouteId)
 	if err != nil {
-		log.Printf("Error querying bus stops: %v", err)
-		return nil, err
+		return nil, fmt.Errorf("failed to query bus stops: %w", err)
 	}
 	defer rows.Close()
 
@@ -45,22 +44,19 @@ func (bsr *BusStopsRepository) GetByParentRouteId(ctx context.Context, parentRou
 	for rows.Next() {
 		var bsm model.BusStop
 		if err := rows.Scan(&bsm.BusStopId, &bsm.BusStopName); err != nil {
-			log.Printf("Error scanning row: %v", err)
-			return nil, err
+			return nil, fmt.Errorf("failed to scan bus stop row: %w", err)
 		}
 
 		bse, err := bsm.ToBusStop()
 		if err != nil {
-			log.Printf("Error converting to BusStop: %v", err)
-			return nil, err
+			return nil, fmt.Errorf("failed to convert to BusStop: %w", err)
 		}
 
 		busStops = append(busStops, *bse)
 	}
 
 	if err := rows.Err(); err != nil {
-		log.Printf("Error iterating rows: %v", err)
-		return nil, err
+		return nil, fmt.Errorf("error occurred during row iteration: %w", err)
 	}
 
 	return busStops, nil

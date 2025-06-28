@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"log"
+	"fmt"
 	"time"
 
 	"github.com/jmoiron/sqlx"
@@ -11,7 +11,7 @@ import (
 	"github.com/tsuna-can/express-bus-time-table-app/backend/infrastructure/repository/model"
 )
 
-var getTimetableQuery = `
+const getTimetableQuery = `
 SELECT
     pr.parent_route_id,
     pr.parent_route_name,
@@ -42,8 +42,7 @@ func NewTimetableRepository(db *sqlx.DB) repository.TimetableRepository {
 func (r *TimetableRepository) GetByParentRouteIdAndBusStopId(ctx context.Context, parentRouteId string, busStopId string) (entity.Timetable, error) {
 	rows, err := r.db.QueryContext(ctx, getTimetableQuery, parentRouteId, busStopId)
 	if err != nil {
-		log.Printf("Error querying timetables: %v", err)
-		return entity.Timetable{}, err
+		return entity.Timetable{}, fmt.Errorf("failed to query timetables: %w", err)
 	}
 	defer rows.Close()
 
@@ -52,7 +51,6 @@ func (r *TimetableRepository) GetByParentRouteIdAndBusStopId(ctx context.Context
 
 	for rows.Next() {
 		var entry model.TimetableEntry
-		// var monday, tuesday, wednesday, thursday, friday, saturday, sunday bool
 		var departureTime time.Time
 
 		if err := rows.Scan(
@@ -70,19 +68,21 @@ func (r *TimetableRepository) GetByParentRouteIdAndBusStopId(ctx context.Context
 			&entry.Saturday,
 			&entry.Sunday,
 		); err != nil {
-			log.Printf("Error scanning row: %v", err)
-			return entity.Timetable{}, err
+			return entity.Timetable{}, fmt.Errorf("failed to scan timetable row: %w", err)
 		}
 
 		entry.DepartureTime = departureTime.Format("15:04")
 		timetableModel.TimetableEntry = append(timetableModel.TimetableEntry, entry)
 	}
 
+	if err := rows.Err(); err != nil {
+		return entity.Timetable{}, fmt.Errorf("error occurred during row iteration: %w", err)
+	}
+
 	// Convert model to entity
 	timetableEntity, err := timetableModel.ToTimetable()
 	if err != nil {
-		log.Printf("Error converting model to entity: %v", err)
-		return entity.Timetable{}, err
+		return entity.Timetable{}, fmt.Errorf("failed to convert model to entity: %w", err)
 	}
 
 	return *timetableEntity, nil
