@@ -40,6 +40,7 @@ func (s *Server) GetTimetableByParentRouteIdAndBusStopId(ctx echo.Context) error
 
 func InitRouter() {
 	e := echo.New()
+	e.Validator = NewCustomValidator()
 	e.Use(APIKeyAuthMiddleware)
 
 	container := BuildContainer()
