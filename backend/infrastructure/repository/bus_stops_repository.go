@@ -6,8 +6,8 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/factory"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/infrastructure/repository/model"
 )
 
 // FIXME : Compare below query with the one that uses JOIN statements
@@ -26,11 +26,15 @@ SELECT stop_id, stop_name FROM stop WHERE stop_id IN (SELECT stop_id FROM stop_t
 `
 
 type BusStopsRepository struct {
-	db *sqlx.DB
+	db      *sqlx.DB
+	factory factory.BusStopFactory
 }
 
 func NewBusStopsRepository(db *sqlx.DB) repository.BusStopsRepository {
-	return &BusStopsRepository{db}
+	return &BusStopsRepository{
+		db:      db,
+		factory: factory.NewBusStopFactory(),
+	}
 }
 
 func (bsr *BusStopsRepository) GetByParentRouteId(ctx context.Context, parentRouteId string) ([]entity.BusStop, error) {
@@ -40,23 +44,23 @@ func (bsr *BusStopsRepository) GetByParentRouteId(ctx context.Context, parentRou
 	}
 	defer rows.Close()
 
-	busStops := make([]entity.BusStop, 0)
+	var rawDataList []factory.BusStopRawData
 	for rows.Next() {
-		var bsm model.BusStop
-		if err := rows.Scan(&bsm.BusStopId, &bsm.BusStopName); err != nil {
+		var rawData factory.BusStopRawData
+		if err := rows.Scan(&rawData.BusStopId, &rawData.BusStopName); err != nil {
 			return nil, fmt.Errorf("failed to scan bus stop row: %w", err)
 		}
-
-		bse, err := bsm.ToBusStop()
-		if err != nil {
-			return nil, fmt.Errorf("failed to convert to BusStop: %w", err)
-		}
-
-		busStops = append(busStops, *bse)
+		rawDataList = append(rawDataList, rawData)
 	}
 
 	if err := rows.Err(); err != nil {
 		return nil, fmt.Errorf("error occurred during row iteration: %w", err)
+	}
+
+	// Convert raw data to entities using factory
+	busStops, err := bsr.factory.ReconstructManyFromRawData(rawDataList)
+	if err != nil {
+		return nil, fmt.Errorf("failed to reconstruct bus stops from raw data: %w", err)
 	}
 
 	return busStops, nil
