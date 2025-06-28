@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/handler/request"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/handler/response"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/infrastructure/handler/request"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/infrastructure/handler/response"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/usecase"
 )
 

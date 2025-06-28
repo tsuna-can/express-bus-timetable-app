@@ -3,7 +3,7 @@ package infrastructure
 import (
 	"log"
 
-	"github.com/tsuna-can/express-bus-time-table-app/backend/handler"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/infrastructure/handler"
 
 	"github.com/labstack/echo/v4"
 )
