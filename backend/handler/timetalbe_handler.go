@@ -33,14 +33,15 @@ func NewTimetableHandler(getTimetableUsecase usecase.GetTimetableUsecase) *Timet
 func (h TimetableHandler) GetByParentRouteIdAndBusStopId(e echo.Context) error {
 	req, err := request.NewTimetableRequest(e)
 	if err != nil {
-		return e.JSON(http.StatusBadRequest, err)
+		log.Printf("Error creating timetable request: %v", err)
+		return e.JSON(http.StatusBadRequest, response.ErrorResponse{Message: "Invalid request parameters"})
 	}
 
 	ctx := e.Request().Context()
 	timetable, err := h.getTimetableUsecase.GetByParentRouteIdAndBusStopId(ctx, req.ParentRouteId, req.BusStopId)
 	if err != nil {
 		log.Printf("Error getting timetables: %v", err)
-		return e.JSON(http.StatusInternalServerError, err)
+		return e.JSON(http.StatusInternalServerError, response.ErrorResponse{Message: "Internal server error"})
 	}
 
 	res := response.NewTimetableResponse(timetable)

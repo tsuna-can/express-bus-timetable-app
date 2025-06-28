@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -31,13 +32,15 @@ func NewBusStopsHandler(getBusStopsUsecase usecase.GetBusStopsUsecase) *BusStops
 func (h *BusStopsHandler) GetByParentRouteId(e echo.Context) error {
 	req, err := request.NewBusStopsRequest(e)
 	if err != nil {
-		return e.JSON(http.StatusBadRequest, err)
+		log.Printf("Error creating bus stops request: %v", err)
+		return e.JSON(http.StatusBadRequest, response.ErrorResponse{Message: "Invalid request parameters"})
 	}
 
 	ctx := e.Request().Context()
 	busStops, parentRoute, err := h.getBusStopsUsecase.GetByParentRouteId(ctx, req.ParentRouteId)
 	if err != nil {
-		return e.JSON(http.StatusInternalServerError, err)
+		log.Printf("Error getting bus stops: %v", err)
+		return e.JSON(http.StatusInternalServerError, response.ErrorResponse{Message: "Internal server error"})
 	}
 
 	res := response.NewBusStopsResponse(busStops, parentRoute)

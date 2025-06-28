@@ -32,7 +32,7 @@ func (h ParentRoutesHandler) GetParentRoutes(e echo.Context) error {
 	parentRoutes, err := h.getParentRoutesUsecase.GetAll(ctx)
 	if err != nil {
 		log.Printf("Error getting parent routes: %v", err)
-		return e.JSON(http.StatusInternalServerError, err)
+		return e.JSON(http.StatusInternalServerError, response.ErrorResponse{Message: "Internal server error"})
 	}
 
 	response := response.NewParentRoutesResponse(parentRoutes)
