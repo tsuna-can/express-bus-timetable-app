@@ -7,8 +7,8 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/entity"
+	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/factory"
 	"github.com/tsuna-can/express-bus-time-table-app/backend/domain/repository"
-	"github.com/tsuna-can/express-bus-time-table-app/backend/infrastructure/repository/model"
 )
 
 const getTimetableQuery = `
@@ -31,11 +31,15 @@ AND s.stop_id = $2;
 `
 
 type TimetableRepository struct {
-	db *sqlx.DB
+	db      *sqlx.DB
+	factory factory.TimetableFactory
 }
 
 func NewTimetableRepository(db *sqlx.DB) repository.TimetableRepository {
-	return &TimetableRepository{db}
+	return &TimetableRepository{
+		db:      db,
+		factory: factory.NewTimetableFactory(),
+	}
 }
 
 // FIXME : Refactor SQL and logic
@@ -46,43 +50,44 @@ func (r *TimetableRepository) GetByParentRouteIdAndBusStopId(ctx context.Context
 	}
 	defer rows.Close()
 
-	// Create timetable entries
-	var timetableModel model.Timetable
+	var rawData factory.TimetableRawData
+	rawData.ParentRouteId = parentRouteId
+	rawData.BusStopId = busStopId
 
 	for rows.Next() {
-		var entry model.TimetableEntry
+		var entryRawData factory.TimetableEntryRawData
 		var departureTime time.Time
 
 		if err := rows.Scan(
-			&timetableModel.ParentRouteId,
-			&timetableModel.ParentRouteName,
-			&entry.DestinationName, // route_name
-			&timetableModel.BusStopId,
-			&timetableModel.BusStopName,
+			&rawData.ParentRouteId,
+			&rawData.ParentRouteName,
+			&entryRawData.DestinationName, // route_name
+			&rawData.BusStopId,
+			&rawData.BusStopName,
 			&departureTime,
-			&entry.Monday,
-			&entry.Tuesday,
-			&entry.Wednesday,
-			&entry.Thursday,
-			&entry.Friday,
-			&entry.Saturday,
-			&entry.Sunday,
+			&entryRawData.Monday,
+			&entryRawData.Tuesday,
+			&entryRawData.Wednesday,
+			&entryRawData.Thursday,
+			&entryRawData.Friday,
+			&entryRawData.Saturday,
+			&entryRawData.Sunday,
 		); err != nil {
 			return entity.Timetable{}, fmt.Errorf("failed to scan timetable row: %w", err)
 		}
 
-		entry.DepartureTime = departureTime.Format("15:04")
-		timetableModel.TimetableEntry = append(timetableModel.TimetableEntry, entry)
+		entryRawData.DepartureTime = departureTime.Format("15:04")
+		rawData.Entries = append(rawData.Entries, entryRawData)
 	}
 
 	if err := rows.Err(); err != nil {
 		return entity.Timetable{}, fmt.Errorf("error occurred during row iteration: %w", err)
 	}
 
-	// Convert model to entity
-	timetableEntity, err := timetableModel.ToTimetable()
+	// Convert raw data to entity using factory
+	timetableEntity, err := r.factory.ReconstructFromRawData(rawData)
 	if err != nil {
-		return entity.Timetable{}, fmt.Errorf("failed to convert model to entity: %w", err)
+		return entity.Timetable{}, fmt.Errorf("failed to reconstruct timetable from raw data: %w", err)
 	}
 
 	return *timetableEntity, nil
