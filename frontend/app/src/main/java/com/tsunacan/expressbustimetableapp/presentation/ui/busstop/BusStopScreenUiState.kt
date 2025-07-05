@@ -1,7 +1,7 @@
 package com.tsunacan.expressbustimetableapp.presentation.ui.busstop
 
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
-import com.tsunacan.expressbustimetableapp.models.TimeTable
+import com.tsunacan.expressbustimetableapp.models.Timetable
 
 @ExperimentalHorologistApi
 sealed class BusStopScreenUiState {
@@ -9,7 +9,7 @@ sealed class BusStopScreenUiState {
     data object Loading : BusStopScreenUiState()
 
     data class Loaded(
-        val timeTable: TimeTable,
+        val timetable: Timetable,
     ) : BusStopScreenUiState()
 
     data object Failed : BusStopScreenUiState()

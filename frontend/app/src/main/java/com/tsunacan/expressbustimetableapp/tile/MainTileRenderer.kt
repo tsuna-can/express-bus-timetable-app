@@ -20,7 +20,7 @@ import androidx.wear.tooling.preview.devices.WearDevices
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.google.android.horologist.tiles.render.SingleTileLayoutRenderer
 import com.tsunacan.expressbustimetableapp.R
-import com.tsunacan.expressbustimetableapp.models.TimeTableEntry
+import com.tsunacan.expressbustimetableapp.models.TimetableEntry
 import com.tsunacan.expressbustimetableapp.presentation.MainActivity
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -75,7 +75,7 @@ private fun mainTileLayout(
     .setContent(
         LayoutElementBuilders.Column.Builder()
             .apply {
-                state.timeTableEntryList.take(3).forEach {
+                state.timetableEntryList.take(3).forEach {
                     val formattedTime = it.departureTime.format(formatter)
                     addContent(
                         Text.Builder(context, formattedTime + " " + it.destination)
@@ -134,9 +134,9 @@ fun mainTileLayoutPreview(context: Context): TilePreviewData {
                 stopId = "Tokyo-id",
                 stopName = "Tokyo",
                 listOf(
-                    TimeTableEntry(dummyTime1, "Tokyo", setOf(LocalDateTime.now().dayOfWeek)),
-                    TimeTableEntry(dummyTime2, "Sapporo", setOf(LocalDateTime.now().dayOfWeek)),
-                    TimeTableEntry(dummyTime3, "Chiba", setOf(LocalDateTime.now().dayOfWeek))
+                    TimetableEntry(dummyTime1, "Tokyo", setOf(LocalDateTime.now().dayOfWeek)),
+                    TimetableEntry(dummyTime2, "Sapporo", setOf(LocalDateTime.now().dayOfWeek)),
+                    TimetableEntry(dummyTime3, "Chiba", setOf(LocalDateTime.now().dayOfWeek))
                 )
             ),
             request

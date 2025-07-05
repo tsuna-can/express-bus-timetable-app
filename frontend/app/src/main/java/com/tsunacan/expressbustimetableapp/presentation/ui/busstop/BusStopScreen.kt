@@ -24,7 +24,7 @@ import com.google.android.horologist.compose.layout.ScreenScaffold
 import com.google.android.horologist.compose.layout.rememberResponsiveColumnState
 import com.google.android.horologist.compose.material.Chip
 import com.tsunacan.expressbustimetableapp.R
-import com.tsunacan.expressbustimetableapp.models.TimeTable
+import com.tsunacan.expressbustimetableapp.models.Timetable
 import com.tsunacan.expressbustimetableapp.presentation.ui.common.ErrorScreen
 import com.tsunacan.expressbustimetableapp.presentation.ui.common.LoadingIndicator
 import java.time.LocalTime
@@ -43,7 +43,7 @@ fun BusStopScreen(
         when (uiState) {
             is BusStopScreenUiState.Loaded -> {
                 BusStopScreen(
-                    timeTable = (uiState as BusStopScreenUiState.Loaded).timeTable,
+                    timetable = (uiState as BusStopScreenUiState.Loaded).timetable,
                     onClickSetForTile = viewModel::onClickSetForTile,
                     modifier = modifier,
                 )
@@ -63,7 +63,7 @@ fun BusStopScreen(
 @OptIn(ExperimentalHorologistApi::class)
 @Composable
 fun BusStopScreen(
-    timeTable: TimeTable,
+    timetable: Timetable,
     onClickSetForTile: (String, String, String, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -78,21 +78,21 @@ fun BusStopScreen(
         ),
     )
 
-    val timeTableEntryList = timeTable.timeTableEntryList
+    val timetableEntryList = timetable.timetableEntryList
 
     ScalingLazyColumn(
         columnState = listState,
     ) {
         item {
             Text(
-                text = timeTable.parentRouteName,
+                text = timetable.parentRouteName,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
         }
         item {
             Text(
-                text = timeTable.stopName,
+                text = timetable.stopName,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -101,16 +101,16 @@ fun BusStopScreen(
             SetForTileButton(
                 onClick = {
                     onClickSetForTile(
-                        timeTable.parentRouteId,
-                        timeTable.parentRouteName,
-                        timeTable.stopId,
-                        timeTable.stopName
+                        timetable.parentRouteId,
+                        timetable.parentRouteName,
+                        timetable.stopId,
+                        timetable.stopName
                     )
                 },
                 modifier = contentModifier,
             )
         }
-        if (timeTableEntryList.isEmpty()) {
+        if (timetableEntryList.isEmpty()) {
             item {
                 Text(
                     text = stringResource(R.string.no_timetable_entry),
@@ -119,12 +119,12 @@ fun BusStopScreen(
                 )
             }
         } else {
-            timeTableEntryList.forEach { timeTableEntry ->
+            timetableEntryList.forEach { timetableEntry ->
                 item {
-                    TimeTableEntryChip(
+                    TimetableEntryChip(
                         modifier = contentModifier,
-                        departureTime = timeTableEntry.departureTime,
-                        destination = timeTableEntry.destination,
+                        departureTime = timetableEntry.departureTime,
+                        destination = timetableEntry.destination,
                     )
                 }
             }
@@ -163,7 +163,7 @@ fun SetForTileButton(
 
 @OptIn(ExperimentalHorologistApi::class)
 @Composable
-fun TimeTableEntryChip(
+fun TimetableEntryChip(
     departureTime: LocalTime,
     destination: String,
     modifier: Modifier = Modifier,

@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.wear.tiles.TileService
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.tsunacan.expressbustimetableapp.data.repository.UserSettingsRepository
-import com.tsunacan.expressbustimetableapp.domain.GetDaySpecificTimeTableUseCase
+import com.tsunacan.expressbustimetableapp.domain.GetDaySpecificTimetableUseCase
 import com.tsunacan.expressbustimetableapp.tile.MainTileService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -23,7 +23,7 @@ import javax.inject.Inject
 class BusStopScreenViewModel @Inject constructor(
     @ApplicationContext val context: Context,
     savedStateHandle: SavedStateHandle,
-    private val getDaySpecificTimeTableUseCase: GetDaySpecificTimeTableUseCase,
+    private val getDaySpecificTimetableUseCase: GetDaySpecificTimetableUseCase,
     private val userSettingsRepository: UserSettingsRepository
 ) : ViewModel() {
 
@@ -34,12 +34,12 @@ class BusStopScreenViewModel @Inject constructor(
     val uiState: StateFlow<BusStopScreenUiState> = flow {
         emit(BusStopScreenUiState.Loading)
         try {
-            val timeTable = getDaySpecificTimeTableUseCase.invoke(
+            val timetable = getDaySpecificTimetableUseCase.invoke(
                 parentRouteId = parentRouteId,
                 busStopId = stopId,
                 today = LocalDate.now()
             )
-            emit(BusStopScreenUiState.Loaded(timeTable = timeTable))
+            emit(BusStopScreenUiState.Loaded(timetable = timetable))
         } catch (e: Exception) {
             emit(BusStopScreenUiState.Failed)
         }

@@ -4,7 +4,7 @@ import androidx.compose.ui.util.trace
 import com.tsunacan.expressbustimetableapp.BuildConfig
 import com.tsunacan.expressbustimetableapp.data.model.BusStopsApiModel
 import com.tsunacan.expressbustimetableapp.data.model.ParentRoutesApiModel
-import com.tsunacan.expressbustimetableapp.data.model.TimeTableApiModel
+import com.tsunacan.expressbustimetableapp.data.model.TimetableApiModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.serialization.json.Json
 import okhttp3.Call
@@ -22,10 +22,10 @@ interface NetworkDataSource {
         parentRouteId: String
     ): BusStopsApiModel
 
-    suspend fun getTimeTable(
+    suspend fun getTimetable(
         parentRouteId: String,
         busStopId: String
-    ): TimeTableApiModel
+    ): TimetableApiModel
 }
 
 private interface NetworkApi {
@@ -38,10 +38,10 @@ private interface NetworkApi {
     ): BusStopsApiModel
 
     @GET(value = "timetable")
-    suspend fun getTimeTable(
+    suspend fun getTimetable(
         @Query("parent-route-id") parentRouteId: String,
         @Query("bus-stop-id") busStopId: String
-    ): TimeTableApiModel
+    ): TimetableApiModel
 }
 
 class RemoteDataSource @Inject constructor(
@@ -73,10 +73,10 @@ class RemoteDataSource @Inject constructor(
         return networkApi.getBusStopList(parentRouteId)
     }
 
-    override suspend fun getTimeTable(
+    override suspend fun getTimetable(
         parentRouteId: String,
         busStopId: String
-    ): TimeTableApiModel {
-        return networkApi.getTimeTable(parentRouteId, busStopId)
+    ): TimetableApiModel {
+        return networkApi.getTimetable(parentRouteId, busStopId)
     }
 }

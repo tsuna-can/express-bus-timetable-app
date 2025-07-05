@@ -8,7 +8,7 @@ import androidx.wear.tiles.TileBuilders.Tile
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.google.android.horologist.tiles.SuspendingTileService
 import com.tsunacan.expressbustimetableapp.data.repository.UserSettingsRepository
-import com.tsunacan.expressbustimetableapp.domain.GetUpcomingTimeTableUseCase
+import com.tsunacan.expressbustimetableapp.domain.GetUpcomingTimetableUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
@@ -27,7 +27,7 @@ class MainTileService : SuspendingTileService() {
     lateinit var userSettingsRepository: UserSettingsRepository
 
     @Inject
-    lateinit var getUpcomingTimeTableUseCase: GetUpcomingTimeTableUseCase
+    lateinit var getUpcomingTimetableUseCase: GetUpcomingTimetableUseCase
 
     private lateinit var renderer: MainTileRenderer
 
@@ -43,27 +43,27 @@ class MainTileService : SuspendingTileService() {
     override suspend fun tileRequest(requestParams: TileRequest): Tile {
         val defaultBusStop = userSettingsRepository.defaultBusStop.stateIn(lifecycleScope).first()
 
-        val timeTable =
-            getUpcomingTimeTableUseCase(
+        val timetable =
+            getUpcomingTimetableUseCase(
                 defaultBusStop.parentRouteId,
                 defaultBusStop.busStopId,
                 LocalDate.now()
             )
 
         val mainTileState = MainTileState(
-            parentRouteId = timeTable.parentRouteId,
-            parentRouteName = timeTable.parentRouteName,
-            stopId = timeTable.stopId,
-            stopName = timeTable.stopName,
-            timeTableEntryList = timeTable.timeTableEntryList
+            parentRouteId = timetable.parentRouteId,
+            parentRouteName = timetable.parentRouteName,
+            stopId = timetable.stopId,
+            stopName = timetable.stopName,
+            timetableEntryList = timetable.timetableEntryList
         )
 
         // Set the freshness interval based on the departure time of the next bus
-        val freshnessIntervalMillis = if (mainTileState.timeTableEntryList.isEmpty()) {
+        val freshnessIntervalMillis = if (mainTileState.timetableEntryList.isEmpty()) {
             Duration.ofHours(1).toMillis() // If there are no buses, refresh every hour
         } else {
             calculateTimeUntilDepartureInMs(
-                mainTileState.timeTableEntryList.first().departureTime
+                mainTileState.timetableEntryList.first().departureTime
             )
         }
         renderer.setFreshnessIntervalMillis(freshnessIntervalMillis)

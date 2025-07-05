@@ -6,13 +6,13 @@ import com.tsunacan.expressbustimetableapp.data.datasource.RemoteDataSource
 import com.tsunacan.expressbustimetableapp.data.datasource.UserSettingsDataSource
 import com.tsunacan.expressbustimetableapp.data.mapper.BusStopMapper
 import com.tsunacan.expressbustimetableapp.data.mapper.ParentRouteMapper
-import com.tsunacan.expressbustimetableapp.data.mapper.TimeTableMapper
+import com.tsunacan.expressbustimetableapp.data.mapper.TimetableMapper
 import com.tsunacan.expressbustimetableapp.data.repository.BusStopRepository
 import com.tsunacan.expressbustimetableapp.data.repository.BusStopRepositoryImpl
 import com.tsunacan.expressbustimetableapp.data.repository.ParentRouteRepository
 import com.tsunacan.expressbustimetableapp.data.repository.ParentRouteRepositoryImpl
-import com.tsunacan.expressbustimetableapp.data.repository.TimeTableRepository
-import com.tsunacan.expressbustimetableapp.data.repository.TimeTableRepositoryImpl
+import com.tsunacan.expressbustimetableapp.data.repository.TimetableRepository
+import com.tsunacan.expressbustimetableapp.data.repository.TimetableRepositoryImpl
 import com.tsunacan.expressbustimetableapp.data.repository.UserSettingsRepository
 import com.tsunacan.expressbustimetableapp.data.repository.UserSettingsRepositoryImpl
 import dagger.Module
@@ -55,16 +55,16 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun timeTableRepository(
-        timeTableRepositoryImpl: TimeTableRepositoryImpl
-    ): TimeTableRepository = timeTableRepositoryImpl
+    fun timetableRepository(
+        timetableRepositoryImpl: TimetableRepositoryImpl
+    ): TimetableRepository = timetableRepositoryImpl
 
     @Provides
     @Singleton
-    fun timeTableRepositoryImpl(
+    fun timetableRepositoryImpl(
         remoteDataSource: RemoteDataSource,
-        timeTableMapper: TimeTableMapper
-    ) = TimeTableRepositoryImpl(remoteDataSource, timeTableMapper)
+        timetableMapper: TimetableMapper
+    ) = TimetableRepositoryImpl(remoteDataSource, timetableMapper)
 
     @Provides
     @Singleton
@@ -91,7 +91,7 @@ class DataModule {
     fun busStopMapper() = BusStopMapper
 
     @Provides
-    fun timeTableMapper() = TimeTableMapper
+    fun timetableMapper() = TimetableMapper
 
     @Provides
     fun ioDispatcher(): CoroutineDispatcher = Dispatchers.IO

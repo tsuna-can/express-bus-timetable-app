@@ -1,21 +1,21 @@
 package com.tsunacan.expressbustimetableapp.testdouble
 
-import com.tsunacan.expressbustimetableapp.data.repository.TimeTableRepository
-import com.tsunacan.expressbustimetableapp.models.TimeTable
+import com.tsunacan.expressbustimetableapp.data.repository.TimetableRepository
+import com.tsunacan.expressbustimetableapp.models.Timetable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class FakeTimetableRepository : TimeTableRepository {
+class FakeTimetableRepository : TimetableRepository {
 
-    private val timeTables = mutableMapOf<Pair<String, String>, TimeTable>()
+    private val timetables = mutableMapOf<Pair<String, String>, Timetable>()
 
-    fun addTimeTable(parentRouteId: String, busStopId: String, timeTable: TimeTable) {
-        timeTables[parentRouteId to busStopId] = timeTable
+    fun addTimetable(parentRouteId: String, busStopId: String, timetable: Timetable) {
+        timetables[parentRouteId to busStopId] = timetable
     }
 
-    override fun getTimeTable(parentRouteId: String, busStopId: String): Flow<TimeTable> {
-        val timeTable = timeTables[parentRouteId to busStopId]
+    override fun getTimetable(parentRouteId: String, busStopId: String): Flow<Timetable> {
+        val timetable = timetables[parentRouteId to busStopId]
             ?: throw IllegalArgumentException("No timetable found for route $parentRouteId and stop $busStopId")
-        return flow { emit(timeTable) }
+        return flow { emit(timetable) }
     }
 }

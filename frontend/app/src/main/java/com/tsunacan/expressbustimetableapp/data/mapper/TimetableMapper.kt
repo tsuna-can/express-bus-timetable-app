@@ -1,29 +1,29 @@
 package com.tsunacan.expressbustimetableapp.data.mapper
 
 import android.util.Log
-import com.tsunacan.expressbustimetableapp.data.model.TimeTableApiModel
-import com.tsunacan.expressbustimetableapp.data.model.TimeTableEntryApiModel
-import com.tsunacan.expressbustimetableapp.models.TimeTable
-import com.tsunacan.expressbustimetableapp.models.TimeTableEntry
+import com.tsunacan.expressbustimetableapp.data.model.TimetableApiModel
+import com.tsunacan.expressbustimetableapp.data.model.TimetableEntryApiModel
+import com.tsunacan.expressbustimetableapp.models.Timetable
+import com.tsunacan.expressbustimetableapp.models.TimetableEntry
 import java.time.DayOfWeek
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
-object TimeTableMapper {
+object TimetableMapper {
     private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
-    fun mapToTimeTable(timeTableApiModel: TimeTableApiModel): TimeTable = TimeTable(
-        parentRouteId = timeTableApiModel.parentRouteId,
-        parentRouteName = timeTableApiModel.parentRouteName,
-        stopId = timeTableApiModel.busStopId,
-        stopName = timeTableApiModel.busStopName,
-        timeTableEntryList = timeTableApiModel.timeTableEntry.mapNotNull { mapEntry(it) }
+    fun mapToTimetable(timetableApiModel: TimetableApiModel): Timetable = Timetable(
+        parentRouteId = timetableApiModel.parentRouteId,
+        parentRouteName = timetableApiModel.parentRouteName,
+        stopId = timetableApiModel.busStopId,
+        stopName = timetableApiModel.busStopName,
+        timetableEntryList = timetableApiModel.timetableEntry.mapNotNull { mapEntry(it) }
     )
 
-    private fun mapEntry(entry: TimeTableEntryApiModel): TimeTableEntry? {
+    private fun mapEntry(entry: TimetableEntryApiModel): TimetableEntry? {
         val departureTime = departureTimeStringToLocalTime(entry.departureTime) ?: return null
-        return TimeTableEntry(
+        return TimetableEntry(
             departureTime = departureTime,
             destination = entry.destinationName,
             availableDayOfWeek = integerSetToDayOfWeekSet(entry.operationDays)
@@ -33,7 +33,7 @@ object TimeTableMapper {
     private fun departureTimeStringToLocalTime(departureTime: String): LocalTime? = try {
         LocalTime.parse(departureTime, timeFormatter)
     } catch (e: DateTimeParseException) {
-        Log.i("TimeTableMapper", "Error parsing time: ${e.message}")
+        Log.i("TimetableMapper", "Error parsing time: ${e.message}")
         null
     }
 

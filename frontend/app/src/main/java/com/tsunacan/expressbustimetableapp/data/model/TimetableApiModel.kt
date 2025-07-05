@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class TimeTableApiModel(
+data class TimetableApiModel(
     @SerialName("parent_route_id")
     val parentRouteId: String,
     @SerialName("parent_route_name")
@@ -14,5 +14,5 @@ data class TimeTableApiModel(
     @SerialName("bus_stop_name")
     val busStopName: String,
     @SerialName("timetable_entry")
-    val timeTableEntry: List<TimeTableEntryApiModel>
+    val timetableEntry: List<TimetableEntryApiModel>
 )

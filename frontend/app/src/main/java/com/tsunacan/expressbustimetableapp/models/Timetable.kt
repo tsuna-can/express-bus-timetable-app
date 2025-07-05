@@ -3,10 +3,10 @@ package com.tsunacan.expressbustimetableapp.models
 /**
  * Time table for a bus stop
  */
-data class TimeTable(
+data class Timetable(
     val parentRouteId: String = "",
     val parentRouteName: String = "",
     val stopId: String = "",
     val stopName: String = "",
-    val timeTableEntryList: List<TimeTableEntry> = emptyList()
+    val timetableEntryList: List<TimetableEntry> = emptyList()
 )

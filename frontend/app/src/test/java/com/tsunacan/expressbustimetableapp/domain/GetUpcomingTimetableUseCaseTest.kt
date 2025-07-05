@@ -1,7 +1,7 @@
 package com.tsunacan.expressbustimetableapp.domain
 
-import com.tsunacan.expressbustimetableapp.models.TimeTable
-import com.tsunacan.expressbustimetableapp.models.TimeTableEntry
+import com.tsunacan.expressbustimetableapp.models.Timetable
+import com.tsunacan.expressbustimetableapp.models.TimetableEntry
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -19,8 +19,8 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 class GetUpcomingTimetableUseCaseTest {
-    private lateinit var getUpcomingTimeTableUseCase: GetUpcomingTimeTableUseCase
-    private lateinit var getDaySpecificTimeTableUseCase: GetDaySpecificTimeTableUseCase
+    private lateinit var getUpcomingTimetableUseCase: GetUpcomingTimetableUseCase
+    private lateinit var getDaySpecificTimetableUseCase: GetDaySpecificTimetableUseCase
 
     // Test constants
     private val parentRouteId = "route1"
@@ -30,8 +30,8 @@ class GetUpcomingTimetableUseCaseTest {
 
     @Before
     fun setup() {
-        getDaySpecificTimeTableUseCase = mockk()
-        getUpcomingTimeTableUseCase = GetUpcomingTimeTableUseCase(getDaySpecificTimeTableUseCase)
+        getDaySpecificTimetableUseCase = mockk()
+        getUpcomingTimetableUseCase = GetUpcomingTimetableUseCase(getDaySpecificTimetableUseCase)
 
         // Mock the LocalDateTime.now() static method
         mockkStatic(LocalDateTime::class)
@@ -45,11 +45,11 @@ class GetUpcomingTimetableUseCaseTest {
         unmockkStatic(LocalDateTime::class)
     }
 
-    private fun createTimeTableEntry(
+    private fun createTimetableEntry(
         time: String,
         destination: String = "Test Destination"
-    ): TimeTableEntry {
-        return TimeTableEntry(
+    ): TimetableEntry {
+        return TimetableEntry(
             departureTime = LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm")),
             destination = destination,
             availableDayOfWeek = setOf(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY)
@@ -59,138 +59,138 @@ class GetUpcomingTimetableUseCaseTest {
     @Test
     fun `when there are upcoming departures, should return up to 3 entries`() = runBlocking {
         // Given
-        val mockTimeTable = TimeTable(
+        val mockTimetable = Timetable(
             parentRouteId = parentRouteId,
             parentRouteName = "Route 1",
             stopId = busStopId,
             stopName = "Stop 1",
-            timeTableEntryList =
+            timetableEntryList =
             listOf(
-                createTimeTableEntry("10:00"),
-                createTimeTableEntry("11:00"),
-                createTimeTableEntry("12:30"), // First upcoming
-                createTimeTableEntry("13:00"), // Second upcoming
-                createTimeTableEntry("14:00"), // Third upcoming
-                createTimeTableEntry("15:00") // Not included
+                createTimetableEntry("10:00"),
+                createTimetableEntry("11:00"),
+                createTimetableEntry("12:30"), // First upcoming
+                createTimetableEntry("13:00"), // Second upcoming
+                createTimetableEntry("14:00"), // Third upcoming
+                createTimetableEntry("15:00") // Not included
             )
         )
 
         coEvery {
-            getDaySpecificTimeTableUseCase.invoke(
+            getDaySpecificTimetableUseCase.invoke(
                 parentRouteId,
                 busStopId,
                 today
             )
-        } returns mockTimeTable
+        } returns mockTimetable
 
         // When
-        val result = getUpcomingTimeTableUseCase(parentRouteId, busStopId, today)
+        val result = getUpcomingTimetableUseCase(parentRouteId, busStopId, today)
 
         // Then
-        assertEquals(3, result.timeTableEntryList.size)
-        assertEquals(LocalTime.parse("12:30"), result.timeTableEntryList[0].departureTime)
-        assertEquals(LocalTime.parse("13:00"), result.timeTableEntryList[1].departureTime)
-        assertEquals(LocalTime.parse("14:00"), result.timeTableEntryList[2].departureTime)
+        assertEquals(3, result.timetableEntryList.size)
+        assertEquals(LocalTime.parse("12:30"), result.timetableEntryList[0].departureTime)
+        assertEquals(LocalTime.parse("13:00"), result.timetableEntryList[1].departureTime)
+        assertEquals(LocalTime.parse("14:00"), result.timetableEntryList[2].departureTime)
     }
 
     @Test
     fun `when there are no upcoming departures, should return empty list`() = runBlocking {
         // Given
-        val mockTimeTable = TimeTable(
+        val mockTimetable = Timetable(
             parentRouteId = parentRouteId,
             parentRouteName = "Route 1",
             stopId = busStopId,
             stopName = "Stop 1",
-            timeTableEntryList =
+            timetableEntryList =
             listOf(
-                createTimeTableEntry("10:00"),
-                createTimeTableEntry("11:00")
+                createTimetableEntry("10:00"),
+                createTimetableEntry("11:00")
                 // All departures are before current time (12:00)
             )
         )
 
         coEvery {
-            getDaySpecificTimeTableUseCase.invoke(
+            getDaySpecificTimetableUseCase.invoke(
                 parentRouteId,
                 busStopId,
                 today
             )
-        } returns mockTimeTable
+        } returns mockTimetable
 
         // When
-        val result = getUpcomingTimeTableUseCase(parentRouteId, busStopId, today)
+        val result = getUpcomingTimetableUseCase(parentRouteId, busStopId, today)
 
         // Then
-        assertEquals(0, result.timeTableEntryList.size)
+        assertEquals(0, result.timetableEntryList.size)
     }
 
     @Test
     fun `when there are less than 3 upcoming departures, should return all available`() =
         runBlocking {
             // Given
-            val mockTimeTable = TimeTable(
+            val mockTimetable = Timetable(
                 parentRouteId = parentRouteId,
                 parentRouteName = "Route 1",
                 stopId = busStopId,
                 stopName = "Stop 1",
-                timeTableEntryList =
+                timetableEntryList =
                 listOf(
-                    createTimeTableEntry("10:00"),
-                    createTimeTableEntry("11:00"),
-                    createTimeTableEntry("12:30"), // First upcoming
-                    createTimeTableEntry("13:00") // Second upcoming
+                    createTimetableEntry("10:00"),
+                    createTimetableEntry("11:00"),
+                    createTimetableEntry("12:30"), // First upcoming
+                    createTimetableEntry("13:00") // Second upcoming
                 )
             )
 
             coEvery {
-                getDaySpecificTimeTableUseCase.invoke(
+                getDaySpecificTimetableUseCase.invoke(
                     parentRouteId,
                     busStopId,
                     today
                 )
-            } returns mockTimeTable
+            } returns mockTimetable
 
             // When
-            val result = getUpcomingTimeTableUseCase(parentRouteId, busStopId, today)
+            val result = getUpcomingTimetableUseCase(parentRouteId, busStopId, today)
 
             // Then
-            assertEquals(2, result.timeTableEntryList.size)
-            assertEquals(LocalTime.parse("12:30"), result.timeTableEntryList[0].departureTime)
-            assertEquals(LocalTime.parse("13:00"), result.timeTableEntryList[1].departureTime)
+            assertEquals(2, result.timetableEntryList.size)
+            assertEquals(LocalTime.parse("12:30"), result.timetableEntryList[0].departureTime)
+            assertEquals(LocalTime.parse("13:00"), result.timetableEntryList[1].departureTime)
         }
 
     @Test
     fun `when the first departure is at the current time, it should be included`() = runBlocking {
         // Given
-        val mockTimeTable = TimeTable(
+        val mockTimetable = Timetable(
             parentRouteId = parentRouteId,
             parentRouteName = "Route 1",
             stopId = busStopId,
             stopName = "Stop 1",
-            timeTableEntryList =
+            timetableEntryList =
             listOf(
-                createTimeTableEntry("10:00"),
-                createTimeTableEntry("12:00"), // Equal to current time, should be included
-                createTimeTableEntry("12:30"),
-                createTimeTableEntry("13:00")
+                createTimetableEntry("10:00"),
+                createTimetableEntry("12:00"), // Equal to current time, should be included
+                createTimetableEntry("12:30"),
+                createTimetableEntry("13:00")
             )
         )
 
         coEvery {
-            getDaySpecificTimeTableUseCase.invoke(
+            getDaySpecificTimetableUseCase.invoke(
                 parentRouteId,
                 busStopId,
                 today
             )
-        } returns mockTimeTable
+        } returns mockTimetable
 
         // When
-        val result = getUpcomingTimeTableUseCase(parentRouteId, busStopId, today)
+        val result = getUpcomingTimetableUseCase(parentRouteId, busStopId, today)
 
         // Then
-        assertEquals(3, result.timeTableEntryList.size)
-        assertEquals(LocalTime.parse("12:00"), result.timeTableEntryList[0].departureTime)
-        assertEquals(LocalTime.parse("12:30"), result.timeTableEntryList[1].departureTime)
-        assertEquals(LocalTime.parse("13:00"), result.timeTableEntryList[2].departureTime)
+        assertEquals(3, result.timetableEntryList.size)
+        assertEquals(LocalTime.parse("12:00"), result.timetableEntryList[0].departureTime)
+        assertEquals(LocalTime.parse("12:30"), result.timetableEntryList[1].departureTime)
+        assertEquals(LocalTime.parse("13:00"), result.timetableEntryList[2].departureTime)
     }
 }

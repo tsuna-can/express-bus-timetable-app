@@ -1,13 +1,13 @@
 package com.tsunacan.expressbustimetableapp.domain
 
-import com.tsunacan.expressbustimetableapp.data.repository.TimeTableRepository
-import com.tsunacan.expressbustimetableapp.models.TimeTable
+import com.tsunacan.expressbustimetableapp.data.repository.TimetableRepository
+import com.tsunacan.expressbustimetableapp.models.Timetable
 import kotlinx.coroutines.flow.first
 import java.time.LocalDate
 import javax.inject.Inject
 
-class GetDaySpecificTimeTableUseCase @Inject constructor(
-    private val timeTableRepository: TimeTableRepository
+class GetDaySpecificTimetableUseCase @Inject constructor(
+    private val timetableRepository: TimetableRepository
 ) {
     /**
      * Get the time table for the selected bus stop, selected day of the week and selected route
@@ -21,19 +21,19 @@ class GetDaySpecificTimeTableUseCase @Inject constructor(
         parentRouteId: String,
         busStopId: String,
         today: LocalDate
-    ): TimeTable {
-        val busStopTimeTable = timeTableRepository.getTimeTable(parentRouteId, busStopId).first()
+    ): Timetable {
+        val busStopTimetable = timetableRepository.getTimetable(parentRouteId, busStopId).first()
 
         val dayOfWeek = today.dayOfWeek
 
         // Filter the time table based on the selected day of the week
-        val filteredTimeTable = busStopTimeTable.timeTableEntryList.filter {
+        val filteredTimetable = busStopTimetable.timetableEntryList.filter {
             it.availableDayOfWeek.contains(dayOfWeek)
         }
 
         // Sort the time table based on the departure time
-        val sortedTimeTable = filteredTimeTable.sortedBy { it.departureTime }
+        val sortedTimetable = filteredTimetable.sortedBy { it.departureTime }
 
-        return busStopTimeTable.copy(timeTableEntryList = sortedTimeTable)
+        return busStopTimetable.copy(timetableEntryList = sortedTimetable)
     }
 }

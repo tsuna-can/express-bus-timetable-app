@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class TimeTableEntryApiModel(
+data class TimetableEntryApiModel(
     @SerialName("departure_time")
     val departureTime: String,
     @SerialName("destination_name")
